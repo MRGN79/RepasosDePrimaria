@@ -18,6 +18,10 @@
     "start": "Play!",
     "done": "Mission done!"
   },
+  "comingSoon": {
+    "title": "Coming soon!",
+    "desc": "We're still preparing the activities for {{course}}. In the meantime you can switch grade from settings."
+  },
   "play": {
     "chooseSubject": "I'll choose"
   },

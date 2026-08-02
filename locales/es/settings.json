@@ -1,5 +1,9 @@
 {
   "title": "Ajustes",
+  "course": {
+    "label": "Curso",
+    "help": "Cada curso guarda sus propias estrellas, racha y medallas. De momento solo 3.º de Primaria tiene actividades."
+  },
   "language": {
     "label": "Idioma",
     "es": "Español",

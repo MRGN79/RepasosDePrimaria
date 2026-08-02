@@ -24,6 +24,8 @@ import {
   buildSubjectVMs,
   buildTopicVMs,
   contentKeyFor,
+  courseHasContent,
+  courseLabelKey,
   type SubjectVM,
 } from "@/lib/catalog";
 import { exercisesByTopic, exerciseById } from "@content/registry";
@@ -110,7 +112,11 @@ export function App() {
     setRoute({ name: "home" });
   }, []);
 
-  const subjectVMs = useMemo<SubjectVM[]>(() => buildSubjectVMs(t), [t]);
+  const curso = store.currentCourse;
+  const contentReady = courseHasContent(curso);
+  const courseLabel = t(courseLabelKey(curso));
+
+  const subjectVMs = useMemo<SubjectVM[]>(() => buildSubjectVMs(curso, t), [curso, t]);
 
   const subjectProgress = useMemo(() => {
     const triedSet = new Set(state.progress.subjectsTried);
@@ -120,7 +126,7 @@ export function App() {
         id: s.id,
         title: s.title,
         colorToken: s.colorToken,
-        topics: buildTopicVMs(s.id, t)
+        topics: buildTopicVMs(curso, s.id, t)
           .filter((tp) => !tp.soon)
           .flatMap((tp) => {
             const exercises = exercisesByTopic(s.id, tp.id);
@@ -135,7 +141,7 @@ export function App() {
           }),
       }))
       .filter((s) => s.topics.length > 0);
-  }, [subjectVMs, state.progress.correctByTopic, state.progress.subjectsTried, t]);
+  }, [curso, subjectVMs, state.progress.correctByTopic, state.progress.subjectsTried, t]);
 
   const currentLanguage: "en" | "es" =
     (state.preferences.language ?? i18n.language) === "es" ? "es" : "en";
@@ -166,7 +172,10 @@ export function App() {
   if (!store.hasProfile) {
     return (
       <OnboardingScreen
-        onComplete={(avatarId, nicknameId, nicknameCustom) => {
+        showCourseStep
+        initialCourse={curso}
+        onComplete={(avatarId, nicknameId, nicknameCustom, chosenCourse) => {
+          if (chosenCourse && chosenCourse !== curso) store.setCourse(chosenCourse);
           store.setProfile(avatarId, nicknameId ?? DEFAULT_NICKNAME, nicknameCustom ?? null);
           setRoute({ name: "home" });
         }}
@@ -180,11 +189,14 @@ export function App() {
     return (
       <HomeScreen
         nickname={nickname}
+        courseLabel={courseLabel}
+        contentReady={contentReady}
         totalStars={state.stars.total}
         streakDays={state.streak.current}
         streakVariant={streakVariant}
         dailyGoalDone={dailyGoalDoneToday}
         onStartDailyGoal={() => {
+          if (!contentReady) return;
           const excludeIds = new Set(state.progress.correctExerciseIds);
           const prebuilt = buildDailySession(3, Math.random, excludeIds);
           if (prebuilt.length === 0) return;
@@ -226,7 +238,7 @@ export function App() {
   }
 
   if (route.name === "subjects") {
-    const topics = selectedSubject ? buildTopicVMs(selectedSubject, t) : null;
+    const topics = selectedSubject ? buildTopicVMs(curso, selectedSubject, t) : null;
     const selectedTitle = selectedSubject
       ? t(`content:${contentKeyFor(selectedSubject)}.title`)
       : undefined;
@@ -280,9 +292,14 @@ export function App() {
   if (route.name === "settings") {
     return (
       <SettingsScreen
+        course={curso}
         language={currentLanguage}
         sound={state.preferences.sound}
         reducedMotion={state.preferences.reducedMotion}
+        onCourse={(c) => {
+          store.setCourse(c);
+          setSelectedSubject(null);
+        }}
         onLanguage={store.setLanguage}
         onSound={store.setSound}
         onReducedMotion={store.setReducedMotion}
@@ -313,7 +330,7 @@ export function App() {
   }
 
   if (route.name === "print") {
-    const topics = selectedSubject ? buildTopicVMs(selectedSubject, t) : null;
+    const topics = selectedSubject ? buildTopicVMs(curso, selectedSubject, t) : null;
     const selectedTitle = selectedSubject
       ? t(`content:${contentKeyFor(selectedSubject)}.title`)
       : undefined;
@@ -358,7 +375,7 @@ export function App() {
   if (route.name === "printSheet") {
     const subjectTitle = t(`content:${contentKeyFor(route.materia)}.title`);
     const topicTitle = route.tema
-      ? buildTopicVMs(route.materia, t).find((tp) => tp.id === route.tema)?.title ?? subjectTitle
+      ? buildTopicVMs(curso, route.materia, t).find((tp) => tp.id === route.tema)?.title ?? subjectTitle
       : t("content:label.surpriseMix");
     return (
       <PrintSheetScreen

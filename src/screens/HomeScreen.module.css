@@ -33,7 +33,14 @@
 .welcome {
   font-size: var(--tdp-font-size-2xl);
   text-align: center;
-  margin-bottom: var(--tdp-space-6);
+  margin-bottom: var(--tdp-space-2);
+}
+
+.courseTag {
+  text-align: center;
+  margin: 0 0 var(--tdp-space-6);
+  font-weight: var(--tdp-font-weight-bold);
+  color: var(--tdp-color-text-muted, inherit);
 }
 
 /* Bloque héroe: la misión del día. Evita la "card con sombra" genérica:

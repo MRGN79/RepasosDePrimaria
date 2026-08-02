@@ -1,10 +1,10 @@
 {
   "app": {
-    "name": "Third Grade",
+    "name": "Primary Review",
     "skipToContent": "Skip to content"
   },
   "footer": {
-    "description": "Summer review exercises for 3rd Grade",
+    "description": "Primary school review exercises",
     "howItWorks": "5 questions per session when you pick a subject (today's mission combines 15: 3 from each) · Questions you get right won't repeat until you've done them all · Wrong answers come back for extra practice",
     "privacy": "This app does not send any data to any server. Everything is saved only on this device."
   },

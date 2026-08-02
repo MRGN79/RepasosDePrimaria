@@ -17,6 +17,9 @@ import styles from "./HomeScreen.module.css";
 
 type HomeScreenProps = {
   nickname?: string;
+  courseLabel?: string;
+  /** el curso activo tiene contenido; si no, se muestra el estado "Pronto" */
+  contentReady?: boolean;
   totalStars?: number;
   streakDays?: number;
   streakVariant?: "normal" | "empty" | "reset";
@@ -32,6 +35,8 @@ type HomeScreenProps = {
 
 export function HomeScreen({
   nickname = "Explorador",
+  courseLabel,
+  contentReady = true,
   totalStars = 0,
   streakDays = 0,
   streakVariant = "empty",
@@ -71,23 +76,37 @@ export function HomeScreen({
       }
     >
       <h1 className={styles.welcome}>{t("home:welcome.title")}</h1>
+      {courseLabel ? <p className={styles.courseTag}>{courseLabel}</p> : null}
 
       <section className={styles.hero} aria-labelledby="daily-goal-title">
         <Mascot expression="happy" size="md" />
         <div className={styles.heroBody}>
-          <h2 id="daily-goal-title" className={styles.heroTitle}>
-            {t("home:dailyGoal.title")}
-          </h2>
-          <p className={styles.heroDesc}>{t("home:dailyGoal.desc")}</p>
-          {dailyGoalDone ? (
-            <p className={styles.doneTag}>
-              <Icon name="check" size={24} aria-hidden="true" />
-              {t("home:dailyGoal.done")}
-            </p>
+          {!contentReady ? (
+            <>
+              <h2 id="daily-goal-title" className={styles.heroTitle}>
+                {t("home:comingSoon.title")}
+              </h2>
+              <p className={styles.heroDesc}>
+                {t("home:comingSoon.desc", { course: courseLabel })}
+              </p>
+            </>
           ) : (
-            <Button variant="primary" size="lg" onClick={onStartDailyGoal}>
-              {t("home:dailyGoal.start")}
-            </Button>
+            <>
+              <h2 id="daily-goal-title" className={styles.heroTitle}>
+                {t("home:dailyGoal.title")}
+              </h2>
+              <p className={styles.heroDesc}>{t("home:dailyGoal.desc")}</p>
+              {dailyGoalDone ? (
+                <p className={styles.doneTag}>
+                  <Icon name="check" size={24} aria-hidden="true" />
+                  {t("home:dailyGoal.done")}
+                </p>
+              ) : (
+                <Button variant="primary" size="lg" onClick={onStartDailyGoal}>
+                  {t("home:dailyGoal.start")}
+                </Button>
+              )}
+            </>
           )}
         </div>
       </section>

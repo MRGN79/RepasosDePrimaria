@@ -3,15 +3,20 @@
  * para que el módulo del componente sólo exporte componentes (Fast Refresh).
  */
 import { createContext, useContext } from "react";
-import type { PersistedState, Language } from "@/lib/storage";
+import type { ActiveView, Language, Curso } from "@/lib/storage";
 import type {
   SessionConsolidation,
   ConsolidationResult,
 } from "./consolidation";
 
 export interface GameStore {
-  state: PersistedState;
+  /** Vista aplanada del curso activo + preferencias globales. */
+  state: ActiveView;
   storageAvailable: boolean;
+  /** curso actualmente seleccionado */
+  currentCourse: Curso;
+  /** cambia el curso activo; crea sus avances vacíos si es la primera vez */
+  setCourse: (curso: Curso) => void;
   setLanguage: (lang: Language) => void;
   setSound: (on: boolean) => void;
   setReducedMotion: (on: boolean) => void;

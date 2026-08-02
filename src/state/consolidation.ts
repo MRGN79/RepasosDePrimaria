@@ -3,7 +3,7 @@
  * actualiza progreso y desbloquea medallas. Separada del proveedor de React para
  * ser testeable y no romper Fast Refresh del componente.
  */
-import type { PersistedState } from "@/lib/storage";
+import type { CourseState } from "@/lib/storage";
 import { advanceStreak, type StreakOutcome } from "@/lib/streak";
 import { newlyEarnedBadges } from "@/lib/badges";
 
@@ -28,10 +28,10 @@ export interface ConsolidationResult {
 
 /** Calcula el nuevo estado consolidado y el resultado, de forma pura. */
 export function applyConsolidation(
-  prev: PersistedState,
+  prev: CourseState,
   c: SessionConsolidation,
   today: string,
-): { next: PersistedState; result: ConsolidationResult } {
+): { next: CourseState; result: ConsolidationResult } {
   const streakResult = advanceStreak(prev.streak, today);
 
   const correctByTopic = { ...prev.progress.correctByTopic };
@@ -58,7 +58,7 @@ export function applyConsolidation(
     ...new Set([...(prev.progress.failedExerciseIds ?? []), ...c.newlyFailedIds]),
   ].filter((id) => !correctSet.has(id));
 
-  const withProgress: PersistedState = {
+  const withProgress: CourseState = {
     ...prev,
     streak: streakResult.state,
     stars: { total: prev.stars.total + c.starsEarned },

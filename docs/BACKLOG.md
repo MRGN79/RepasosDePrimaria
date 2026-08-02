@@ -4,6 +4,24 @@ Items anotados para implementar en el futuro, ordenados por aparición. No impli
 
 ---
 
+## Trabajo Activo
+
+| Feature | Rama | Estado |
+|---|---|---|
+| **Multi-curso: selección de curso (1.º-6.º) + progreso aislado por curso + rebranding a "Repasos de Primaria"** | `claude/primary-app-multi-course-ygqnjm` | Implementada y con todos los gates en verde. Pendiente de confirmación del usuario para PR/merge/deploy y tag `v0.5.0`. Al integrarse, mover a Historial. Sólo 3.º tiene contenido; el resto de cursos quedan como "Pronto". Ver `docs/decisions/ADR-002-modelo-multi-curso.md`. |
+
+---
+
+## Dirección de producto (cambios mayores a futuro)
+
+Registrados a petición del usuario. No son features incrementales sobre la web actual: implican cambios de naturaleza del producto. **No iniciados** — requieren su propio flujo cuando se aborden.
+
+- **Cambio de naturaleza del producto: de web a app instalable en Android (posible iOS después).** El usuario ha indicado que "va a dejar de ser una web con una URL, para ser una aplicación instalable en Android". Es decir, la dirección no es "web con URL pública que crece", sino app instalable, con **login y guardado de datos en la nube vía Firebase**. Esto implica pasar de "sin backend, sin login" a autenticación y backend en la nube: es un cambio de arquitectura mayor que **necesita su propio flujo de Decisión de Arquitectura con el Arquitecto** (nuevo ADR) y previsiblemente **invalidará partes del README actual sobre privacidad** ("nada sale del dispositivo") y hará que **GitHub Pages / la URL pública dejen de ser el canal de distribución principal**. El modelo de datos multi-curso construido ahora (ADR-002) ya es serializable y separa lo global de lo per-curso, de modo que no estorba esa migración; no se ha añadido ninguna abstracción anticipada para ella.
+
+- **Monetización (dos vías, interés comercial explícito del usuario).** (1) **Donativos voluntarios** y (2) **publicidad ligera y no invasiva** ("muy poca, nada invasiva"). Dado el interés comercial explícito, cuando se aborde debe **invocarse a Growth**: primero en modo consultor (dictamen de potencial) y, si el usuario confirma interés, en modo estratega. No iniciar ahora. Nota: el ADR-001 registraba el proyecto como "gratuito, sin interés comercial"; esa premisa ha cambiado y deberá revisarse al abrir la vía comercial.
+
+---
+
 ## Contenido
 
 - **Añadir temas a Inglés** — "body parts", "food & drink", "classroom", "days & months".

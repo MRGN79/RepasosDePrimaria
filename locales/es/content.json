@@ -1,4 +1,12 @@
 {
+  "course": {
+    "1": "1.º de Primaria",
+    "2": "2.º de Primaria",
+    "3": "3.º de Primaria",
+    "4": "4.º de Primaria",
+    "5": "5.º de Primaria",
+    "6": "6.º de Primaria"
+  },
   "math": {
     "title": "Matemáticas",
     "zone": "La playa de los números",
