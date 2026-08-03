@@ -6,15 +6,17 @@ Items anotados para implementar en el futuro, ordenados por aparición. No impli
 
 ## Trabajo Activo
 
-_(sin trabajo activo — ver Historial para lo último integrado)_
+| Feature | Rama | Estado |
+|---|---|---|
+| **Giro a app Android instalable + login/datos vía Firebase** | _(aún sin rama — en fase de Decisión de Arquitectura, sin código todavía)_ | Abogado ya emitió las restricciones legales (bloqueante: el niño no puede tener login propio, cuenta debe ser del adulto/tutor con perfiles de hijo sin PII). Arquitecto está preparando las opciones técnicas (empaquetado Android, arquitectura Firebase, CI de APK por PR, consulta previa a Seguridad) para que el usuario decida. Requisitos explícitos del usuario: APK generado automáticamente en cada PR, retirar despliegue de GitHub Pages, repositorio pasa a privado. |
 
 ---
 
 ## Dirección de producto (cambios mayores a futuro)
 
-Registrados a petición del usuario. No son features incrementales sobre la web actual: implican cambios de naturaleza del producto. **No iniciados** — requieren su propio flujo cuando se aborden.
+Registrados a petición del usuario. No son features incrementales sobre la web actual: implican cambios de naturaleza del producto.
 
-- **Cambio de naturaleza del producto: de web a app instalable en Android (posible iOS después).** El usuario ha indicado que "va a dejar de ser una web con una URL, para ser una aplicación instalable en Android". Es decir, la dirección no es "web con URL pública que crece", sino app instalable, con **login y guardado de datos en la nube vía Firebase**. Esto implica pasar de "sin backend, sin login" a autenticación y backend en la nube: es un cambio de arquitectura mayor que **necesita su propio flujo de Decisión de Arquitectura con el Arquitecto** (nuevo ADR) y previsiblemente **invalidará partes del README actual sobre privacidad** ("nada sale del dispositivo") y hará que **GitHub Pages / la URL pública dejen de ser el canal de distribución principal**. El modelo de datos multi-curso construido ahora (ADR-002) ya es serializable y separa lo global de lo per-curso, de modo que no estorba esa migración; no se ha añadido ninguna abstracción anticipada para ella.
+- **Cambio de naturaleza del producto: de web a app instalable en Android (posible iOS después).** **En curso** (ver Trabajo Activo) — el usuario ha confirmado que quiere iniciar este giro ahora. El modelo de datos multi-curso construido antes (ADR-002) ya es serializable y separa lo global de lo per-curso, de modo que no estorba esta migración; no se había añadido ninguna abstracción anticipada para ella.
 
 - **Monetización (dos vías, interés comercial explícito del usuario).** (1) **Donativos voluntarios** y (2) **publicidad ligera y no invasiva** ("muy poca, nada invasiva"). Dado el interés comercial explícito, cuando se aborde debe **invocarse a Growth**: primero en modo consultor (dictamen de potencial) y, si el usuario confirma interés, en modo estratega. No iniciar ahora. Nota: el ADR-001 registraba el proyecto como "gratuito, sin interés comercial"; esa premisa ha cambiado y deberá revisarse al abrir la vía comercial. El `LICENSE` propietario ya elegido (ver Historial) mantiene abierta esta vía sin ceder derechos de reutilización.
 
