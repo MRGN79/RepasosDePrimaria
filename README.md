@@ -209,6 +209,10 @@ Este es un proyecto personal y gratuito, pero el flujo de trabajo está pensado 
 - **Changelog:** todo cambio relevante para el usuario se anota en la sección `[Unreleased]` de [`CHANGELOG.md`](CHANGELOG.md), siguiendo [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 - **Versionado:** [Semantic Versioning](https://semver.org/lang/es/) (`MAJOR.MINOR.PATCH`).
 
+## Licencia
+
+Todos los derechos reservados. El uso de la aplicación desplegada es gratuito para uso personal, educativo y no comercial; la reutilización del código o del contenido requiere autorización previa. Ver [`LICENSE`](LICENSE) para el texto completo (ES/EN).
+
 ---
 
 Hecho para que aprender en verano no pese. ☀️

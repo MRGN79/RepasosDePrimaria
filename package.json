@@ -1,6 +1,7 @@
 {
   "name": "repasosdeprimaria",
   "private": true,
+  "license": "UNLICENSED",
   "version": "0.5.0",
   "type": "module",
   "description": "Repasos de Primaria: ejercicios y juegos educativos por curso (1.º-6.º). 100% estática, sin backend. Contenido disponible por ahora para 3.º.",
