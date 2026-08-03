@@ -23,6 +23,19 @@
   flex: 1;
 }
 
+.help {
+  margin: 0 0 var(--tdp-space-3);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--tdp-color-text-muted, inherit);
+}
+
+.courseRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--tdp-gap-touch, 12px);
+}
+
 .dangerGroup {
   border-top: 1px solid var(--tdp-color-border);
   padding-top: var(--tdp-space-5);

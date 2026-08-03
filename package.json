@@ -1,9 +1,9 @@
 {
   "name": "tercerodeprimaria",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
-  "description": "Web de ejercicios y juegos educativos para 3º de primaria (8-9 años). 100% estática, sin backend.",
+  "description": "Repasos de Primaria: ejercicios y juegos educativos por curso (1.º-6.º). 100% estática, sin backend. Contenido disponible por ahora para 3.º.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

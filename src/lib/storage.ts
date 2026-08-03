@@ -1,7 +1,15 @@
 /*
- * Persistencia local (ADR-001 §4): única clave raíz versionada "tdp:v1".
- * Lectura defensiva: ante ausencia, corrupción o schemaVersion desconocida,
- * se descarta y se arranca con un estado por defecto limpio. Nunca rompe la app.
+ * Persistencia local (ADR-001 §4, ADR-002 modelo multi-curso).
+ * Clave raíz versionada "tdp:v1" (nombre de la clave, no del esquema).
+ *
+ * Esquema v2: los avances (perfil, racha, estrellas, medallas, misión diaria y
+ * progreso) viven AISLADOS por curso en `courses[curso]`. Las preferencias del
+ * dispositivo (idioma, sonido, movimiento) son globales. Ver ADR-002.
+ *
+ * Lectura defensiva: ante ausencia, corrupción o schemaVersion desconocida, se
+ * descarta y se arranca con un estado por defecto limpio. Nunca rompe la app.
+ * Migración: un estado v1 (un solo curso implícito, 3.º) se transforma a v2
+ * moviendo todos sus avances al curso "3" sin pérdida de datos.
  * Si localStorage no está disponible (modo privado, almacenamiento lleno), la
  * app funciona en memoria y degrada sin error.
  *
@@ -9,17 +17,25 @@
  */
 
 export const STORAGE_KEY = "tdp:v1";
-export const SCHEMA_VERSION = 1 as const;
+export const SCHEMA_VERSION = 2 as const;
 
 export type Language = "en" | "es";
 
-export interface PersistedState {
-  schemaVersion: typeof SCHEMA_VERSION;
-  preferences: {
-    language: Language | null; // null = no elegido explícitamente (sigue detección)
-    sound: boolean;
-    reducedMotion: boolean;
-  };
+/** Cursos de Primaria. Sólo "3" tiene contenido en esta fase; el resto se
+ *  ofrecen en el selector con las materias marcadas "Pronto". */
+export type Curso = "1" | "2" | "3" | "4" | "5" | "6";
+export const COURSES: readonly Curso[] = ["1", "2", "3", "4", "5", "6"] as const;
+/** Curso por defecto: el único con contenido real (migración v1 → v2). */
+export const DEFAULT_COURSE: Curso = "3";
+
+export interface Preferences {
+  language: Language | null; // null = no elegido explícitamente (sigue detección)
+  sound: boolean;
+  reducedMotion: boolean;
+}
+
+/** Avances de un curso concreto. Todo lo que debe estar aislado entre cursos. */
+export interface CourseState {
   profile: {
     avatarId: string | null;
     nicknameId: string | null;
@@ -55,16 +71,50 @@ export interface PersistedState {
   };
 }
 
-export function defaultState(): PersistedState {
+/** Estado persistido completo (v2). */
+export interface PersistedState {
+  schemaVersion: typeof SCHEMA_VERSION;
+  preferences: Preferences;
+  /** curso activo actualmente seleccionado */
+  currentCourse: Curso;
+  /** avances por curso; se crean bajo demanda al seleccionar un curso */
+  courses: Partial<Record<Curso, CourseState>>;
+}
+
+/**
+ * Vista aplanada del curso activo que consumen los componentes: fusiona los
+ * avances del curso activo con las preferencias globales y el curso actual.
+ * Mantiene la forma que la UI ya esperaba (state.streak, state.stars, …) para
+ * que el paso a multi-curso no obligue a reescribir cada pantalla.
+ */
+export type ActiveView = CourseState & {
+  preferences: Preferences;
+  currentCourse: Curso;
+};
+
+export function emptyCourseState(): CourseState {
   return {
-    schemaVersion: SCHEMA_VERSION,
-    preferences: { language: null, sound: true, reducedMotion: false },
     profile: { avatarId: null, nicknameId: null, nicknameCustom: null },
     streak: { current: 0, longest: 0, lastPlayedDate: null },
     stars: { total: 0 },
     badges: { unlocked: {} },
     dailyGoal: { lastDoneDate: null, totalCompleted: 0 },
-    progress: { correctByTopic: {}, correctBySubject: {}, subjectsTried: [], correctExerciseIds: [], failedExerciseIds: [] },
+    progress: {
+      correctByTopic: {},
+      correctBySubject: {},
+      subjectsTried: [],
+      correctExerciseIds: [],
+      failedExerciseIds: [],
+    },
+  };
+}
+
+export function defaultState(): PersistedState {
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    preferences: { language: null, sound: true, reducedMotion: false },
+    currentCourse: DEFAULT_COURSE,
+    courses: { [DEFAULT_COURSE]: emptyCourseState() },
   };
 }
 
@@ -72,26 +122,37 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-/**
- * Valida y normaliza la forma del estado leído. Devuelve un estado completo y
- * coherente, fusionando lo que sea válido con los valores por defecto. Si el
- * dato no es ni siquiera un objeto o su schemaVersion es desconocida e
- * inmigrable, devuelve null (el llamante usa el estado por defecto).
- */
-export function parseState(raw: unknown): PersistedState | null {
-  if (!isPlainObject(raw)) return null;
-  if (raw.schemaVersion !== SCHEMA_VERSION) return null; // sin migraciones aún
+function isCurso(value: unknown): value is Curso {
+  return typeof value === "string" && (COURSES as readonly string[]).includes(value);
+}
 
-  const base = defaultState();
-  const prefs = isPlainObject(raw.preferences) ? raw.preferences : {};
-  const profile = isPlainObject(raw.profile) ? raw.profile : {};
-  const streak = isPlainObject(raw.streak) ? raw.streak : {};
-  const stars = isPlainObject(raw.stars) ? raw.stars : {};
-  const badges = isPlainObject(raw.badges) ? raw.badges : {};
-  const dailyGoal = isPlainObject(raw.dailyGoal) ? raw.dailyGoal : {};
-  const progress = isPlainObject(raw.progress) ? raw.progress : {};
-
+function parsePreferences(raw: unknown): Preferences {
+  const base = defaultState().preferences;
+  const prefs = isPlainObject(raw) ? raw : {};
   const lang = prefs.language;
+  return {
+    language: lang === "en" || lang === "es" ? lang : base.language,
+    sound: typeof prefs.sound === "boolean" ? prefs.sound : base.sound,
+    reducedMotion:
+      typeof prefs.reducedMotion === "boolean" ? prefs.reducedMotion : base.reducedMotion,
+  };
+}
+
+/**
+ * Valida y normaliza los avances de un curso, fusionando lo válido con los
+ * valores por defecto. Reutilizada tanto por la validación v2 como por la
+ * migración v1 → v2 (donde estos campos viven en la raíz del estado v1).
+ */
+export function parseCourseState(raw: unknown): CourseState {
+  const base = emptyCourseState();
+  const src = isPlainObject(raw) ? raw : {};
+  const profile = isPlainObject(src.profile) ? src.profile : {};
+  const streak = isPlainObject(src.streak) ? src.streak : {};
+  const stars = isPlainObject(src.stars) ? src.stars : {};
+  const badges = isPlainObject(src.badges) ? src.badges : {};
+  const dailyGoal = isPlainObject(src.dailyGoal) ? src.dailyGoal : {};
+  const progress = isPlainObject(src.progress) ? src.progress : {};
+
   const unlocked =
     isPlainObject(badges.unlocked) &&
     Object.values(badges.unlocked).every((v) => typeof v === "string")
@@ -124,37 +185,83 @@ export function parseState(raw: unknown): PersistedState | null {
       : [];
 
   return {
-    schemaVersion: SCHEMA_VERSION,
-    preferences: {
-      language: lang === "en" || lang === "es" ? lang : base.preferences.language,
-      sound: typeof prefs.sound === "boolean" ? prefs.sound : base.preferences.sound,
-      reducedMotion:
-        typeof prefs.reducedMotion === "boolean"
-          ? prefs.reducedMotion
-          : base.preferences.reducedMotion,
-    },
     profile: {
-      avatarId: typeof profile.avatarId === "string" ? profile.avatarId : null,
-      nicknameId: typeof profile.nicknameId === "string" ? profile.nicknameId : null,
-      nicknameCustom: typeof profile.nicknameCustom === "string" ? profile.nicknameCustom : null,
+      avatarId: typeof profile.avatarId === "string" ? profile.avatarId : base.profile.avatarId,
+      nicknameId: typeof profile.nicknameId === "string" ? profile.nicknameId : base.profile.nicknameId,
+      nicknameCustom:
+        typeof profile.nicknameCustom === "string" ? profile.nicknameCustom : base.profile.nicknameCustom,
     },
     streak: {
       current: typeof streak.current === "number" && streak.current >= 0 ? Math.floor(streak.current) : 0,
       longest: typeof streak.longest === "number" && streak.longest >= 0 ? Math.floor(streak.longest) : 0,
-      lastPlayedDate:
-        typeof streak.lastPlayedDate === "string" ? streak.lastPlayedDate : null,
+      lastPlayedDate: typeof streak.lastPlayedDate === "string" ? streak.lastPlayedDate : null,
     },
     stars: {
       total: typeof stars.total === "number" && stars.total >= 0 ? Math.floor(stars.total) : 0,
     },
     badges: { unlocked },
     dailyGoal: {
-      lastDoneDate:
-        typeof dailyGoal.lastDoneDate === "string" ? dailyGoal.lastDoneDate : null,
+      lastDoneDate: typeof dailyGoal.lastDoneDate === "string" ? dailyGoal.lastDoneDate : null,
       totalCompleted:
-        typeof dailyGoal.totalCompleted === "number" && dailyGoal.totalCompleted >= 0 ? Math.floor(dailyGoal.totalCompleted) : 0,
+        typeof dailyGoal.totalCompleted === "number" && dailyGoal.totalCompleted >= 0
+          ? Math.floor(dailyGoal.totalCompleted)
+          : 0,
     },
     progress: { correctByTopic, correctBySubject, subjectsTried, correctExerciseIds, failedExerciseIds },
+  };
+}
+
+/**
+ * Valida y normaliza el estado leído. Devuelve un estado v2 completo y coherente.
+ * - Un estado v2 se valida campo a campo.
+ * - Un estado v1 (esquema anterior, un solo curso implícito) se migra a v2
+ *   moviendo todos sus avances al curso "3" sin pérdida.
+ * - Cualquier otra cosa (no objeto, esquema desconocido) devuelve null y el
+ *   llamante usa el estado por defecto.
+ */
+export function parseState(raw: unknown): PersistedState | null {
+  if (!isPlainObject(raw)) return null;
+
+  // Migración v1 → v2: los avances estaban en la raíz; van al curso por defecto.
+  if (raw.schemaVersion === 1) {
+    return {
+      schemaVersion: SCHEMA_VERSION,
+      preferences: parsePreferences(raw.preferences),
+      currentCourse: DEFAULT_COURSE,
+      courses: { [DEFAULT_COURSE]: parseCourseState(raw) },
+    };
+  }
+
+  if (raw.schemaVersion !== SCHEMA_VERSION) return null;
+
+  const currentCourse = isCurso(raw.currentCourse) ? raw.currentCourse : DEFAULT_COURSE;
+  const coursesRaw = isPlainObject(raw.courses) ? raw.courses : {};
+  const courses: Partial<Record<Curso, CourseState>> = {};
+  for (const key of Object.keys(coursesRaw)) {
+    if (isCurso(key)) courses[key] = parseCourseState(coursesRaw[key]);
+  }
+  // Garantiza que el curso activo siempre tiene una entrada.
+  if (!courses[currentCourse]) courses[currentCourse] = emptyCourseState();
+
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    preferences: parsePreferences(raw.preferences),
+    currentCourse,
+    courses,
+  };
+}
+
+/** Avances del curso activo, creando una entrada vacía si aún no existe. */
+export function activeCourse(state: PersistedState): CourseState {
+  return state.courses[state.currentCourse] ?? emptyCourseState();
+}
+
+/** Vista aplanada que consume la UI (curso activo + preferencias globales). */
+export function activeView(state: PersistedState): ActiveView {
+  return {
+    ...activeCourse(state),
+    preferences: state.preferences,
+    currentCourse: state.currentCourse,
   };
 }
 

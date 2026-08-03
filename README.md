@@ -1,10 +1,12 @@
-# TerceroDePrimaria
+# Repasos de Primaria
 
-Web de ejercicios y juegos educativos para repasar en verano lo aprendido en 3º de primaria (8-9 años). 100% estática, gratuita, sin cuentas y sin recogida de datos.
+Ejercicios y juegos educativos para repasar lo aprendido en Primaria. 100% estática, gratuita, sin cuentas y sin recogida de datos.
+
+> **Alcance actual:** la app cubre la selección de curso de 1.º a 6.º de Primaria, con el progreso guardado por separado en cada curso. El **contenido de actividades está disponible por ahora para 3.º**; el resto de cursos aparecen en el selector marcados como "Pronto" mientras se preparan sus ejercicios.
 
 ## ¿Qué es esto?
 
-**TerceroDePrimaria** es una pequeña aplicación web pensada para que un niño o niña de 8-9 años repase durante el verano lo que ha trabajado en 3º de primaria. No hay deberes que entregar ni nadie vigilando: el niño elige una materia, resuelve ejercicios cortos, gana estrellas e insignias, y mantiene una racha diaria que le anima a volver al día siguiente.
+**Repasos de Primaria** es una pequeña aplicación web pensada para que un niño o niña de Primaria repase lo que ha trabajado en clase. No hay deberes que entregar ni nadie vigilando: el niño elige su curso y una materia, resuelve ejercicios cortos, gana estrellas e insignias, y mantiene una racha diaria que le anima a volver al día siguiente. Cada curso guarda sus propios avances, sin mezclarse con los de otro.
 
 Está hecha para usarse cómodamente **en tablet** (también funciona en móvil y ordenador), es **ligera y rápida** incluso en dispositivos modestos, y **no necesita conexión a un servidor**: todo ocurre en el propio navegador. **Ningún dato sale del dispositivo** — el progreso (racha, estrellas, preferencias) se guarda solo en el almacenamiento local del navegador.
 

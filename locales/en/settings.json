@@ -1,5 +1,9 @@
 {
   "title": "Settings",
+  "course": {
+    "label": "Grade",
+    "help": "Each grade keeps its own stars, streak and badges. Only 3rd grade has activities for now."
+  },
   "language": {
     "label": "Language",
     "es": "Spanish",

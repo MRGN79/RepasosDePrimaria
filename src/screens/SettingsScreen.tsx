@@ -5,13 +5,16 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageLayout, AppHeader, ToggleSwitch, Button, Icon } from "@/components";
-import type { Language } from "@/lib/storage";
+import { COURSES, type Language, type Curso } from "@/lib/storage";
+import { courseLabelKey } from "@/lib/catalog";
 import styles from "./SettingsScreen.module.css";
 
 type SettingsScreenProps = {
+  course: Curso;
   language: Language;
   sound: boolean;
   reducedMotion: boolean;
+  onCourse: (course: Curso) => void;
   onLanguage: (lang: Language) => void;
   onSound: (on: boolean) => void;
   onReducedMotion: (on: boolean) => void;
@@ -22,9 +25,11 @@ type SettingsScreenProps = {
 };
 
 export function SettingsScreen({
+  course,
   language,
   sound,
   reducedMotion,
+  onCourse,
   onLanguage,
   onSound,
   onReducedMotion,
@@ -33,7 +38,7 @@ export function SettingsScreen({
   onHome,
   onBack,
 }: SettingsScreenProps) {
-  const { t } = useTranslation(["settings", "common"]);
+  const { t } = useTranslation(["settings", "content", "common"]);
   const [confirmClear, setConfirmClear] = useState(false);
 
   return (
@@ -42,6 +47,25 @@ export function SettingsScreen({
       header={<AppHeader title={t("settings:title")} onBack={onBack} onHome={onHome} />}
     >
       <div className={styles.root}>
+        <fieldset className={styles.group}>
+          <legend className={styles.legend}>{t("settings:course.label")}</legend>
+          <p className={styles.help}>{t("settings:course.help")}</p>
+          <div className={styles.courseRow} role="radiogroup" aria-label={t("settings:course.label")}>
+            {COURSES.map((c) => (
+              <Button
+                key={c}
+                variant={course === c ? "primary" : "secondary"}
+                size="lg"
+                onClick={() => onCourse(c)}
+                aria-pressed={course === c}
+              >
+                {course === c ? <Icon name="check" size={22} aria-hidden="true" /> : null}
+                {t(courseLabelKey(c))}
+              </Button>
+            ))}
+          </div>
+        </fieldset>
+
         <fieldset className={styles.group}>
           <legend className={styles.legend}>{t("settings:language.label")}</legend>
           <div className={styles.langRow} role="radiogroup" aria-label={t("settings:language.label")}>

@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { BADGES, newlyEarnedBadges, badgeDef } from "./badges";
-import { defaultState, type PersistedState } from "./storage";
+import { emptyCourseState, type CourseState } from "./storage";
 
 /*
  * Medallas (gamificación §4). Reglas de desbloqueo evaluadas sobre estado ya
  * consolidado. newlyEarnedBadges no muta el estado y sólo devuelve las nuevas.
  */
 
-function stateWith(overrides: (s: PersistedState) => void): PersistedState {
-  const s = defaultState();
+function stateWith(overrides: (s: CourseState) => void): CourseState {
+  const s = emptyCourseState();
   overrides(s);
   return s;
 }
@@ -19,7 +19,7 @@ const ALL_SUBJECTS = ["matematicas", "lengua", "ciencias", "sociales", "ingles"]
 describe("condiciones de cada medalla", () => {
   it("firstSession: se gana al tener lastPlayedDate", () => {
     const def = badgeDef("firstSession")!;
-    expect(def.isEarned(defaultState())).toBe(false);
+    expect(def.isEarned(emptyCourseState())).toBe(false);
     expect(def.isEarned(stateWith((s) => (s.streak.lastPlayedDate = "2026-06-25")))).toBe(true);
   });
 
@@ -56,7 +56,7 @@ describe("condiciones de cada medalla", () => {
 
 describe("newlyEarnedBadges", () => {
   it("estado por defecto: ninguna medalla nueva", () => {
-    expect(newlyEarnedBadges(defaultState())).toEqual([]);
+    expect(newlyEarnedBadges(emptyCourseState())).toEqual([]);
   });
 
   it("devuelve las medallas cuya condición se cumple y aún no estaban", () => {

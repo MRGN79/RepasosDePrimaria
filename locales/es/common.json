@@ -1,10 +1,10 @@
 {
   "app": {
-    "name": "Tercero de Primaria",
+    "name": "Repasos de Primaria",
     "skipToContent": "Saltar al contenido"
   },
   "footer": {
-    "description": "Actividades de repaso de verano para 3.º de Primaria",
+    "description": "Actividades de repaso para Primaria",
     "howItWorks": "5 preguntas por sesión al elegir una materia (la misión de hoy combina 15: 3 de cada una) · Las que aciertas no se repiten hasta completar todas · Las que fallas vuelven para practicar de nuevo",
     "privacy": "Esta aplicación no envía ningún dato a ningún servidor. Todo se guarda únicamente en este dispositivo."
   },

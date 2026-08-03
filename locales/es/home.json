@@ -18,6 +18,10 @@
     "start": "¡Jugar!",
     "done": "¡Misión hecha!"
   },
+  "comingSoon": {
+    "title": "¡Muy pronto!",
+    "desc": "Todavía estamos preparando las actividades de {{course}}. Mientras tanto puedes cambiar de curso desde los ajustes."
+  },
   "play": {
     "chooseSubject": "Elijo yo"
   },

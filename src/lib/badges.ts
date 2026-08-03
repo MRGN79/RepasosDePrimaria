@@ -6,7 +6,7 @@
  * El catálogo aquí define ids estables; el nombre/pista se resuelven por i18n
  * (content:badge.<id>.name / .hint).
  */
-import type { PersistedState } from "./storage";
+import type { CourseState } from "./storage";
 import { exerciseById } from "@content/registry";
 
 export interface BadgeDef {
@@ -18,18 +18,18 @@ export interface BadgeDef {
   /** token de color del relleno de la medalla desbloqueada */
   colorToken?: string;
   /** condición de desbloqueo evaluada sobre el estado ya consolidado */
-  isEarned: (state: PersistedState) => boolean;
+  isEarned: (state: CourseState) => boolean;
 }
 
 const TIMES_TABLES_TOPIC = "operations.times_tables";
 const ALL_SUBJECT_IDS = ["matematicas", "lengua", "ciencias", "sociales", "ingles"];
 
-const bySubject = (s: PersistedState, id: string) =>
+const bySubject = (s: CourseState, id: string) =>
   s.progress.correctBySubject?.[id] ?? 0;
 
 // correctBySubject counts every correct answer including replays of the same
 // exercise; only unique static IDs in correctExerciseIds reflect real mastery.
-const bySubjectUnique = (s: PersistedState, materiaId: string): number =>
+const bySubjectUnique = (s: CourseState, materiaId: string): number =>
   s.progress.correctExerciseIds.filter(
     (id) => exerciseById(id)?.materia === materiaId,
   ).length;
@@ -246,7 +246,7 @@ export const BADGES: BadgeDef[] = [
  * Devuelve los ids de medallas recién desbloqueadas: condición cumplida y no
  * presentes aún en state.badges.unlocked. No muta el estado.
  */
-export function newlyEarnedBadges(state: PersistedState): string[] {
+export function newlyEarnedBadges(state: CourseState): string[] {
   return BADGES.filter(
     (b) => !(b.id in state.badges.unlocked) && b.isEarned(state),
   ).map((b) => b.id);

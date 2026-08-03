@@ -3,6 +3,11 @@
  * persistencia (lib/storage) y expone acciones de alto nivel. Es el ÚNICO punto
  * que toca localStorage; los componentes consumen vía useGameStore (gameContext).
  *
+ * Multi-curso (ADR-002): los avances viven aislados por curso. El store expone
+ * una vista aplanada del curso activo (state) para que las pantallas sigan
+ * leyendo state.streak, state.stars, … sin cambios. Las escrituras de avances
+ * (perfil, consolidación) apuntan al curso activo; las preferencias son globales.
+ *
  * Scope deliberadamente pequeño: sólo lo que debe sobrevivir entre pantallas y
  * sesiones. El estado efímero de una sesión vive en useSession, no aquí.
  */
@@ -19,8 +24,13 @@ import {
   saveState,
   isStorageAvailable,
   defaultState,
+  emptyCourseState,
+  activeCourse,
+  activeView,
   type PersistedState,
+  type CourseState,
   type Language,
+  type Curso,
 } from "@/lib/storage";
 import { localDateKey } from "@/lib/streak";
 import { applyConsolidation, type SessionConsolidation } from "./consolidation";
@@ -37,6 +47,27 @@ export function GameProvider({ children }: { children: ReactNode }) {
     saveState(state);
   }, [state]);
 
+  // Actualiza inmutablemente los avances del curso activo.
+  const updateActiveCourse = useCallback(
+    (updater: (cs: CourseState) => CourseState) => {
+      setState((s) => {
+        const cur = s.courses[s.currentCourse] ?? emptyCourseState();
+        return { ...s, courses: { ...s.courses, [s.currentCourse]: updater(cur) } };
+      });
+    },
+    [],
+  );
+
+  const setCourse = useCallback((curso: Curso) => {
+    setState((s) => {
+      if (s.currentCourse === curso && s.courses[curso]) return s;
+      const courses = s.courses[curso]
+        ? s.courses
+        : { ...s.courses, [curso]: emptyCourseState() };
+      return { ...s, currentCourse: curso, courses };
+    });
+  }, []);
+
   const setLanguage = useCallback((language: Language) => {
     setState((s) => ({ ...s, preferences: { ...s.preferences, language } }));
   }, []);
@@ -51,9 +82,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const setProfile = useCallback(
     (avatarId: string, nicknameId: string | null, nicknameCustom: string | null = null) => {
-      setState((s) => ({ ...s, profile: { avatarId, nicknameId, nicknameCustom } }));
+      updateActiveCourse((cs) => ({ ...cs, profile: { avatarId, nicknameId, nicknameCustom } }));
     },
-    [],
+    [updateActiveCourse],
   );
 
   const clearData = useCallback(() => {
@@ -65,41 +96,58 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const consolidateSession = useCallback<GameStore["consolidateSession"]>(
     (c: SessionConsolidation) => {
       const today = localDateKey();
-      const { next, result } = applyConsolidation(stateRef.current, c, today);
-      stateRef.current = next;
-      setState(next);
+      const prev = stateRef.current;
+      const cur = prev.courses[prev.currentCourse] ?? emptyCourseState();
+      const { next: nextCourse, result } = applyConsolidation(cur, c, today);
+      const nextState: PersistedState = {
+        ...prev,
+        courses: { ...prev.courses, [prev.currentCourse]: nextCourse },
+      };
+      stateRef.current = nextState;
+      setState(nextState);
       return result;
     },
     [],
   );
 
-  const removeFailedExerciseIds = useCallback((ids: string[]) => {
-    const toRemove = new Set(ids);
-    setState((s) => ({
-      ...s,
-      progress: {
-        ...s.progress,
-        failedExerciseIds: s.progress.failedExerciseIds.filter((id) => !toRemove.has(id)),
-      },
-    }));
-  }, []);
+  const removeFailedExerciseIds = useCallback(
+    (ids: string[]) => {
+      const toRemove = new Set(ids);
+      updateActiveCourse((cs) => ({
+        ...cs,
+        progress: {
+          ...cs.progress,
+          failedExerciseIds: cs.progress.failedExerciseIds.filter((id) => !toRemove.has(id)),
+        },
+      }));
+    },
+    [updateActiveCourse],
+  );
+
+  const view = useMemo(() => activeView(state), [state]);
+  const course = useMemo(() => activeCourse(state), [state]);
 
   const value = useMemo<GameStore>(
     () => ({
-      state,
+      state: view,
       storageAvailable,
+      currentCourse: state.currentCourse,
+      setCourse,
       setLanguage,
       setSound,
       setReducedMotion,
       setProfile,
       clearData,
-      hasProfile: state.profile.avatarId !== null,
+      hasProfile: course.profile.avatarId !== null,
       consolidateSession,
       removeFailedExerciseIds,
     }),
     [
-      state,
+      view,
+      course,
+      state.currentCourse,
       storageAvailable,
+      setCourse,
       setLanguage,
       setSound,
       setReducedMotion,

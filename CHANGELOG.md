@@ -7,6 +7,29 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-08-03
+
+### Added
+
+- **Selección de curso (1.º–6.º de Primaria).** La app se abre a toda la
+  Primaria bajo el nombre "Repasos de Primaria". El curso se elige en el primer
+  arranque y se puede cambiar en cualquier momento desde Ajustes. La pantalla de
+  inicio muestra el curso activo.
+- **Progreso aislado por curso.** La racha, las estrellas, las medallas, la
+  misión diaria y el progreso por tema/materia se guardan por separado en cada
+  curso: lo de un curso no interfiere con lo de otro.
+- Estado "Pronto" para los cursos aún sin actividades (todos salvo 3.º): sus
+  materias aparecen en el selector marcadas como no disponibles, sin contenido de
+  relleno.
+
+### Changed
+
+- Renombrado de la aplicación de "Tercero de Primaria" a "Repasos de Primaria"
+  (título, textos e información del pie de página) en español e inglés.
+- El contenido existente de 3.º se conserva íntegro dentro del nuevo modelo por
+  curso. Los usuarios con progreso previo lo mantienen: al actualizar, sus
+  avances se asignan automáticamente a 3.º sin pérdida.
+
 ## [0.4.0] — 2026-07-23
 
 ### Added
