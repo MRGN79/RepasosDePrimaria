@@ -1,0 +1,105 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tdp-space-4);
+  max-width: 26rem;
+  margin: 0 auto;
+  padding: var(--tdp-space-4) 0;
+}
+
+.title {
+  font-family: var(--tdp-font-family-display);
+  font-size: var(--tdp-font-size-2xl);
+  color: var(--tdp-color-text);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: var(--tdp-font-size-base);
+  color: var(--tdp-color-text-muted);
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tdp-space-4);
+  margin-top: var(--tdp-space-2);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tdp-space-1);
+}
+
+.label {
+  font-size: var(--tdp-font-size-sm);
+  font-weight: 700;
+  color: var(--tdp-color-text);
+}
+
+.input {
+  font-family: var(--tdp-font-family-base);
+  font-size: var(--tdp-font-size-lg);
+  padding: var(--tdp-space-3);
+  min-height: 48px;
+  border: var(--tdp-border-width-strong) solid var(--tdp-color-border);
+  border-radius: var(--tdp-radius-lg);
+  background: var(--tdp-color-surface);
+  color: var(--tdp-color-text);
+}
+
+.input:focus-visible {
+  outline: var(--tdp-focus-ring-width) solid var(--tdp-focus-ring-color);
+  outline-offset: var(--tdp-focus-ring-offset);
+  border-color: var(--tdp-color-primary);
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--tdp-color-error);
+}
+
+.error {
+  margin: 0;
+  padding: var(--tdp-space-2) var(--tdp-space-3);
+  border-radius: var(--tdp-radius-md);
+  background: var(--tdp-color-error-bg);
+  color: var(--tdp-color-error-text);
+  font-size: var(--tdp-font-size-sm);
+}
+
+.info {
+  margin: 0;
+  padding: var(--tdp-space-2) var(--tdp-space-3);
+  border-radius: var(--tdp-radius-md);
+  background: var(--tdp-color-success-bg);
+  color: var(--tdp-color-success-text);
+  font-size: var(--tdp-font-size-sm);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tdp-space-2);
+  align-items: center;
+  margin-top: var(--tdp-space-2);
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  color: var(--tdp-color-primary-strong);
+  font-family: var(--tdp-font-family-base);
+  font-size: var(--tdp-font-size-base);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: var(--tdp-space-2);
+  min-height: 44px;
+}
+
+.linkButton:focus-visible {
+  outline: var(--tdp-focus-ring-width) solid var(--tdp-focus-ring-color);
+  outline-offset: var(--tdp-focus-ring-offset);
+  border-radius: var(--tdp-radius-sm);
+}
