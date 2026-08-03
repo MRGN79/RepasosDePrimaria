@@ -179,6 +179,25 @@ La internacionalización está pensada para que añadir un idioma **no requiera 
 
 Detalles completos en `docs/specs/06-i18n-textos-ui.md` y ADR-001 §2.
 
+## Aviso sobre el contenido
+
+Todas las preguntas y ejercicios de esta aplicación son de elaboración propia. Se han redactado tomando como referencia el currículo oficial de Educación Primaria vigente en España (Ley Orgánica 3/2020, LOMLOE, y el Real Decreto 157/2022, de 1 de marzo, por el que se establecen la ordenación y las enseñanzas mínimas de la Educación Primaria, junto con la normativa autonómica de desarrollo que corresponda).
+
+No se ha copiado, reproducido ni adaptado material de libros de texto ni de ninguna editorial. Los enunciados, las respuestas y su formulación son originales. Cualquier parecido con contenidos de terceros sería casual y no intencionado.
+
+Si crees que algún contenido pudiera infringir derechos de propiedad intelectual, puedes comunicárnoslo a través del repositorio del proyecto en GitHub y lo revisaremos, retirándolo o corrigiéndolo si procede.
+
+<details>
+<summary><strong>Content notice (English)</strong></summary>
+
+All questions and exercises in this application are original works. They have been written using the official primary-education curriculum in force in Spain as a reference (Organic Law 3/2020, LOMLOE, and Royal Decree 157/2022 of 1 March, which sets out the organisation and minimum requirements of Primary Education, together with the applicable regional implementing regulations).
+
+No material from textbooks or from any publisher has been copied, reproduced or adapted. The wording of the questions, the answers and their phrasing are original. Any resemblance to third-party content would be coincidental and unintentional.
+
+If you believe any content may infringe intellectual property rights, you can let us know through the project's GitHub repository and we will review it, removing or correcting it where appropriate.
+
+</details>
+
 ## Contribuir
 
 Este es un proyecto personal y gratuito, pero el flujo de trabajo está pensado para ser ordenado y transferible:

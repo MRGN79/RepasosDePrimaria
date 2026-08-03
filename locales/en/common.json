@@ -6,7 +6,8 @@
   "footer": {
     "description": "Primary school review exercises",
     "howItWorks": "5 questions per session when you pick a subject (today's mission combines 15: 3 from each) · Questions you get right won't repeat until you've done them all · Wrong answers come back for extra practice",
-    "privacy": "This app does not send any data to any server. Everything is saved only on this device."
+    "privacy": "This app does not send any data to any server. Everything is saved only on this device.",
+    "contentOrigin": "Original questions, based on the official primary-school curriculum. No publisher's material is used."
   },
   "nav": {
     "home": "Home",
