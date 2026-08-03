@@ -7,6 +7,12 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Added
+
+- Aviso sobre el origen del contenido: el pie de página indica que las
+  preguntas son de elaboración propia basadas en el currículo oficial, y el
+  README incluye el aviso legal completo en español e inglés.
+
 ### Changed
 
 - El repositorio de GitHub se ha renombrado de `TerceroDePrimaria` a

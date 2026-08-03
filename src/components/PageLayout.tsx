@@ -38,6 +38,7 @@ export function PageLayout({
         <span className={styles.version}>v{__APP_VERSION__}</span>
         <span className={styles.howItWorks}>{t("footer.howItWorks")}</span>
         <span className={styles.privacy}>{t("footer.privacy")}</span>
+        <span className={styles.contentOrigin}>{t("footer.contentOrigin")}</span>
       </footer>
     </div>
   );
