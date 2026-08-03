@@ -7,6 +7,14 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Changed
+
+- El repositorio de GitHub se ha renombrado de `TerceroDePrimaria` a
+  `RepasosDePrimaria`. La URL pública del sitio pasa a
+  `https://mrgn79.github.io/RepasosDePrimaria/`; GitHub redirige
+  automáticamente la URL anterior. Ajustado el `base` de Vite y el favicon
+  en consecuencia.
+
 ## [0.5.0] — 2026-08-03
 
 ### Added

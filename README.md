@@ -52,8 +52,8 @@ Desde una máquina limpia:
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/<usuario>/TerceroDePrimaria.git
-cd TerceroDePrimaria
+git clone https://github.com/<usuario>/RepasosDePrimaria.git
+cd RepasosDePrimaria
 
 # 2. Instalar dependencias (usa el lock file)
 npm ci
@@ -76,7 +76,7 @@ Este proyecto es **100% estático y no requiere ninguna variable de entorno** pa
 Notas importantes:
 
 - Si en el futuro se añade alguna variable, debe llevar el prefijo `VITE_` para que Vite la exponga al cliente. **Cualquier `VITE_*` es pública** (acaba en el bundle del navegador): nunca pongas secretos reales.
-- El *base path* para GitHub Pages (`/TerceroDePrimaria/`) **no** se gestiona por variable de entorno: está fijado de forma determinista en [`vite.config.ts`](vite.config.ts). Ver ADR-001 §6.
+- El *base path* para GitHub Pages (`/RepasosDePrimaria/`) **no** se gestiona por variable de entorno: está fijado de forma determinista en [`vite.config.ts`](vite.config.ts). Ver ADR-001 §6.
 
 ## Cómo ejecutar
 
@@ -91,7 +91,7 @@ npm run build
 npm run preview
 ```
 
-Tras `npm run dev`, abre la URL que imprime Vite en consola (por defecto `http://localhost:5173/TerceroDePrimaria/`).
+Tras `npm run dev`, abre la URL que imprime Vite en consola (por defecto `http://localhost:5173/RepasosDePrimaria/`).
 
 ## Cómo ejecutar los tests
 
@@ -111,7 +111,7 @@ La suite incluye **113 tests** (motor de quiz, generación de números aleatorio
 ## Estructura del proyecto
 
 ```
-TerceroDePrimaria/
+RepasosDePrimaria/
 ├── content/                  # Contenido educativo (modelo de datos tipado)
 │   ├── materias.json         # Índice de materias y temas
 │   ├── types.ts              # Tipos del esquema de ejercicios (Ejercicio, EjercicioGenerado…)
@@ -147,7 +147,7 @@ El despliegue es **automático a GitHub Pages** mediante GitHub Actions. No hay 
 
 Configuración inicial de GitHub Pages (una sola vez) y *branch protection*: ver [`docs/devops/github-pages-setup.md`](docs/devops/github-pages-setup.md).
 
-El sitio se sirve desde `https://<usuario>.github.io/TerceroDePrimaria/`. Si cambias de subruta o usas dominio propio, ajusta `base` en `vite.config.ts`.
+El sitio se sirve desde `https://<usuario>.github.io/RepasosDePrimaria/`. Si cambias de subruta o usas dominio propio, ajusta `base` en `vite.config.ts`.
 
 ## Cómo mantener el proyecto (veranos sucesivos)
 
