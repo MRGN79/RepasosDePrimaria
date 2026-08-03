@@ -1,10 +1,10 @@
 # Despliegue en GitHub Pages — Guía de configuración
 
-**Proyecto:** TerceroDePrimaria
-**Repositorio:** `MRGN79/TerceroDePrimaria`
+**Proyecto:** RepasosDePrimaria
+**Repositorio:** `MRGN79/RepasosDePrimaria`
 **Hosting:** GitHub Pages (modelo de deploy "desde GitHub Actions")
 **Responsable:** DevOps
-**Última actualización:** 2026-06-25
+**Última actualización:** 2026-08-03 (repositorio renombrado de `TerceroDePrimaria` a `RepasosDePrimaria`; `base` de Vite y URL de Pages actualizados en consecuencia)
 
 ---
 
@@ -51,7 +51,7 @@ Si el proyecto no va a tener linter al principio, dejar al menos un `lint` que n
 GitHub Pages sirve este sitio desde una subruta:
 
 ```
-https://mrgn79.github.io/TerceroDePrimaria/
+https://mrgn79.github.io/RepasosDePrimaria/
 ```
 
 Por eso Vite **debe** configurarse con el `base` correspondiente, o todos los assets (JS, CSS, imágenes) darán 404:
@@ -62,12 +62,12 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-  base: "/TerceroDePrimaria/",   // <-- nombre EXACTO del repo, con barras a ambos lados
+  base: "/RepasosDePrimaria/",   // <-- nombre EXACTO del repo, con barras a ambos lados
   plugins: [react()],
 });
 ```
 
-- El nombre del repo es **`TerceroDePrimaria`** (sensible a mayúsculas/minúsculas). El `base` debe coincidir exactamente.
+- El nombre del repo es **`RepasosDePrimaria`** (sensible a mayúsculas/minúsculas). El `base` debe coincidir exactamente.
 - **Routing:** usar **`HashRouter`** de `react-router-dom` (decisión del ADR-001). Evita los 404 de SPA en GitHub Pages sin trucos de `404.html`, porque la ruta de cliente va tras el `#` y nunca llega al servidor.
 - Si en el futuro se usa un dominio propio o un GitHub Pages de usuario/organización servido desde la raíz, `base` pasaría a `/`. **Hoy NO es el caso.**
 
@@ -81,7 +81,7 @@ Estos pasos **no se pueden automatizar desde el código** — hay que hacerlos u
 
 ### Paso A — Activar GitHub Pages con source "GitHub Actions"
 
-1. Abre el repositorio en GitHub: `https://github.com/MRGN79/TerceroDePrimaria`
+1. Abre el repositorio en GitHub: `https://github.com/MRGN79/RepasosDePrimaria`
 2. Ve a **Settings** (pestaña superior del repo).
 3. En el menú lateral izquierdo, baja hasta **Pages** (sección "Code and automation").
 4. En **Build and deployment** → **Source**, abre el desplegable y selecciona **GitHub Actions**.
@@ -167,8 +167,8 @@ Al ser un sitio estático sin estado de servidor, el rollback es sencillo:
 ## 8. Checklist resumen para el usuario
 
 - [ ] (Frontend) Crear el scaffold de Vite con `package.json` y scripts `lint` + `build`.
-- [ ] (Frontend) Fijar `base: "/TerceroDePrimaria/"` en `vite.config.ts` y usar `HashRouter`.
+- [ ] (Frontend) Fijar `base: "/RepasosDePrimaria/"` en `vite.config.ts` y usar `HashRouter`.
 - [ ] **(Usuario) Paso A** — Settings → Pages → Source = **GitHub Actions**.
 - [ ] **(Usuario) Paso B** — Settings → Branches → proteger `main` (PR + 1 aprobación + check `Lint + Build`).
 - [ ] (Usuario, opcional) **Paso C** — Settings → Environments → proteger `github-pages`.
-- [ ] (DevOps) Confirmar primer deploy verde y comprobar la URL `https://mrgn79.github.io/TerceroDePrimaria/`.
+- [ ] (DevOps) Confirmar primer deploy verde y comprobar la URL `https://mrgn79.github.io/RepasosDePrimaria/`.

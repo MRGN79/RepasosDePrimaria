@@ -1,5 +1,5 @@
 /*
- * Reset + base — TerceroDePrimaria
+ * Reset + base — Repasos de Primaria
  * Capa transversal: tipografía base, foco visible y reduced-motion.
  * La fuente Atkinson Hyperlegible se autoaloja vía @fontsource (import en main.tsx),
  * NO desde CDN externo (privacidad + offline-friendly, ADR D-3).
