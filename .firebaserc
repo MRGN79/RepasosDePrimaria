@@ -1,0 +1,6 @@
+{
+  "//": "Alias de proyecto Firebase. 'demo-repasos' es un proyecto de DEMO para el emulador (no existe en la nube); el emulador acepta cualquier projectId que empiece por 'demo-'. Cuando exista el proyecto real, añadir su id aquí.",
+  "projects": {
+    "default": "demo-repasos"
+  }
+}

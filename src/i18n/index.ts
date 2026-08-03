@@ -25,6 +25,7 @@ import enSettings from "@locales/en/settings.json";
 import enContent from "@locales/en/content.json";
 import enExercises from "@locales/en/exercises.json";
 import enCalligraphy from "@locales/en/calligraphy.json";
+import enAuth from "@locales/en/auth.json";
 
 import esCommon from "@locales/es/common.json";
 import esHome from "@locales/es/home.json";
@@ -38,6 +39,7 @@ import esSettings from "@locales/es/settings.json";
 import esContent from "@locales/es/content.json";
 import esExercises from "@locales/es/exercises.json";
 import esCalligraphy from "@locales/es/calligraphy.json";
+import esAuth from "@locales/es/auth.json";
 
 export const NAMESPACES = [
   "common",
@@ -52,6 +54,7 @@ export const NAMESPACES = [
   "content",
   "exercises",
   "calligraphy",
+  "auth",
 ] as const;
 
 const resources = {
@@ -68,6 +71,7 @@ const resources = {
     content: enContent,
     exercises: enExercises,
     calligraphy: enCalligraphy,
+    auth: enAuth,
   },
   es: {
     common: esCommon,
@@ -82,6 +86,7 @@ const resources = {
     content: esContent,
     exercises: esExercises,
     calligraphy: esCalligraphy,
+    auth: esAuth,
   },
 } as const;
 
