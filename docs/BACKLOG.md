@@ -8,8 +8,8 @@ Items anotados para implementar en el futuro, ordenados por aparición. No impli
 
 | Feature | Rama | Estado |
 |---|---|---|
-| **Pivote a app Android + Firebase (v0.6.0)** — Inc. 1: shell Capacitor + Android + CI de APK debug + retirada de GitHub Pages | `feat/capacitor-android-shell` | En curso — gates locales pasando; pendiente confirmación de push/PR del usuario |
-| **Pivote a app Android + Firebase (v0.6.0)** — Inc. 2: Firebase Auth + pantallas de alta/consentimiento del tutor | `feat/firebase-auth-tutor` (deriva de Inc. 1) | Iniciado (código/UI) — sin proyecto Firebase real todavía; corre contra emulador |
+| **Pivote a app Android + Firebase (v0.6.0)** — Inc. 1: shell Capacitor + Android + CI de APK debug + retirada de GitHub Pages | `feat/capacitor-android-shell` (mergeada) | ✅ Mergeada en `main` (`2fc4ed4`) |
+| **Pivote a app Android + Firebase (v0.6.0)** — Inc. 2: Firebase Auth + pantallas de alta/consentimiento del tutor | `feat/firebase-auth-tutor` | En curso — gates locales pasando; pendiente confirmación de push/PR del usuario. Sin proyecto Firebase real todavía; corre contra emulador |
 
 **Decisión de arquitectura del pivote:** `docs/decisions/ADR-003-android-firebase.md` (incorpora las condiciones de Seguridad: email del tutor solo en Firebase Auth, PIN del hijo solo local, puerta parental, CI endurecido). Specs e incrementos en `docs/specs/07-app-android-firebase.md`. Punto legal abierto para el Abogado: residencia de datos de Firebase Auth + DPIA. Bloqueo externo: la creación real del proyecto Firebase (consola, credenciales) requiere una acción manual del usuario, no automatizable desde aquí.
 
