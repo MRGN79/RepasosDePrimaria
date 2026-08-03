@@ -1,6 +1,7 @@
 {
   "name": "repasosdeprimaria",
   "private": true,
+  "license": "UNLICENSED",
   "version": "0.6.0",
   "type": "module",
   "description": "Repasos de Primaria: ejercicios y juegos educativos por curso (1.º-6.º). App instalable en Android (Capacitor); el contenido está disponible por ahora para 3.º.",

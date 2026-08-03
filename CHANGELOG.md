@@ -12,6 +12,9 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aviso sobre el origen del contenido: el pie de página indica que las
   preguntas son de elaboración propia basadas en el currículo oficial, y el
   README incluye el aviso legal completo en español e inglés.
+- Fichero `LICENSE`: todos los derechos reservados. Uso gratuito de la
+  aplicación desplegada para fines personales, educativos y no comerciales;
+  reutilización del código o del contenido sujeta a autorización previa.
 - **La aplicación pasa a ser una app instalable en Android**, empaquetada con
   Capacitor sobre la misma aplicación existente. Se añade el proyecto Android
   nativo y el manejo del botón "atrás" del dispositivo (fuera de la pantalla de

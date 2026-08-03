@@ -41,7 +41,7 @@ Decisiones de arquitectura completas: [`docs/decisions/ADR-001-stack-y-arquitect
 
 ## Requisitos previos
 
-- **Node.js 20** o superior (el CI usa Node 20).
+- **Node.js 22** o superior (el CLI de Capacitor lo exige; el CI de lint/build usa Node 20, el de empaquetado Android usa Node 22).
 - **npm** (incluido con Node). El proyecto usa `package-lock.json`.
 
 No se necesita nada más: ni base de datos, ni servicios externos, ni claves de API.
@@ -225,6 +225,10 @@ Este es un proyecto personal y gratuito, pero el flujo de trabajo está pensado 
 - **Antes de subir:** ejecuta `npm run lint` y `npm run test:run` en local.
 - **Changelog:** todo cambio relevante para el usuario se anota en la sección `[Unreleased]` de [`CHANGELOG.md`](CHANGELOG.md), siguiendo [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 - **Versionado:** [Semantic Versioning](https://semver.org/lang/es/) (`MAJOR.MINOR.PATCH`).
+
+## Licencia
+
+Todos los derechos reservados. El uso de la aplicación desplegada es gratuito para uso personal, educativo y no comercial; la reutilización del código o del contenido requiere autorización previa. Ver [`LICENSE`](LICENSE) para el texto completo (ES/EN).
 
 ---
 
