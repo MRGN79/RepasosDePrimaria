@@ -9,6 +9,8 @@ name: Android APK
 #
 # Sustituye a la publicación en GitHub Pages (retirada en este cambio): el
 # artefacto publicado del proyecto pasa a ser el APK/AAB, no un sitio web.
+#
+# Node 22 (no 20 como en ci.yml): el CLI de Capacitor 8 exige NodeJS >=22.
 
 on:
   pull_request:
@@ -33,7 +35,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -83,7 +85,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies

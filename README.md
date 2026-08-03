@@ -41,7 +41,7 @@ Decisiones de arquitectura completas: [`docs/decisions/ADR-001-stack-y-arquitect
 
 ## Requisitos previos
 
-- **Node.js 20** o superior (el CI usa Node 20).
+- **Node.js 22** o superior (el CLI de Capacitor lo exige; el CI de lint/build usa Node 20, el de empaquetado Android usa Node 22).
 - **npm** (incluido con Node). El proyecto usa `package-lock.json`.
 
 No se necesita nada más: ni base de datos, ni servicios externos, ni claves de API.
