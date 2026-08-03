@@ -8,7 +8,7 @@ Items anotados para implementar en el futuro, ordenados por aparición. No impli
 
 | Feature | Rama | Estado |
 |---|---|---|
-| **Giro a app Android instalable + login/datos vía Firebase** | _(aún sin rama — en fase de Decisión de Arquitectura, sin código todavía)_ | Abogado ya emitió las restricciones legales (bloqueante: el niño no puede tener login propio, cuenta debe ser del adulto/tutor con perfiles de hijo sin PII). Arquitecto está preparando las opciones técnicas (empaquetado Android, arquitectura Firebase, CI de APK por PR, consulta previa a Seguridad) para que el usuario decida. Requisitos explícitos del usuario: APK generado automáticamente en cada PR, retirar despliegue de GitHub Pages, repositorio pasa a privado. |
+| **Giro a app Android instalable + login/datos vía Firebase** | _(aún sin rama — decisión de arquitectura cerrada, implementación pendiente de orquestar como Nueva Feature)_ | **Decisión tomada**: Opción A (Capacitor + Firebase Auth + Firestore + migración + CI de APK, todo de una vez), versión `0.6.0` para este trabajo con `1.0.0` reservada al lanzamiento en Play. Ver `docs/decisions/ADR-003-android-firebase.md` (incorpora las condiciones de Seguridad: email del tutor solo en Firebase Auth, PIN del hijo solo local, puerta parental, CI endurecido). Punto legal abierto para el Abogado: residencia de datos de Firebase Auth + DPIA. Pendiente: que el Jefe orqueste la implementación (Analista Funcional → Arquitecto/UX-UI/Maquetador/Frontend → Tester → gates → Abogado). Bloqueo externo: la creación real del proyecto Firebase (consola, credenciales) requiere una acción manual del usuario, no automatizable desde aquí. |
 
 ---
 
@@ -16,7 +16,7 @@ Items anotados para implementar en el futuro, ordenados por aparición. No impli
 
 Registrados a petición del usuario. No son features incrementales sobre la web actual: implican cambios de naturaleza del producto.
 
-- **Cambio de naturaleza del producto: de web a app instalable en Android (posible iOS después).** **En curso** (ver Trabajo Activo) — el usuario ha confirmado que quiere iniciar este giro ahora. El modelo de datos multi-curso construido antes (ADR-002) ya es serializable y separa lo global de lo per-curso, de modo que no estorba esta migración; no se había añadido ninguna abstracción anticipada para ella.
+- **Cambio de naturaleza del producto: de web a app instalable en Android (posible iOS después).** **Decisión de arquitectura tomada** (ver Trabajo Activo y ADR-003) — pendiente de implementación. El modelo de datos multi-curso construido antes (ADR-002) ya es serializable y separa lo global de lo per-curso, de modo que no estorba esta migración; no se había añadido ninguna abstracción anticipada para ella.
 
 - **Monetización (dos vías, interés comercial explícito del usuario).** (1) **Donativos voluntarios** y (2) **publicidad ligera y no invasiva** ("muy poca, nada invasiva"). Dado el interés comercial explícito, cuando se aborde debe **invocarse a Growth**: primero en modo consultor (dictamen de potencial) y, si el usuario confirma interés, en modo estratega. No iniciar ahora. Nota: el ADR-001 registraba el proyecto como "gratuito, sin interés comercial"; esa premisa ha cambiado y deberá revisarse al abrir la vía comercial. El `LICENSE` propietario ya elegido (ver Historial) mantiene abierta esta vía sin ceder derechos de reutilización.
 
