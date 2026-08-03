@@ -11,6 +11,7 @@ Especificación funcional del Analista Funcional para el arranque del proyecto.
 | [04-version-imprimible.md](./04-version-imprimible.md) | Flujo y estructura de la ficha imprimible + soluciones |
 | [05-user-stories-mvp.md](./05-user-stories-mvp.md) | User stories priorizadas con criterios de aceptación |
 | [06-i18n-textos-ui.md](./06-i18n-textos-ui.md) | Claves i18n con valor EN de referencia |
+| [07-app-android-firebase.md](./07-app-android-firebase.md) | Pivote a app Android (Capacitor) + login del tutor + datos en la nube (Firebase): user stories, criterios y plan de incrementos (ver ADR-003) |
 
 ## Estado y siguientes pasos
 

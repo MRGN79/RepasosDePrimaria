@@ -18,6 +18,7 @@ import { PrintConfigScreen } from "@/screens/PrintConfigScreen";
 import { PrintSheetScreen } from "@/screens/PrintSheetScreen";
 import { CalligraphySheet } from "@/screens/CalligraphySheet";
 import { pickCalligraphyJokes } from "@/lib/calligraphy";
+import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 import { useGameStore } from "@/state/gameContext";
 import { esGenerado, type Materia } from "@content/types";
 import {
@@ -111,6 +112,9 @@ export function App() {
     setSelectedSubject(null);
     setRoute({ name: "home" });
   }, []);
+
+  // Botón atrás de Android: fuera de Home vuelve a Home; en Home permite salir.
+  useAndroidBackButton(route.name === "home", goHome);
 
   const curso = store.currentCourse;
   const contentReady = courseHasContent(curso);
