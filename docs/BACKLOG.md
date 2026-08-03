@@ -6,17 +6,30 @@ Items anotados para implementar en el futuro, ordenados por aparición. No impli
 
 ## Trabajo Activo
 
-_(sin trabajo activo — ver Historial para lo último integrado)_
+| Feature | Rama | Estado |
+|---|---|---|
+| **Pivote a app Android + Firebase (v0.6.0)** — Inc. 1: shell Capacitor + Android + CI de APK debug + retirada de GitHub Pages | `feat/capacitor-android-shell` | En curso — gates locales pasando; pendiente confirmación de push/PR del usuario |
+| **Pivote a app Android + Firebase (v0.6.0)** — Inc. 2: Firebase Auth + pantallas de alta/consentimiento del tutor | `feat/firebase-auth-tutor` (deriva de Inc. 1) | Iniciado (código/UI) — sin proyecto Firebase real todavía; corre contra emulador |
+
+**Decisión de arquitectura del pivote:** `docs/decisions/ADR-003-android-firebase.md` (creado en este flujo — es la fuente de verdad). Specs e incrementos en `docs/specs/07-app-android-firebase.md`.
+
+**Plan de entrega en incrementos técnicos** (el ADR decide "todo de una vez" como producto — no se lanza al usuario una app a medias — pero internamente se trocea en PRs revisables):
+
+1. **Shell Capacitor + Android + CI de APK debug** — envoltorio nativo, sin Firebase todavía; desbloquea todo lo demás. Retira GitHub Pages (el pipeline de APK pasa a ser el artefacto publicado). ← _en curso_
+2. **Firebase Auth + alta/consentimiento del tutor** — email/contraseña del tutor con verificación obligatoria; pantallas de registro y consentimiento; corre contra el emulador de Firebase mientras no haya proyecto real.
+3. **Firestore + perfiles de hijo + reglas de seguridad** — datos en la nube región europea, offline-first; el niño opera bajo la cuenta del tutor sin login ni PII.
+4. **Migración del progreso local existente** — el progreso `localStorage` (esquema v2) se asocia al primer perfil de hijo del tutor sin pérdida.
+5. **Puerta parental + endurecimiento** — reautenticación para acciones destructivas/de cuenta; endurecimiento de reglas.
+6. **Copy legal + política de privacidad + DPIA** — reescritura del aviso "nada sale del dispositivo", política de privacidad, DPIA. _Debe viajar en el mismo cambio que introduce la nube (Inc. 2/3), no después._
+7. **Retirada final de GitHub Pages** — ya cubierta en Inc. 1 al existir el pipeline de APK.
 
 ---
 
 ## Dirección de producto (cambios mayores a futuro)
 
-Registrados a petición del usuario. No son features incrementales sobre la web actual: implican cambios de naturaleza del producto. **No iniciados** — requieren su propio flujo cuando se aborden.
+Registrados a petición del usuario. No son features incrementales sobre la web actual: implican cambios de naturaleza del producto.
 
-- **Cambio de naturaleza del producto: de web a app instalable en Android (posible iOS después).** El usuario ha indicado que "va a dejar de ser una web con una URL, para ser una aplicación instalable en Android". Es decir, la dirección no es "web con URL pública que crece", sino app instalable, con **login y guardado de datos en la nube vía Firebase**. Esto implica pasar de "sin backend, sin login" a autenticación y backend en la nube: es un cambio de arquitectura mayor que **necesita su propio flujo de Decisión de Arquitectura con el Arquitecto** (nuevo ADR) y previsiblemente **invalidará partes del README actual sobre privacidad** ("nada sale del dispositivo") y hará que **GitHub Pages / la URL pública dejen de ser el canal de distribución principal**. El modelo de datos multi-curso construido ahora (ADR-002) ya es serializable y separa lo global de lo per-curso, de modo que no estorba esa migración; no se ha añadido ninguna abstracción anticipada para ella.
-
-- **Monetización (dos vías, interés comercial explícito del usuario).** (1) **Donativos voluntarios** y (2) **publicidad ligera y no invasiva** ("muy poca, nada invasiva"). Dado el interés comercial explícito, cuando se aborde debe **invocarse a Growth**: primero en modo consultor (dictamen de potencial) y, si el usuario confirma interés, en modo estratega. No iniciar ahora. Nota: el ADR-001 registraba el proyecto como "gratuito, sin interés comercial"; esa premisa ha cambiado y deberá revisarse al abrir la vía comercial.
+- **Monetización (dos vías, interés comercial explícito del usuario).** (1) **Donativos voluntarios** y (2) **publicidad ligera y no invasiva** ("muy poca, nada invasiva"). Dado el interés comercial explícito, cuando se aborde debe **invocarse a Growth**: primero en modo consultor (dictamen de potencial) y, si el usuario confirma interés, en modo estratega. No iniciar ahora. Nota: el ADR-001 registraba el proyecto como "gratuito, sin interés comercial"; esa premisa ha cambiado y deberá revisarse al abrir la vía comercial. _(El pivote a app Android + Firebase, antes en esta sección, ha pasado a "Trabajo Activo".)_
 
 ---
 
