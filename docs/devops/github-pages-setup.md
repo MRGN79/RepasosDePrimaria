@@ -1,10 +1,41 @@
-# Despliegue en GitHub Pages — Guía de configuración
+# Despliegue — Guía de configuración
 
 **Proyecto:** RepasosDePrimaria
 **Repositorio:** `MRGN79/RepasosDePrimaria`
-**Hosting:** GitHub Pages (modelo de deploy "desde GitHub Actions")
 **Responsable:** DevOps
-**Última actualización:** 2026-08-03 (repositorio renombrado de `TerceroDePrimaria` a `RepasosDePrimaria`; `base` de Vite y URL de Pages actualizados en consecuencia)
+**Última actualización:** 2026-08-03 (pivote a app Android — ADR-003 — y **retirada de GitHub Pages**)
+
+---
+
+> ## ⛔ GitHub Pages RETIRADO (ADR-003)
+>
+> El proyecto ha dejado de ser una web con URL pública y pasa a ser una **app
+> instalable en Android** (Capacitor). En consecuencia:
+>
+> - El workflow `deploy.yml` (Pages) **se ha eliminado**. El artefacto publicado
+>   del proyecto pasa a ser el **APK/AAB**, construido por
+>   [`.github/workflows/android-apk.yml`](../../.github/workflows/android-apk.yml).
+> - Las secciones 2–7 de abajo, específicas de Pages, quedan **como histórico**
+>   y **ya no aplican**. Lo único vigente de este documento es la **protección de
+>   la rama `main`** (sección 4, Paso B), con estos ajustes:
+>   - El *status check* requerido sigue siendo **`Lint + Build`** (job de
+>     `ci.yml`), y puede añadirse también **`APK debug (sin firmar)`** (job de
+>     `android-apk.yml`) si se quiere exigir que el APK compile antes de mergear.
+>   - El environment protegido ya no es `github-pages` sino **`android-release`**
+>     (secretos de firma para el AAB de release — ver §Firma de release abajo).
+>
+> ### Firma de release (Environment `android-release`)
+>
+> 1. **Settings → Environments → New environment** → nombre **`android-release`**.
+> 2. **Deployment branches and tags:** *Selected* → añade `main` y el patrón de
+>    tags `v*` (solo `main`/tags firman release).
+> 3. (Recomendado) **Required reviewers:** tu usuario, para aprobar cada release.
+> 4. **Secrets** del environment (cuando se prepare la subida a Play):
+>    `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`,
+>    `ANDROID_KEY_PASSWORD`. Mientras no existan, el job de release **avisa y no
+>    falla** (solo se produce el APK debug).
+>
+> El resto del documento se conserva por trazabilidad histórica.
 
 ---
 

@@ -41,7 +41,7 @@ Decisiones de arquitectura completas: [`docs/decisions/ADR-001-stack-y-arquitect
 
 ## Requisitos previos
 
-- **Node.js 20** o superior (el CI usa Node 20).
+- **Node.js 22** o superior (el CLI de Capacitor lo exige; el CI de lint/build usa Node 20, el de empaquetado Android usa Node 22).
 - **npm** (incluido con Node). El proyecto usa `package-lock.json`.
 
 No se necesita nada más: ni base de datos, ni servicios externos, ni claves de API.
@@ -76,7 +76,7 @@ Este proyecto es **100% estático y no requiere ninguna variable de entorno** pa
 Notas importantes:
 
 - Si en el futuro se añade alguna variable, debe llevar el prefijo `VITE_` para que Vite la exponga al cliente. **Cualquier `VITE_*` es pública** (acaba en el bundle del navegador): nunca pongas secretos reales.
-- El *base path* para GitHub Pages (`/RepasosDePrimaria/`) **no** se gestiona por variable de entorno: está fijado de forma determinista en [`vite.config.ts`](vite.config.ts). Ver ADR-001 §6.
+- El *base path* de Vite es **relativo (`"./"`)** para que la aplicación se ejecute dentro de la app Android (Capacitor); está fijado en [`vite.config.ts`](vite.config.ts). Ver ADR-003.
 
 ## Cómo ejecutar
 
@@ -91,7 +91,7 @@ npm run build
 npm run preview
 ```
 
-Tras `npm run dev`, abre la URL que imprime Vite en consola (por defecto `http://localhost:5173/RepasosDePrimaria/`).
+Tras `npm run dev`, abre la URL que imprime Vite en consola (por defecto `http://localhost:5173/`).
 
 ## Cómo ejecutar los tests
 
@@ -131,23 +131,40 @@ RepasosDePrimaria/
 │   ├── state/                # Estado global del juego (gameStore, consolidation)
 │   ├── i18n/                 # Configuración de i18next y carga de namespaces
 │   └── styles/               # Estilos base, tokens de diseño y estilos de impresión
+├── android/                  # Proyecto Android nativo (Capacitor) — envuelve el bundle web
+├── capacitor.config.ts       # Configuración de Capacitor (appId, webDir)
 ├── docs/                     # Documentación interna (specs, decisiones, diseño, devops)
-├── .github/workflows/        # CI (lint + build) y deploy a GitHub Pages
-├── vite.config.ts            # Configuración de Vite (base path, alias @/@content/@locales)
+├── .github/workflows/        # CI (lint + build) y empaquetado del APK Android
+├── vite.config.ts            # Configuración de Vite (base path relativo, alias @/@content/@locales)
 └── CHANGELOG.md              # Historial de versiones
 ```
 
-## Cómo desplegar
+## Cómo empaquetar la app Android
 
-El despliegue es **automático a GitHub Pages** mediante GitHub Actions. No hay pasos manuales de subida.
+La aplicación es una **app instalable en Android** empaquetada con [Capacitor](https://capacitorjs.com): el mismo bundle web de Vite se ejecuta dentro de un WebView nativo. Ver [ADR-003](docs/decisions/ADR-003-android-firebase.md).
 
-- Cada **push/merge a `main`** dispara el workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml): instala dependencias, pasa el lint, ejecuta `npm run build` y publica la carpeta `dist/` en GitHub Pages.
-- Solo se publica `dist/` (el resultado del build). Los archivos internos (`.claude/`, `CLAUDE.md`, `.github/`, `docs/`, `CHANGELOG.md`) **nunca** entran en el artefacto desplegado.
-- Las Pull Requests pasan por el workflow de CI [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (lint + build). **CI verde es requisito para hacer merge.**
+```bash
+# Construir el bundle web y sincronizarlo con el proyecto Android
+npm run cap:sync
 
-Configuración inicial de GitHub Pages (una sola vez) y *branch protection*: ver [`docs/devops/github-pages-setup.md`](docs/devops/github-pages-setup.md).
+# Abrir el proyecto en Android Studio (requiere Android Studio instalado)
+npm run android:open
+```
 
-El sitio se sirve desde `https://<usuario>.github.io/RepasosDePrimaria/`. Si cambias de subruta o usas dominio propio, ajusta `base` en `vite.config.ts`.
+Para compilar el APK de prueba desde línea de comandos se necesita el **Android SDK + JDK**:
+
+```bash
+cd android && ./gradlew assembleDebug   # → android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+### Integración continua
+
+- Cada **Pull Request** y cada **push a `main`** disparan el workflow [`.github/workflows/android-apk.yml`](.github/workflows/android-apk.yml), que construye un **APK debug sin firmar** y lo publica como artefacto descargable del workflow. No requiere secretos.
+- En **push a `main` o tag `vX.Y.Z`**, además se prepara el **AAB de release firmado** mediante Play App Signing, con los secretos de firma tras un **GitHub Environment protegido** (`android-release`). Mientras esos secretos no existan, ese paso avisa y no falla.
+- Las Pull Requests pasan también por [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (lint + build). **CI verde es requisito para hacer merge.**
+- Los archivos internos (`.claude/`, `CLAUDE.md`, `.github/`, `docs/`, `CHANGELOG.md`) y cualquier clave de firma **nunca** se incluyen en la app ni se versionan.
+
+> **Nota:** el proyecto ya no se publica en GitHub Pages; el canal de distribución es la app instalable. Configuración de *branch protection*: ver [`docs/devops/github-pages-setup.md`](docs/devops/github-pages-setup.md).
 
 ## Cómo mantener el proyecto (veranos sucesivos)
 

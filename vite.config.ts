@@ -3,11 +3,13 @@ import react from "@vitejs/plugin-react";
 import { fileURLToPath, URL } from "node:url";
 import pkg from "./package.json";
 
-// Base path para GitHub Pages: el sitio se sirve desde
-// https://<usuario>.github.io/RepasosDePrimaria/ (ver ADR-001 §6).
-// HashRouter evita 404 en rutas de cliente sobre Pages.
+// Base path relativo ("./"): la app se empaqueta como aplicación Android con
+// Capacitor (ADR-003) y se sirve desde la raíz del esquema local del WebView,
+// no desde una subruta pública. Un base relativo funciona tanto dentro del
+// WebView como en cualquier hosting estático. Sustituye al antiguo
+// "/RepasosDePrimaria/" de GitHub Pages, retirado en este mismo cambio.
 export default defineConfig({
-  base: "/RepasosDePrimaria/",
+  base: "./",
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
   },

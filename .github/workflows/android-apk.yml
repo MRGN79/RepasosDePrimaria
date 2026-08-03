@@ -1,0 +1,146 @@
+name: Android APK
+
+# Empaquetado Android (Capacitor, ADR-003).
+#  - En cada Pull Request y push a main: construye un APK DEBUG sin firmar y lo
+#    publica como artefacto descargable. No requiere secretos.
+#  - En push a main o tag vX.Y.Z: además construye el AAB de release y lo firma
+#    con Play App Signing SI los secretos de firma están disponibles (tras un
+#    GitHub Environment protegido). Sin secretos, ese job avisa y no falla.
+#
+# Sustituye a la publicación en GitHub Pages (retirada en este cambio): el
+# artefacto publicado del proyecto pasa a ser el APK/AAB, no un sitio web.
+#
+# Node 22 (no 20 como en ci.yml): el CLI de Capacitor 8 exige NodeJS >=22.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+concurrency:
+  group: android-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  debug-apk:
+    name: APK debug (sin firmar)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build web bundle
+        run: npm run build
+
+      - name: Setup Java (JDK 21)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Capacitor sync (Android)
+        run: npx cap sync android
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug --no-daemon
+        working-directory: android
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: repasos-de-primaria-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+  release-aab:
+    name: AAB release (firmado con Play App Signing)
+    # Solo en push a main o tags; nunca en PRs. Entorno protegido: la aprobación
+    # y los secretos de firma se gestionan en GitHub → Settings → Environments.
+    if: github.event_name == 'push'
+    needs: debug-apk
+    runs-on: ubuntu-latest
+    environment: android-release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web bundle
+        run: npm run build
+
+      - name: Setup Java (JDK 21)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Capacitor sync (Android)
+        run: npx cap sync android
+
+      - name: Check signing secrets
+        id: signing
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::No hay secretos de firma configurados todavía (ANDROID_KEYSTORE_BASE64). Se omite la firma de release; configúralos en el Environment 'android-release' cuando se prepare la publicación en Play."
+          fi
+
+      - name: Decode upload keystore
+        if: steps.signing.outputs.available == 'true'
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: echo "$KEYSTORE_B64" | base64 -d > android/app/upload-keystore.jks
+
+      - name: Build signed release AAB
+        if: steps.signing.outputs.available == 'true'
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: ./gradlew bundleRelease --no-daemon
+        working-directory: android
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f android/app/upload-keystore.jks
+
+      - name: Upload release AAB
+        if: steps.signing.outputs.available == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: repasos-de-primaria-release-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Repasos de Primaria</string>
+    <string name="title_activity_main">Repasos de Primaria</string>
+    <string name="package_name">com.repasosdeprimaria.app</string>
+    <string name="custom_url_scheme">com.repasosdeprimaria.app</string>
+</resources>

@@ -15,14 +15,26 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Fichero `LICENSE`: todos los derechos reservados. Uso gratuito de la
   aplicación desplegada para fines personales, educativos y no comerciales;
   reutilización del código o del contenido sujeta a autorización previa.
+- **La aplicación pasa a ser una app instalable en Android**, empaquetada con
+  Capacitor sobre la misma aplicación existente. Se añade el proyecto Android
+  nativo y el manejo del botón "atrás" del dispositivo (fuera de la pantalla de
+  inicio vuelve a inicio; en inicio permite salir).
+- Integración continua que construye y publica en cada cambio un **APK de
+  prueba (debug)** descargable. La firma de la versión de publicación queda
+  preparada para hacerse de forma segura cuando llegue el momento de subir a
+  Google Play.
 
 ### Changed
 
 - El repositorio de GitHub se ha renombrado de `TerceroDePrimaria` a
-  `RepasosDePrimaria`. La URL pública del sitio pasa a
-  `https://mrgn79.github.io/RepasosDePrimaria/`; GitHub redirige
-  automáticamente la URL anterior. Ajustado el `base` de Vite y el favicon
-  en consecuencia.
+  `RepasosDePrimaria` (GitHub redirige automáticamente la URL anterior).
+- Las rutas internas de la aplicación pasan a ser relativas para poder
+  ejecutarse dentro de la app; ya no dependen de una subruta de un sitio web.
+
+### Removed
+
+- Se retira la publicación del sitio en GitHub Pages: el canal de distribución
+  pasa a ser la app instalable, no una página web con URL pública.
 
 ## [0.5.0] — 2026-08-03
 
