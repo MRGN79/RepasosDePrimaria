@@ -23,6 +23,10 @@
     "label": "Character and nickname",
     "edit": "Change character or nickname"
   },
+  "about": {
+    "label": "Privacy",
+    "privacy": "Privacy policy"
+  },
   "clearData": {
     "label": "Delete all my data",
     "confirmTitle": "Are you sure?",

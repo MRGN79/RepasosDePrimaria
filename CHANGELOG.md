@@ -9,6 +9,11 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- **Política de privacidad** accesible desde Ajustes, en español e inglés.
+  Explica en lenguaje claro qué datos se guardan (la cuenta del adulto y el
+  progreso de cada perfil de hijo, sin ningún dato que identifique al niño), en
+  qué se basa el consentimiento del adulto responsable, dónde residen los datos
+  (progreso en región europea) y qué derechos tiene el usuario.
 - Aviso sobre el origen del contenido: el pie de página indica que las
   preguntas son de elaboración propia basadas en el currículo oficial, y el
   README incluye el aviso legal completo en español e inglés.
@@ -26,6 +31,11 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Changed
 
+- Se actualiza el **aviso de privacidad** (pie de página, README y archivo de
+  configuración) para reflejar el nuevo funcionamiento con cuenta opcional: si un
+  adulto crea una cuenta, su correo y el progreso se guardan de forma segura en la
+  nube; el progreso y el PIN del niño siguen guardándose únicamente en el
+  dispositivo, y no se trata ningún dato que identifique al niño.
 - El repositorio de GitHub se ha renombrado de `TerceroDePrimaria` a
   `RepasosDePrimaria` (GitHub redirige automáticamente la URL anterior).
 - Las rutas internas de la aplicación pasan a ser relativas para poder

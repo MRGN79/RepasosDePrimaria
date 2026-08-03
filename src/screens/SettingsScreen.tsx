@@ -19,6 +19,7 @@ type SettingsScreenProps = {
   onSound: (on: boolean) => void;
   onReducedMotion: (on: boolean) => void;
   onEditProfile: () => void;
+  onPrivacy: () => void;
   onClearData: () => void;
   onHome: () => void;
   onBack: () => void;
@@ -34,11 +35,12 @@ export function SettingsScreen({
   onSound,
   onReducedMotion,
   onEditProfile,
+  onPrivacy,
   onClearData,
   onHome,
   onBack,
 }: SettingsScreenProps) {
-  const { t } = useTranslation(["settings", "content", "common"]);
+  const { t } = useTranslation(["settings", "content", "common", "legal"]);
   const [confirmClear, setConfirmClear] = useState(false);
 
   return (
@@ -108,6 +110,13 @@ export function SettingsScreen({
           <legend className={styles.legend}>{t("settings:profile.label")}</legend>
           <Button variant="secondary" size="lg" onClick={onEditProfile}>
             {t("settings:profile.edit")}
+          </Button>
+        </fieldset>
+
+        <fieldset className={styles.group}>
+          <legend className={styles.legend}>{t("settings:about.label")}</legend>
+          <Button variant="secondary" size="lg" onClick={onPrivacy}>
+            {t("settings:about.privacy")}
           </Button>
         </fieldset>
 

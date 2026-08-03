@@ -13,3 +13,4 @@ export { CalligraphySheet } from "./CalligraphySheet";
 export { TutorAuthScreen } from "./TutorAuthScreen";
 export type { AuthMode } from "./TutorAuthScreen";
 export { ConsentScreen } from "./ConsentScreen";
+export { PrivacyPolicyScreen } from "./PrivacyPolicyScreen";
