@@ -1,0 +1,19 @@
+{
+  "//": "Config de la Firebase Local Emulator Suite (ADR-003, Inc. 2). Permite probar Auth y las reglas de Firestore sin un proyecto real. Requiere firebase-tools: `npx firebase emulators:start` (o `npm run emulators`).",
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4000
+    },
+    "singleProjectMode": true
+  }
+}

@@ -10,3 +10,6 @@ export { SettingsScreen } from "./SettingsScreen";
 export { PrintConfigScreen } from "./PrintConfigScreen";
 export { PrintSheetScreen } from "./PrintSheetScreen";
 export { CalligraphySheet } from "./CalligraphySheet";
+export { TutorAuthScreen } from "./TutorAuthScreen";
+export type { AuthMode } from "./TutorAuthScreen";
+export { ConsentScreen } from "./ConsentScreen";
