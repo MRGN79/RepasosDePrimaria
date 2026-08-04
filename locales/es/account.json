@@ -18,7 +18,6 @@
     "title": "Comprobación rápida para personas adultas",
     "body": "Para confirmar que eres una persona adulta, resuelve esto:",
     "question": "¿Cuánto es {{a}} × {{b}}?",
-    "inputLabel": "Tu respuesta",
     "submit": "Continuar",
     "wrong": "No es correcto. Inténtalo de nuevo.",
     "cancel": "Atrás"

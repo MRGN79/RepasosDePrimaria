@@ -18,7 +18,6 @@
     "title": "Quick check for grown-ups",
     "body": "To confirm you're an adult, solve this:",
     "question": "How much is {{a}} × {{b}}?",
-    "inputLabel": "Your answer",
     "submit": "Continue",
     "wrong": "That's not right. Please try again.",
     "cancel": "Back"

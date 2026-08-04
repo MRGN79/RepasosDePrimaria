@@ -45,7 +45,6 @@ export function AdultChallenge({ onPass, onCancel }: AdultChallengeProps) {
           type="text"
           inputMode="numeric"
           autoComplete="off"
-          aria-label={t("adultChallenge.inputLabel")}
           aria-invalid={wrong ? true : undefined}
           value={value}
           onChange={(e) => {
