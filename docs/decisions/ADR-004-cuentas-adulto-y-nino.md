@@ -1,7 +1,7 @@
 # ADR-004: Coexistencia de dos tipos de cuenta — tutor adulto y niño con cuenta propia (Google/Family Link)
 
 **Fecha:** 2026-08-04
-**Estado:** Propuesto
+**Estado:** Aceptado (confirmado por el usuario el 2026-08-04; implementación en Inc. 3)
 **Decidido por:** Arquitecto (con consulta previa a Seguridad y a Abogado — sus veredictos e implicaciones se incorporan abajo)
 
 > **Revisión 2026-08-04 — el tutor también podrá iniciar sesión con Google.** A petición
