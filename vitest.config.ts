@@ -15,6 +15,10 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["src/**/*.{test,spec}.{ts,tsx}", "tests/**/*.{test,spec}.{ts,tsx}"],
+    // Los tests de reglas de Firestore corren contra el emulador con su propia
+    // config (vitest.rules.config.ts, vía `npm run test:rules`), no en la suite
+    // unitaria por defecto (que no tiene emulador levantado).
+    exclude: ["**/node_modules/**", "**/dist/**", "tests/firestore/**"],
     globals: false,
     coverage: {
       provider: "v8",
