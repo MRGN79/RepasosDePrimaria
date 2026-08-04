@@ -1,38 +1,38 @@
 {
   "privacy": {
     "title": "Privacy policy",
-    "updated": "Last updated: 3 August 2026",
-    "intro": "Repasos de Primaria is a free educational app. A child uses the content without an account; only an adult (parent or guardian) can, if they wish, create an account to save progress in the cloud. Here we explain what data is processed and how.",
+    "updated": "Last updated: 4 August 2026",
+    "intro": "Repasos de Primaria is a free educational app. A child can play without an account, with a profile under an adult's account, or with their own Google account if they already have one. Here we explain what data is processed and how, for each case.",
     "design": {
-      "title": "The child's data does not leave the device",
-      "body": "The child has no account, no email and no identifying data. Their progress (streak, stars, badges, preferences) is stored on the device itself. The PIN that protects a profile is just a local latch and never leaves the device."
+      "title": "Two ways to play: a profile under the tutor's account, or the child's own account",
+      "body": "Model A (default): the adult creates the account and, inside it, a child profile with a nickname and avatar from a fixed list; the child has no account or email of their own. Model B: if the child already has their own Google account, they can sign in themselves; in that case they do have an account and email, handled by Firebase Authentication just like the adult's account, though in Firestore we never store their email, name or photo. In both models, sign-up requires passing an adult challenge (a simple sum) first — a reasonable-effort measure, not strong identity verification. The child's progress (streak, stars, badges, preferences) is always stored on the device itself; the local-latch PIN (Model A only) never leaves the device."
     },
     "whatWeProcess": {
       "title": "What data we process",
-      "body": "Only if an adult creates an account:",
+      "body": "Only if there is an active account (Model A or B):",
       "bullets": [
-        "The adult's email and password, to create and sign in to their session. These are handled by Firebase Authentication (Google); we never see or store the password in clear text.",
-        "Each child profile's learning progress and their nickname and avatar (chosen from a fixed list), to save and sync them across the adult's devices in Cloud Firestore (European region).",
-        "Current status: the adult account is already built; cloud saving of progress is designed and still pending activation for real users."
+        "The adult's email and password, or the email/name/photo of the adult's or child's Google account when signing in with Google. These are handled by Firebase Authentication (Google); we never see or store a password in clear text.",
+        "The child profile's or child account's learning progress, and their nickname and avatar (chosen from a fixed list), to save and sync them in Cloud Firestore (European region). For the child's Google account, Firestore only stores a technical identifier, never their email, name or photo.",
+        "Current status: all of this is already built in code; there is no effective processing of any real user's data until a real Firebase project exists."
       ]
     },
     "whatWeDont": {
       "title": "What data we do NOT process",
       "body": "We never process the following:",
       "bullets": [
-        "Any data that identifies the child: no real name, birth date, photo, voice or email.",
-        "The child's PIN is never stored in the cloud in any form; it lives only on the device.",
-        "The adult's email is not copied into the progress database: it resides only in Firebase Authentication.",
+        "In Cloud Firestore, no identifying data: no real name, birth date, photo, voice or email — the adult's or the child's. The nickname comes from a fixed list.",
+        "The child's PIN is never stored in the cloud in any form; it lives only on the device (Model A only).",
+        "Neither the adult's email nor the child's (Model B) is copied into the progress database: both reside only in Firebase Authentication.",
         "We use no third-party cookies, analytics, advertising or trackers."
       ]
     },
     "legalBasis": {
       "title": "Legal basis and consent",
-      "body": "Consent and control rest with the responsible adult, not the child. The adult gives informed consent before anything is saved in the cloud, and that consent is recorded with its date and version. The app targets children below the age of digital consent (14 in Spain, Art. 7 LOPD-GDD), so processing relies on the adult's consent (Art. 6(1)(a) and 6(1)(b) GDPR). There is no profiling, automated decision-making or advertising directed at minors."
+      "body": "Model A: consent and control rest with the responsible adult, not the child; the adult gives informed consent before anything is saved in the cloud. Model B: the child themselves signs in, after passing the adult challenge and the consent screen. That challenge is a reasonable-effort measure, not strong identity or age verification; whether it suffices as valid parental consent for a minor's own account (GDPR Art. 8, Spain's LOPD-GDD Art. 7) is a point pending confirmation by a qualified legal professional, not automated review alone. The app targets children below the age of digital consent (14 in Spain, Art. 7 LOPD-GDD), so processing relies on the responsible adult's consent (Art. 6(1)(a) and 6(1)(b) GDPR). There is no profiling, automated decision-making or advertising directed at minors."
     },
     "location": {
       "title": "Where data is stored and international transfers",
-      "body": "Progress and child profiles are stored in Cloud Firestore in a European region and do not leave the European Economic Area at rest. The adult's email is handled by Firebase Authentication, which runs on Google's global infrastructure and cannot be pinned to an EU region: that may involve an international transfer of the email. Google acts as processor under its Data Processing Addendum, with the Standard Contractual Clauses (SCCs 2021) and, where applicable, the EU-US Data Privacy Framework. The only personal data reaching that global infrastructure is the adult's email: no child data passes through it."
+      "body": "Progress and child profiles are stored in Cloud Firestore in a European region and do not leave the European Economic Area at rest. The adult's email and, in Model B, the child's Google account email/name/photo are handled by Firebase Authentication, which runs on Google's global infrastructure and cannot be pinned to an EU region: that may involve an international transfer of that data. Google acts as processor under its Data Processing Addendum, with the Standard Contractual Clauses (SCCs 2021) and, where applicable, the EU-US Data Privacy Framework. Firestore, in turn, never stores that identifying data: only a technical identifier."
     },
     "retention": {
       "title": "Retention and deletion",

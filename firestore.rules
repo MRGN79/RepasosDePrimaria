@@ -1,36 +1,235 @@
 rules_version = '2';
 
-// Reglas de Cloud Firestore — BASE (ADR-003, Inc. 2).
+// Reglas de Cloud Firestore — DEFINITIVAS (ADR-003 §3 + ADR-004 §2, Inc. 3).
 //
-// Las reglas DEFINITIVAS, con validación por campo y su suite de tests contra el
-// emulador, son del Incremento 3 (perfiles de hijo + estructura final). Esta base
-// establece ya los invariantes de seguridad del ADR:
-//   - Aislamiento por cuenta: cada tutor solo accede a lo que cuelga de su uid.
-//   - Deny por defecto: cualquier ruta no contemplada queda denegada.
-//   - Ningún documento puede contener el email del tutor ni el PIN del niño
-//     (el email vive solo en Auth §2; el PIN nunca sale del dispositivo §4).
+// Modelo de datos: una única colección users/{uid} con un campo `role`
+// ("tutor" | "kid") que decide la FORMA del subárbol, nunca la frontera de
+// acceso. La frontera es siempre la misma (ADR-004 §1, nota de Seguridad):
+//     request.auth.uid == uid  &&  email_verified == true
+// Un rol mal puesto jamás abre datos de otra cuenta: solo cambia la forma del
+// documento propio.
+//
+// Invariantes que estas reglas garantizan:
+//  - Aislamiento por cuenta (uid + email_verified).
+//  - `role`, `consentimiento` y `createdAt` inmutables tras la creación.
+//  - Allowlist de campos por documento (se rechaza cualquier campo desconocido).
+//  - Prohibición de PII y credenciales locales en TODO documento: nunca
+//    email / displayName / photoURL / nombre / fecha de nacimiento / PIN
+//    (el email vive solo en Auth; el PIN nunca sale del dispositivo).
+//  - Verificación cruzada proveedor↔rol ASIMÉTRICA (ADR-004 §1/§2, revisión
+//    2026-08-04): password ⟹ tutor y kid ⟹ google.com. La pareja
+//    (google.com, tutor) se ADMITE — esa distinción la gobierna la UI (paso de
+//    rol + reto de adulto), no la regla.
+//  - Ramificación por rol: un `tutor` tiene children/{childId}/courses/{curso}
+//    y NO courses/{curso} directo; un `kid` tiene courses/{curso} directo y NO
+//    subcolección children.
+//  - Tope de hijos por cuenta de tutor vía contador transaccional coherente.
+//
+// Nota de alcance de la validación: el documento hoja courses/{curso} es el
+// CourseState de ADR-002 serializado 1:1. Las reglas validan su allowlist de
+// claves de primer nivel + ausencia de PII; la validación profunda del
+// CourseState (tipos internos) vive en la capa de datos del cliente, no en las
+// reglas (Firestore no valida estructuras anidadas de forma práctica).
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // El tutor autenticado es dueño de todo lo que cuelga de users/{uid}.
-    match /users/{uid}/{document=**} {
-      allow read: if isOwner(uid);
-      allow write: if isOwner(uid) && noForbiddenFields();
+    // ------------------------- helpers de frontera -------------------------
+
+    function isSignedIn() {
+      return request.auth != null;
     }
 
-    // Deny explícito para cualquier otra ruta.
+    // Frontera única de acceso (ADR-003 §3, ADR-004 §1). No depende del rol.
+    function isOwner(uid) {
+      return isSignedIn()
+        && request.auth.uid == uid
+        && request.auth.token.email_verified == true;
+    }
+
+    function providerIs(p) {
+      return request.auth.token.firebase.sign_in_provider == p;
+    }
+
+    // Rol declarado en el documento de usuario ya existente (para subcolecciones).
+    function ownerRole(uid) {
+      return get(/databases/$(database)/documents/users/$(uid)).data.role;
+    }
+
+    // Contador de hijos actual y post-escritura del documento de tutor (para la
+    // coherencia transaccional del tope, ADR-003 §5).
+    function childrenCountNow(uid) {
+      return get(/databases/$(database)/documents/users/$(uid)).data.childrenCount;
+    }
+    function childrenCountAfter(uid) {
+      return getAfter(/databases/$(database)/documents/users/$(uid)).data.childrenCount;
+    }
+
+    // ------------------------- helpers de contenido ------------------------
+
+    // PII / credenciales prohibidas en CUALQUIER documento (ADR-004 §2/§3).
+    // Se comprueba por CLAVE: ninguno de estos campos puede existir jamás.
+    function noForbiddenFields(data) {
+      return !data.keys().hasAny([
+        'email', 'displayName', 'photoURL', 'name', 'fullName',
+        'realName', 'birthDate', 'dob', 'pin', 'pinHash'
+      ]);
+    }
+
+    function isCourse(curso) {
+      return curso in ['1', '2', '3', '4', '5', '6'];
+    }
+
+    function validConsent(c) {
+      return c.keys().hasOnly(['version', 'acceptedAt'])
+        && c.version is string
+        && c.acceptedAt is timestamp;
+    }
+
+    // Documento hoja de progreso: allowlist de claves de primer nivel del
+    // CourseState (ADR-002) + sin PII.
+    function validCourseDoc(data) {
+      return data.keys().hasOnly(['profile', 'streak', 'stars', 'badges', 'dailyGoal', 'progress'])
+        && noForbiddenFields(data);
+    }
+
+    // Tope de hijos por cuenta de tutor (ADR-003 §5).
+    function maxChildren() {
+      return 6;
+    }
+
+    // --------------------------- documento raíz ---------------------------
+
+    match /users/{uid} {
+
+      // Campos comunes válidos y bien formados en la creación.
+      function validCommonCreate(d) {
+        return d.role in ['tutor', 'kid']
+          && d.locale in ['en', 'es']
+          && d.createdAt is timestamp
+          && validConsent(d.consentimiento)
+          && noForbiddenFields(d);
+      }
+
+      // Verificación cruzada proveedor↔rol, asimétrica (ADR-004 §1/§2).
+      function providerRoleOk(role) {
+        // password ⟹ tutor  (un alta por contraseña nunca crea un niño)
+        return (providerIs('password') ? role == 'tutor' : true)
+          // kid ⟹ google.com  (un niño nunca existe sin Google)
+          && (role == 'kid' ? providerIs('google.com') : true);
+      }
+
+      // Forma del documento de TUTOR en la creación.
+      function validTutorCreate(d) {
+        return d.keys().hasOnly(['role', 'locale', 'consentimiento', 'createdAt', 'childrenCount'])
+          && d.childrenCount == 0;
+      }
+
+      // Forma del documento de NIÑO en la creación.
+      function validKidCreate(d) {
+        return d.keys().hasOnly(['role', 'locale', 'consentimiento', 'createdAt', 'mote', 'avatar', 'currentCourse'])
+          && d.mote is string
+          && d.avatar is string
+          && isCourse(d.currentCourse);
+      }
+
+      // Inmutables tras la creación (ADR-003 §9, ADR-004 §2).
+      function immutablePreserved() {
+        return request.resource.data.role == resource.data.role
+          && request.resource.data.consentimiento == resource.data.consentimiento
+          && request.resource.data.createdAt == resource.data.createdAt;
+      }
+
+      // El contador solo puede quedarse igual o cambiar en ±1 (crear/borrar un
+      // hijo), nunca saltar, y nunca superar el tope.
+      function childrenCountUpdateOk() {
+        return request.resource.data.role == 'kid'
+          ? true
+          : (request.resource.data.childrenCount >= 0
+             && request.resource.data.childrenCount <= maxChildren()
+             && (request.resource.data.childrenCount == resource.data.childrenCount
+                 || request.resource.data.childrenCount == resource.data.childrenCount + 1
+                 || request.resource.data.childrenCount == resource.data.childrenCount - 1));
+      }
+
+      allow read: if isOwner(uid);
+
+      allow create: if isOwner(uid)
+        && validCommonCreate(request.resource.data)
+        && providerRoleOk(request.resource.data.role)
+        && (request.resource.data.role == 'tutor'
+              ? validTutorCreate(request.resource.data)
+              : validKidCreate(request.resource.data));
+
+      allow update: if isOwner(uid)
+        && immutablePreserved()
+        && noForbiddenFields(request.resource.data)
+        && childrenCountUpdateOk()
+        && (resource.data.role == 'tutor'
+              ? request.resource.data.keys().hasOnly(['role', 'locale', 'consentimiento', 'createdAt', 'childrenCount'])
+              : request.resource.data.keys().hasOnly(['role', 'locale', 'consentimiento', 'createdAt', 'mote', 'avatar', 'currentCourse'])
+                && request.resource.data.mote is string
+                && request.resource.data.avatar is string
+                && isCourse(request.resource.data.currentCourse));
+
+      allow delete: if isOwner(uid);
+    }
+
+    // -------------------- subárbol del TUTOR: perfiles ---------------------
+
+    match /users/{uid}/children/{childId} {
+      // Solo una cuenta de tutor tiene perfiles de hijo.
+      allow read: if isOwner(uid) && ownerRole(uid) == 'tutor';
+
+      // Creación coherente con el contador (ADR-003 §5): el documento de tutor
+      // debe quedar, en la MISMA escritura atómica, con el contador +1 y sin
+      // superar el tope. Sin esa coherencia (creación suelta), se deniega.
+      allow create: if isOwner(uid)
+        && ownerRole(uid) == 'tutor'
+        && request.resource.data.keys().hasOnly(['mote', 'avatar', 'currentCourse', 'createdAt'])
+        && request.resource.data.mote is string
+        && request.resource.data.avatar is string
+        && isCourse(request.resource.data.currentCourse)
+        && request.resource.data.createdAt is timestamp
+        && noForbiddenFields(request.resource.data)
+        && childrenCountAfter(uid) == childrenCountNow(uid) + 1
+        && childrenCountAfter(uid) <= maxChildren();
+
+      allow update: if isOwner(uid)
+        && ownerRole(uid) == 'tutor'
+        && request.resource.data.keys().hasOnly(['mote', 'avatar', 'currentCourse', 'createdAt'])
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.mote is string
+        && request.resource.data.avatar is string
+        && isCourse(request.resource.data.currentCourse)
+        && noForbiddenFields(request.resource.data);
+
+      allow delete: if isOwner(uid) && ownerRole(uid) == 'tutor';
+    }
+
+    // Progreso de un perfil de hijo bajo la cuenta de tutor.
+    match /users/{uid}/children/{childId}/courses/{curso} {
+      allow read: if isOwner(uid) && ownerRole(uid) == 'tutor';
+      allow write: if isOwner(uid)
+        && ownerRole(uid) == 'tutor'
+        && isCourse(curso)
+        && validCourseDoc(request.resource.data);
+    }
+
+    // ---------------- subárbol del NIÑO: cursos directos -------------------
+
+    match /users/{uid}/courses/{curso} {
+      // Solo una cuenta de niño tiene cursos colgando directamente de la raíz.
+      allow read: if isOwner(uid) && ownerRole(uid) == 'kid';
+      allow write: if isOwner(uid)
+        && ownerRole(uid) == 'kid'
+        && isCourse(curso)
+        && validCourseDoc(request.resource.data);
+    }
+
+    // ------------------------- deny por defecto ----------------------------
+    // Cualquier ruta no contemplada queda denegada explícitamente.
     match /{document=**} {
       allow read, write: if false;
-    }
-
-    function isOwner(uid) {
-      return request.auth != null && request.auth.uid == uid;
-    }
-
-    // Invariante del ADR: nunca se escribe el email del tutor ni el PIN del niño
-    // (ni un hash del PIN) en Firestore.
-    function noForbiddenFields() {
-      return !request.resource.data.keys().hasAny(['email', 'pin', 'pinHash']);
     }
   }
 }

@@ -16,6 +16,14 @@
  */
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getAuth, connectAuthEmulator, type Auth } from "firebase/auth";
+import {
+  initializeFirestore,
+  connectFirestoreEmulator,
+  persistentLocalCache,
+  persistentSingleTabManager,
+  memoryLocalCache,
+  type Firestore,
+} from "firebase/firestore";
 
 interface FirebaseEnvConfig {
   apiKey: string;
@@ -84,7 +92,18 @@ function effectiveConfig(): FirebaseEnvConfig {
 
 let cachedApp: FirebaseApp | null = null;
 let cachedAuth: Auth | null = null;
+let cachedFirestore: Firestore | null = null;
 let emulatorConnected = false;
+let firestoreEmulatorConnected = false;
+
+/**
+ * ¿Soporta el entorno la persistencia offline con IndexedDB? En el WebView de
+ * Android y en navegadores sí; en SSR/tests (node/jsdom) no. Sin IndexedDB se
+ * cae a caché en memoria para no romper.
+ */
+function supportsIndexedDb(): boolean {
+  return typeof globalThis !== "undefined" && "indexedDB" in globalThis;
+}
 
 function getFirebaseApp(): FirebaseApp {
   if (cachedApp) return cachedApp;
@@ -111,4 +130,32 @@ export function getFirebaseAuth(): Auth {
   }
   cachedAuth = auth;
   return auth;
+}
+
+/**
+ * Devuelve la instancia de Firestore con persistencia offline habilitada
+ * (offline-first, ADR-003 §3: el niño juega sin conexión y sincroniza al
+ * reconectar). Init idempotente. Se conecta al emulador si procede.
+ *
+ * La caché persistente (IndexedDB) solo se usa donde IndexedDB existe (WebView
+ * de Android, navegador). En entornos sin IndexedDB se usa caché en memoria.
+ */
+export function getFirebaseFirestore(): Firestore {
+  if (!isCloudEnabled()) {
+    throw new Error(
+      "Firebase no está configurado. La app funciona en local; configura VITE_FIREBASE_* o el emulador para habilitar la nube.",
+    );
+  }
+  if (cachedFirestore) return cachedFirestore;
+  const db = initializeFirestore(getFirebaseApp(), {
+    localCache: supportsIndexedDb()
+      ? persistentLocalCache({ tabManager: persistentSingleTabManager(undefined) })
+      : memoryLocalCache(),
+  });
+  if (useEmulator && !firestoreEmulatorConnected) {
+    connectFirestoreEmulator(db, emulatorHost, 8080);
+    firestoreEmulatorConnected = true;
+  }
+  cachedFirestore = db;
+  return db;
 }

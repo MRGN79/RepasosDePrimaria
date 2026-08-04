@@ -9,6 +9,24 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- **Cuentas y guardado en la nube (dos tipos de cuenta).** La app admite ahora
+  dos formas de acceso que conviven: una **cuenta de madre, padre o tutor**
+  (con correo y contraseña o con Google) que gestiona uno o varios **perfiles de
+  hijo** —con un selector "¿quién juega?" y un **PIN** de 4 cifras, que se queda
+  solo en el dispositivo, cuando hay más de un perfil—; y una **cuenta de niño**
+  con su propia cuenta de Google (pensada para cuentas supervisadas por Family
+  Link), que entra directamente a elegir curso. En el alta con Google se pregunta
+  de forma explícita si la cuenta es de la persona adulta o del niño, y la opción
+  "soy adulto" pide resolver una operación sencilla como comprobación.
+- **El progreso viaja con la cuenta.** El progreso de cada perfil (racha,
+  estrellas, medallas, misión diaria y avance por materia) se guarda en la nube
+  en región europea y funciona **sin conexión**: se puede jugar sin red y se
+  sincroniza al reconectar. Sin cuenta configurada, la app sigue funcionando por
+  completo en el dispositivo, como hasta ahora.
+- **Privacidad por diseño.** De las cuentas de Google solo se usa el
+  identificador de sesión: nunca se guardan el correo, el nombre ni la foto. El
+  avatar y el apodo salen de una lista cerrada, sin texto libre que identifique
+  al niño.
 - **Contenido de 2.º de Primaria (primer paquete).** Al elegir el curso de 2.º,
   las cinco materias muestran ya actividades reales (antes aparecían como
   "Pronto"), alineadas al currículo oficial de 2.º: en Matemáticas, números hasta
@@ -67,6 +85,20 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Se retira la publicación del sitio en GitHub Pages: el canal de distribución
   pasa a ser la app instalable, no una página web con URL pública.
+
+### Fixed
+
+- Accesibilidad de las pantallas de alta de cuenta (elección de rol, reto de
+  adulto, selector "cambiar de niño" con PIN, elección de avatar y apodo):
+  contraste de bordes de inputs/opciones corregido, selección de avatar ya no
+  depende solo del color (se añade una marca ✓), y objetivos táctiles ajustados
+  al tamaño mínimo del proyecto.
+- La política de privacidad, la DPIA y el mapeo de Play Data Safety se
+  actualizan para reflejar con exactitud la cuenta propia del niño con Google
+  (ADR-004): ya no afirman sin matices que "el niño no tiene cuenta ni correo"
+  cuando el niño usa su propia cuenta de Google, en cuyo caso su
+  correo/nombre/foto residen en Firebase Authentication igual que los del
+  adulto (nunca en la base de datos de progreso).
 
 ## [0.5.0] — 2026-08-03
 

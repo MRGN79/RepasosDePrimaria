@@ -1,0 +1,65 @@
+{
+  "chooser": {
+    "title": "Who is signing in?",
+    "subtitle": "Choose how you want to use the app.",
+    "tutor": "I'm a parent or guardian",
+    "tutorHint": "Manage one or more children's progress.",
+    "kid": "I'm a child with my own account",
+    "kidHint": "Sign in with your Google account and start learning."
+  },
+  "google": {
+    "button": "Continue with Google",
+    "roleTitle": "Is this your account or your child's?",
+    "roleSubtitle": "Tell us who will use this Google account.",
+    "adult": "It's mine (I'm the adult)",
+    "child": "It's my child's account"
+  },
+  "adultChallenge": {
+    "title": "Quick check for grown-ups",
+    "body": "To confirm you're an adult, solve this:",
+    "question": "How much is {{a}} × {{b}}?",
+    "submit": "Continue",
+    "wrong": "That's not right. Please try again.",
+    "cancel": "Back"
+  },
+  "verify": {
+    "title": "Verify your email",
+    "body": "We've sent a verification link to your email. Open it, then come back and tap the button below.",
+    "recheck": "I've verified my email",
+    "resend": "Resend verification email",
+    "resent": "Verification email sent.",
+    "signOut": "Sign out",
+    "stillPending": "Your email isn't verified yet. Check your inbox and try again."
+  },
+  "profileSetup": {
+    "tutorTitle": "Create your first child's profile",
+    "kidTitle": "Set up your profile",
+    "course": "Which grade?",
+    "avatar": "Choose an avatar",
+    "nickname": "Choose a nickname",
+    "create": "Create profile",
+    "limitReached": "You've reached the maximum number of children for this account."
+  },
+  "selector": {
+    "title": "Who's playing?",
+    "subtitle": "Choose a profile to continue.",
+    "add": "Add a child",
+    "manage": "Sign out",
+    "locked": "Locked"
+  },
+  "pin": {
+    "setTitle": "Set a PIN for {{name}}",
+    "setBody": "This 4-digit PIN keeps siblings from opening the wrong profile. It stays only on this device.",
+    "enterTitle": "Enter {{name}}'s PIN",
+    "label": "4-digit PIN",
+    "confirmLabel": "Repeat the PIN",
+    "save": "Save PIN",
+    "unlock": "Unlock",
+    "skip": "Skip for now",
+    "mismatch": "The PINs don't match.",
+    "wrong": "Wrong PIN. Try again.",
+    "invalid": "The PIN must be exactly 4 digits.",
+    "back": "Back"
+  },
+  "loading": "Loading…"
+}

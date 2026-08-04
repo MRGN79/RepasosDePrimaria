@@ -1,0 +1,65 @@
+{
+  "chooser": {
+    "title": "¿Quién va a entrar?",
+    "subtitle": "Elige cómo quieres usar la app.",
+    "tutor": "Soy madre, padre o tutor",
+    "tutorHint": "Gestiona el progreso de uno o varios hijos.",
+    "kid": "Soy un niño o niña con mi propia cuenta",
+    "kidHint": "Inicia sesión con tu cuenta de Google y empieza a aprender."
+  },
+  "google": {
+    "button": "Continuar con Google",
+    "roleTitle": "¿Esta cuenta es tuya o de tu hijo/a?",
+    "roleSubtitle": "Dinos quién va a usar esta cuenta de Google.",
+    "adult": "Es mía (soy la persona adulta)",
+    "child": "Es la cuenta de mi hijo/a"
+  },
+  "adultChallenge": {
+    "title": "Comprobación rápida para personas adultas",
+    "body": "Para confirmar que eres una persona adulta, resuelve esto:",
+    "question": "¿Cuánto es {{a}} × {{b}}?",
+    "submit": "Continuar",
+    "wrong": "No es correcto. Inténtalo de nuevo.",
+    "cancel": "Atrás"
+  },
+  "verify": {
+    "title": "Verifica tu correo",
+    "body": "Te hemos enviado un enlace de verificación. Ábrelo, vuelve aquí y pulsa el botón de abajo.",
+    "recheck": "Ya he verificado mi correo",
+    "resend": "Reenviar correo de verificación",
+    "resent": "Correo de verificación enviado.",
+    "signOut": "Cerrar sesión",
+    "stillPending": "Tu correo aún no está verificado. Revisa tu bandeja e inténtalo de nuevo."
+  },
+  "profileSetup": {
+    "tutorTitle": "Crea el perfil de tu primer hijo o hija",
+    "kidTitle": "Configura tu perfil",
+    "course": "¿Qué curso?",
+    "avatar": "Elige un avatar",
+    "nickname": "Elige un apodo",
+    "create": "Crear perfil",
+    "limitReached": "Has alcanzado el número máximo de hijos para esta cuenta."
+  },
+  "selector": {
+    "title": "¿Quién juega?",
+    "subtitle": "Elige un perfil para continuar.",
+    "add": "Añadir un hijo o hija",
+    "manage": "Cerrar sesión",
+    "locked": "Bloqueado"
+  },
+  "pin": {
+    "setTitle": "Pon un PIN para {{name}}",
+    "setBody": "Este PIN de 4 cifras evita que un hermano abra el perfil equivocado. Se queda solo en este dispositivo.",
+    "enterTitle": "Introduce el PIN de {{name}}",
+    "label": "PIN de 4 cifras",
+    "confirmLabel": "Repite el PIN",
+    "save": "Guardar PIN",
+    "unlock": "Desbloquear",
+    "skip": "Ahora no",
+    "mismatch": "Los PIN no coinciden.",
+    "wrong": "PIN incorrecto. Inténtalo de nuevo.",
+    "invalid": "El PIN debe tener exactamente 4 cifras.",
+    "back": "Atrás"
+  },
+  "loading": "Cargando…"
+}
