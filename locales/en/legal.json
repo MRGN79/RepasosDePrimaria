@@ -1,0 +1,59 @@
+{
+  "privacy": {
+    "title": "Privacy policy",
+    "updated": "Last updated: 3 August 2026",
+    "intro": "Repasos de Primaria is a free educational app. A child uses the content without an account; only an adult (parent or guardian) can, if they wish, create an account to save progress in the cloud. Here we explain what data is processed and how.",
+    "design": {
+      "title": "The child's data does not leave the device",
+      "body": "The child has no account, no email and no identifying data. Their progress (streak, stars, badges, preferences) is stored on the device itself. The PIN that protects a profile is just a local latch and never leaves the device."
+    },
+    "whatWeProcess": {
+      "title": "What data we process",
+      "body": "Only if an adult creates an account:",
+      "bullets": [
+        "The adult's email and password, to create and sign in to their session. These are handled by Firebase Authentication (Google); we never see or store the password in clear text.",
+        "Each child profile's learning progress and their nickname and avatar (chosen from a fixed list), to save and sync them across the adult's devices in Cloud Firestore (European region).",
+        "Current status: the adult account is already built; cloud saving of progress is designed and still pending activation for real users."
+      ]
+    },
+    "whatWeDont": {
+      "title": "What data we do NOT process",
+      "body": "We never process the following:",
+      "bullets": [
+        "Any data that identifies the child: no real name, birth date, photo, voice or email.",
+        "The child's PIN is never stored in the cloud in any form; it lives only on the device.",
+        "The adult's email is not copied into the progress database: it resides only in Firebase Authentication.",
+        "We use no third-party cookies, analytics, advertising or trackers."
+      ]
+    },
+    "legalBasis": {
+      "title": "Legal basis and consent",
+      "body": "Consent and control rest with the responsible adult, not the child. The adult gives informed consent before anything is saved in the cloud, and that consent is recorded with its date and version. The app targets children below the age of digital consent (14 in Spain, Art. 7 LOPD-GDD), so processing relies on the adult's consent (Art. 6(1)(a) and 6(1)(b) GDPR). There is no profiling, automated decision-making or advertising directed at minors."
+    },
+    "location": {
+      "title": "Where data is stored and international transfers",
+      "body": "Progress and child profiles are stored in Cloud Firestore in a European region and do not leave the European Economic Area at rest. The adult's email is handled by Firebase Authentication, which runs on Google's global infrastructure and cannot be pinned to an EU region: that may involve an international transfer of the email. Google acts as processor under its Data Processing Addendum, with the Standard Contractual Clauses (SCCs 2021) and, where applicable, the EU-US Data Privacy Framework. The only personal data reaching that global infrastructure is the adult's email: no child data passes through it."
+    },
+    "retention": {
+      "title": "Retention and deletion",
+      "body": "Data is kept while the adult account exists. The adult can delete a child profile or close the account from the app; closing the account cascade-deletes all their cloud data and removes the user. Progress stored on the device can be deleted at any time from Settings."
+    },
+    "rights": {
+      "title": "Your rights",
+      "body": "The responsible adult may exercise over their account data the rights of:",
+      "bullets": [
+        "Access, rectification and erasure (right to be forgotten).",
+        "Restriction, objection and portability.",
+        "Lodging a complaint with the Spanish Data Protection Agency (AEPD), www.aepd.es."
+      ]
+    },
+    "security": {
+      "title": "Security",
+      "body": "Each adult can only access the data under their own account (Firestore security rules). Writing to the cloud requires prior email verification. Sensitive actions (deleting data, closing the account, changing email or password) are protected by a parental gate that requires the adult to re-authenticate."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "You can raise any privacy question, or exercise your rights, through the project's GitHub repository. If this policy changes, we will update its date and version and, where the change is substantial, request the adult's consent again."
+    }
+  }
+}

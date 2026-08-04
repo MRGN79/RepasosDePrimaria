@@ -1,6 +1,6 @@
 # Repasos de Primaria
 
-Ejercicios y juegos educativos para repasar lo aprendido en Primaria. 100% estática, gratuita, sin cuentas y sin recogida de datos.
+Ejercicios y juegos educativos para repasar lo aprendido en Primaria. App instalable en Android, gratuita, pensada para que el niño juegue sin cuenta y con su progreso guardado en el dispositivo; de forma opcional, un adulto puede crear una cuenta para sincronizar ese progreso en la nube.
 
 > **Alcance actual:** la app cubre la selección de curso de 1.º a 6.º de Primaria, con el progreso guardado por separado en cada curso. El **contenido de actividades está disponible por ahora para 3.º**; el resto de cursos aparecen en el selector marcados como "Pronto" mientras se preparan sus ejercicios.
 
@@ -8,7 +8,7 @@ Ejercicios y juegos educativos para repasar lo aprendido en Primaria. 100% está
 
 **Repasos de Primaria** es una pequeña aplicación web pensada para que un niño o niña de Primaria repase lo que ha trabajado en clase. No hay deberes que entregar ni nadie vigilando: el niño elige su curso y una materia, resuelve ejercicios cortos, gana estrellas e insignias, y mantiene una racha diaria que le anima a volver al día siguiente. Cada curso guarda sus propios avances, sin mezclarse con los de otro.
 
-Está hecha para usarse cómodamente **en tablet** (también funciona en móvil y ordenador), es **ligera y rápida** incluso en dispositivos modestos, y **no necesita conexión a un servidor**: todo ocurre en el propio navegador. **Ningún dato sale del dispositivo** — el progreso (racha, estrellas, preferencias) se guarda solo en el almacenamiento local del navegador.
+Está hecha para usarse cómodamente **en tablet** (también funciona en móvil y ordenador) y es **ligera y rápida** incluso en dispositivos modestos. El **progreso del niño** (racha, estrellas, preferencias) se guarda **en el propio dispositivo** y funciona sin conexión. De forma **opcional**, un adulto (madre, padre o tutor) puede crear una cuenta para **guardar y sincronizar** ese progreso **en la nube** (Firebase, con la base de datos en región europea): en ese caso, salen del dispositivo únicamente el **correo del adulto** y el **progreso** —nunca ningún dato que identifique al niño, ni su PIN—. Los detalles están en la [política de privacidad](docs/legal/privacy-policy.md).
 
 Además del modo interactivo, ofrece una **versión imprimible**: hojas de ejercicios en papel (con o sin soluciones) que un adulto puede imprimir o guardar como PDF desde el propio navegador.
 
@@ -20,7 +20,7 @@ Además del modo interactivo, ofrece una **versión imprimible**: hojas de ejerc
 - **Gamificación sin cuenta:** racha diaria, estrellas, insignias (la "mochila"), objetivo diario, avatar y mote elegidos en el onboarding. Todo persiste en `localStorage`, sin registro.
 - **Versión imprimible:** hojas de ejercicios para papel, con opción de incluir soluciones, vía `window.print()` del navegador (sin librerías pesadas de PDF).
 - **Multiidioma (i18n) EN/ES** desde el primer día: ningún texto va escrito a mano en el código, todo pasa por claves de traducción.
-- **Privacidad por diseño:** sin backend, sin login, sin cookies de terceros, sin analítica. Nada se envía a ningún servidor.
+- **Privacidad por diseño:** el niño no tiene cuenta ni aporta datos personales; su progreso y su PIN **no salen del dispositivo**. La cuenta del adulto (opcional) usa Firebase Authentication y el progreso se sincroniza en Cloud Firestore (**región europea**), minimizando los datos personales tratados. Sin cookies de terceros, sin analítica y sin publicidad. Ver [ADR-003](docs/decisions/ADR-003-android-firebase.md), la [política de privacidad](docs/legal/privacy-policy.md) y la [DPIA](docs/legal/dpia.md).
 - **Accesibilidad:** tipografía Atkinson Hyperlegible, soporte de movimiento reducido, contraste cuidado (ver `docs/design/02-criterios-accesibilidad.md`).
 
 ## Stack tecnológico
@@ -44,7 +44,7 @@ Decisiones de arquitectura completas: [`docs/decisions/ADR-001-stack-y-arquitect
 - **Node.js 22** o superior (el CLI de Capacitor lo exige; el CI de lint/build usa Node 20, el de empaquetado Android usa Node 22).
 - **npm** (incluido con Node). El proyecto usa `package-lock.json`.
 
-No se necesita nada más: ni base de datos, ni servicios externos, ni claves de API.
+Para el desarrollo local no hace falta nada más: sin configurar Firebase, la app arranca en **modo local** (sin nube). La configuración de Firebase (Auth/Firestore) es **opcional** y se activa por variables de entorno; ver [Variables de entorno](#variables-de-entorno) y [ADR-003](docs/decisions/ADR-003-android-firebase.md).
 
 ## Instalación y configuración local
 
@@ -67,15 +67,16 @@ cp .env.example .env.local
 
 ## Variables de entorno
 
-Este proyecto es **100% estático y no requiere ninguna variable de entorno** para funcionar. El archivo [`.env.example`](.env.example) existe únicamente como referencia para el futuro.
+La app **funciona sin ninguna variable de entorno** (modo local, sin nube). Para activar el guardado en la nube (cuenta del adulto + progreso en Firestore) se usan variables `VITE_FIREBASE_*` **opcionales**, documentadas en [`.env.example`](.env.example). Ninguna es obligatoria para arrancar.
 
 | Variable | Descripción | Obligatoria | Ejemplo |
 |---|---|---|---|
-| *(ninguna)* | No hay variables requeridas en tiempo de build ni de ejecución | No | — |
+| `VITE_FIREBASE_*` | Config pública del cliente Firebase (Auth/Firestore). Sin ellas, la app funciona en modo local | No | ver [`.env.example`](.env.example) |
+| `VITE_FIREBASE_USE_EMULATOR` | Usa el emulador de Firebase en desarrollo, sin proyecto real | No | `true` |
 
 Notas importantes:
 
-- Si en el futuro se añade alguna variable, debe llevar el prefijo `VITE_` para que Vite la exponga al cliente. **Cualquier `VITE_*` es pública** (acaba en el bundle del navegador): nunca pongas secretos reales.
+- Toda variable expuesta al cliente lleva el prefijo `VITE_`. **Cualquier `VITE_*` es pública** (acaba en el bundle del navegador): la config de Firebase no es secreta, pero **nunca pongas secretos reales** (claves de firma, credenciales de servidor) en variables `VITE_*`.
 - El *base path* de Vite es **relativo (`"./"`)** para que la aplicación se ejecute dentro de la app Android (Capacitor); está fijado en [`vite.config.ts`](vite.config.ts). Ver ADR-003.
 
 ## Cómo ejecutar

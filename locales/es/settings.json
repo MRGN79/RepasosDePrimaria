@@ -23,6 +23,10 @@
     "label": "Personaje y apodo",
     "edit": "Cambiar personaje o apodo"
   },
+  "about": {
+    "label": "Privacidad",
+    "privacy": "Política de privacidad"
+  },
   "clearData": {
     "label": "Borrar todos mis datos",
     "confirmTitle": "¿Estás seguro?",

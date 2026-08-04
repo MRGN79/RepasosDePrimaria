@@ -1,0 +1,59 @@
+{
+  "privacy": {
+    "title": "Política de privacidad",
+    "updated": "Última actualización: 3 de agosto de 2026",
+    "intro": "Repasos de Primaria es una app educativa gratuita. El contenido lo usa un niño o niña sin cuenta; solo un adulto (madre, padre o tutor) puede, si lo desea, crear una cuenta para guardar el progreso en la nube. Aquí te explicamos qué datos se tratan y cómo.",
+    "design": {
+      "title": "Los datos del niño no salen del dispositivo",
+      "body": "El niño no tiene cuenta, ni correo, ni ningún dato que lo identifique. Su progreso (racha, estrellas, medallas, preferencias) se guarda en el propio dispositivo. El PIN que protege un perfil es solo un pestillo local y nunca sale del dispositivo."
+    },
+    "whatWeProcess": {
+      "title": "Qué datos tratamos",
+      "body": "Solo si un adulto crea una cuenta:",
+      "bullets": [
+        "El correo y la contraseña del adulto, para crear e iniciar su sesión. Se gestionan mediante Firebase Authentication (Google); nunca vemos ni guardamos la contraseña en claro.",
+        "El progreso de aprendizaje de cada perfil de hijo y su apodo y avatar (elegidos de una lista cerrada), para guardarlos y sincronizarlos entre los dispositivos del adulto en Cloud Firestore (región europea).",
+        "Estado actual: la cuenta del adulto ya está construida; el guardado del progreso en la nube está diseñado y aún pendiente de activarse para usuarios reales."
+      ]
+    },
+    "whatWeDont": {
+      "title": "Qué datos NO tratamos",
+      "body": "Nunca tratamos lo siguiente:",
+      "bullets": [
+        "Ningún dato que identifique al niño: ni nombre real, ni fecha de nacimiento, ni foto, ni voz, ni correo.",
+        "El PIN del niño no se guarda en la nube de ninguna forma; vive solo en el dispositivo.",
+        "El correo del adulto no se copia a la base de datos de progreso: reside únicamente en Firebase Authentication.",
+        "No usamos cookies de terceros, ni analítica, ni publicidad, ni rastreadores."
+      ]
+    },
+    "legalBasis": {
+      "title": "Base jurídica y consentimiento",
+      "body": "El consentimiento y el control residen en el adulto responsable, no en el niño. El adulto da su consentimiento informado antes de que se guarde nada en la nube, y ese consentimiento queda registrado con su fecha y versión. La app está pensada para niños por debajo de la edad de consentimiento digital (14 años en España, art. 7 LOPD-GDD), por eso el tratamiento se apoya en el consentimiento del adulto (art. 6.1.a y 6.1.b RGPD). No hay perfilado, decisiones automatizadas ni publicidad dirigida a menores."
+    },
+    "location": {
+      "title": "Dónde se guardan los datos y transferencias internacionales",
+      "body": "El progreso y los perfiles de hijo se guardan en Cloud Firestore en región europea y no salen del Espacio Económico Europeo en reposo. El correo del adulto se gestiona con Firebase Authentication, que se ejecuta sobre la infraestructura global de Google y no es fijable a una región de la UE: eso puede suponer una transferencia internacional de ese correo. Google actúa como encargado del tratamiento bajo su Data Processing Addendum, con las Cláusulas Contractuales Tipo (SCCs 2021) y, cuando aplica, el Data Privacy Framework UE-EEUU. El único dato personal que llega a esa infraestructura global es el correo del adulto: ningún dato del niño pasa por ahí."
+    },
+    "retention": {
+      "title": "Conservación y borrado",
+      "body": "Los datos se conservan mientras exista la cuenta del adulto. El adulto puede borrar un perfil de hijo o cerrar la cuenta desde la app; cerrar la cuenta borra en cascada todos sus datos en la nube y elimina el usuario. El progreso guardado en el dispositivo se puede borrar en cualquier momento desde Ajustes."
+    },
+    "rights": {
+      "title": "Tus derechos",
+      "body": "El adulto responsable puede ejercer sobre los datos de su cuenta los derechos de:",
+      "bullets": [
+        "Acceso, rectificación y supresión (derecho al olvido).",
+        "Limitación, oposición y portabilidad.",
+        "Reclamar ante la Agencia Española de Protección de Datos (AEPD), www.aepd.es."
+      ]
+    },
+    "security": {
+      "title": "Seguridad",
+      "body": "Cada adulto solo puede acceder a los datos de su propia cuenta (reglas de seguridad de Firestore). Escribir en la nube exige verificar antes el correo. Las acciones sensibles (borrar datos, cerrar cuenta, cambiar correo o contraseña) están protegidas por una puerta parental que pide reautenticación del adulto."
+    },
+    "contact": {
+      "title": "Contacto",
+      "body": "Puedes plantear cualquier cuestión sobre privacidad, o ejercer tus derechos, a través del repositorio del proyecto en GitHub. Si esta política cambia, actualizaremos su fecha y versión y, cuando el cambio sea sustancial, pediremos de nuevo el consentimiento del adulto."
+    }
+  }
+}

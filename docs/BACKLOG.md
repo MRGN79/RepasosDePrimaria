@@ -11,6 +11,7 @@ Items anotados para implementar en el futuro, ordenados por aparición. No impli
 | **Pivote a app Android + Firebase (v0.6.0)** — Inc. 1: shell Capacitor + Android + CI de APK debug + retirada de GitHub Pages | `feat/capacitor-android-shell` (mergeada) | ✅ Mergeada en `main` (`2fc4ed4`) |
 | **Pivote a app Android + Firebase (v0.6.0)** — Inc. 2: Firebase Auth + pantallas de alta/consentimiento del tutor | `feat/firebase-auth-tutor` (mergeada) | ✅ Mergeada en `main` (`72c908f`). Pantallas creadas pero aún no cableadas al flujo de entrada de la app; sin proyecto Firebase real, corre contra emulador |
 | **Pivote a app Android + Firebase (v0.6.0)** — Inc. 3: Firestore + perfiles de hijo + reglas de seguridad | _(sin empezar)_ | Siguiente en el plan |
+| **Pivote a app Android + Firebase (v0.6.0)** — Inc. 6: Copy legal + política de privacidad + DPIA | `claude/incremento-6-fx1iwx` | ✅ Entregado **adelantado a Inc. 3** (Inc. 2 ya hizo falsa la promesa "nada sale del dispositivo"). Política de privacidad (pantalla en la app + `docs/legal/privacy-policy.md`), DPIA (`docs/legal/dpia.md`), mapeo de Play Data Safety (`docs/legal/play-data-safety.md`) y reescritura del copy en README, `.env.example` y footer. Validado por el Abogado. Acciones del usuario en `.claude/pending-actions.md` (DPA de Google, URL pública de la política, formulario Data Safety, revisión legal humana) |
 
 **Decisión de arquitectura del pivote:** `docs/decisions/ADR-003-android-firebase.md` (incorpora las condiciones de Seguridad: email del tutor solo en Firebase Auth, PIN del hijo solo local, puerta parental, CI endurecido). Specs e incrementos en `docs/specs/07-app-android-firebase.md`. Punto legal abierto para el Abogado: residencia de datos de Firebase Auth + DPIA. Bloqueo externo: la creación real del proyecto Firebase (consola, credenciales) requiere una acción manual del usuario, no automatizable desde aquí.
 
@@ -21,7 +22,7 @@ Items anotados para implementar en el futuro, ordenados por aparición. No impli
 3. **Firestore + perfiles de hijo + reglas de seguridad** — datos en la nube región europea, offline-first; el niño opera bajo la cuenta del tutor sin login ni PII.
 4. **Migración del progreso local existente** — el progreso `localStorage` (esquema v2) se asocia al primer perfil de hijo del tutor sin pérdida.
 5. **Puerta parental + endurecimiento** — reautenticación para acciones destructivas/de cuenta; endurecimiento de reglas.
-6. **Copy legal + política de privacidad + DPIA** — reescritura del aviso "nada sale del dispositivo", política de privacidad, DPIA. _Debe viajar en el mismo cambio que introduce la nube (Inc. 2/3), no después._
+6. **Copy legal + política de privacidad + DPIA** — reescritura del aviso "nada sale del dispositivo", política de privacidad, DPIA. _Debe viajar en el mismo cambio que introduce la nube (Inc. 2/3), no después._ ← ✅ **Entregado adelantado a Inc. 3** en la rama `claude/incremento-6-fx1iwx` (Inc. 2 ya introdujo la cuenta del tutor, haciendo falsa la promesa antigua). Ver "Trabajo Activo".
 7. **Retirada final de GitHub Pages** — ya cubierta en Inc. 1 al existir el pipeline de APK.
 
 ---

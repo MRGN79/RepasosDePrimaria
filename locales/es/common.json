@@ -6,7 +6,7 @@
   "footer": {
     "description": "Actividades de repaso para Primaria",
     "howItWorks": "5 preguntas por sesión al elegir una materia (la misión de hoy combina 15: 3 de cada una) · Las que aciertas no se repiten hasta completar todas · Las que fallas vuelven para practicar de nuevo",
-    "privacy": "Esta aplicación no envía ningún dato a ningún servidor. Todo se guarda únicamente en este dispositivo.",
+    "privacy": "El progreso del niño se guarda en este dispositivo. La cuenta del adulto (opcional) se guarda en la nube. Consulta la política de privacidad en Ajustes.",
     "contentOrigin": "Preguntas de elaboración propia, basadas en el currículo oficial de Primaria. No se usa material de ninguna editorial."
   },
   "nav": {

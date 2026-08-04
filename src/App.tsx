@@ -13,6 +13,7 @@ import {
 } from "@/screens";
 import { OnboardingScreen } from "@/screens/OnboardingScreen";
 import { SettingsScreen } from "@/screens/SettingsScreen";
+import { PrivacyPolicyScreen } from "@/screens/PrivacyPolicyScreen";
 import { SessionContainer } from "@/screens/SessionContainer";
 import { PrintConfigScreen } from "@/screens/PrintConfigScreen";
 import { PrintSheetScreen } from "@/screens/PrintSheetScreen";
@@ -42,6 +43,7 @@ type Route =
   | { name: "session"; materia: Materia; tema: string | null; isDailyGoal: boolean; prebuilt?: PreparedExercise[] }
   | { name: "backpack" }
   | { name: "settings" }
+  | { name: "privacyPolicy" }
   | { name: "editProfile" }
   | { name: "print" }
   | { name: "printSheet"; materia: Materia; tema: string | null }
@@ -308,12 +310,22 @@ export function App() {
         onSound={store.setSound}
         onReducedMotion={store.setReducedMotion}
         onEditProfile={() => setRoute({ name: "editProfile" })}
+        onPrivacy={() => setRoute({ name: "privacyPolicy" })}
         onClearData={() => {
           store.clearData();
           setRoute({ name: "home" });
         }}
         onHome={goHome}
         onBack={goHome}
+      />
+    );
+  }
+
+  if (route.name === "privacyPolicy") {
+    return (
+      <PrivacyPolicyScreen
+        onBack={() => setRoute({ name: "settings" })}
+        onHome={goHome}
       />
     );
   }
