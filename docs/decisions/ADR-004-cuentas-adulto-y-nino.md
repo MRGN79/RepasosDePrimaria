@@ -4,6 +4,17 @@
 **Estado:** Propuesto
 **Decidido por:** Arquitecto (con consulta previa a Seguridad y a Abogado — sus veredictos e implicaciones se incorporan abajo)
 
+> **Revisión 2026-08-04 — el tutor también podrá iniciar sesión con Google.** A petición
+> del usuario, la **cuenta de adulto deja de estar atada a email/contraseña**: el tutor
+> podrá entrar **también con Google Sign-In**, por comodidad. Este mismo ADR ya anticipaba
+> la apertura ("se podría abrir en el futuro sin migración de datos", §1 y Alternativa 1);
+> aquí se materializa. El cambio afecta justo a la parte de autenticación/autorización que
+> Seguridad había revisado, por lo que se **re-consulta a Seguridad** (regla Arquitecto ↔
+> Seguridad del CLAUDE.md, que aplica también a la revisión de un diseño ya consultado). El
+> resultado —mecanismo para fijar el rol de forma fiable en el caso Google y su mitigación—
+> se integra en §1, §2 y §7. El documento **sigue en estado _Propuesto_** hasta que el
+> usuario lo confirme.
+
 > **Relación con ADR-003.** Este ADR **extiende** [`ADR-003`](./ADR-003-android-firebase.md);
 > no lo contradice. El modelo "una cuenta = un tutor adulto, con perfiles de hijo"
 > de ADR-003 **se conserva íntegro**. Aquí se **añade** un segundo tipo de cuenta —
@@ -70,22 +81,54 @@ de seguridad (defensa en profundidad para esta fase).**
 - El documento `users/{uid}` lleva `role: "tutor" | "kid"`, escrito **una sola vez en
   la creación** y **rechazado en toda actualización** por las reglas (inmutable, igual
   que `consentimiento` y `createdAt` en ADR-003 §3/§9).
-- El **flujo de alta** decide el valor: la ruta **email/contraseña** crea `role:"tutor"`;
-  la ruta **Google Sign-In** crea `role:"kid"`.
-- **Verificación cruzada en reglas (defensa en profundidad):** Firestore expone el
-  proveedor real y no falsificable en `request.auth.token.firebase.sign_in_provider`.
-  Las reglas exigen la coherencia `role=="tutor" ⇔ provider=="password"` y
-  `role=="kid" ⇔ provider=="google.com"` **en la creación**. Así, aunque un cliente
-  manipulado intente crear un documento con el rol equivocado, la regla lo rechaza.
+- El **flujo de alta** decide el valor. Con **dos proveedores para el tutor** (revisión
+  2026-08-04) el alta ya no es "un proveedor = un rol", sino:
+  - **Ruta email/contraseña** → siempre `role:"tutor"`. Los niños de este diseño **no**
+    usan email/contraseña (solo Google), así que este proveedor sigue determinando el rol
+    de forma inequívoca.
+  - **Ruta Google Sign-In** → **puede ser tutor _o_ niño**. El proveedor ya no basta para
+    decidir el rol. El alta con Google incorpora un **paso explícito de elección de rol**
+    (ver abajo) que fija `role` **antes** de crear el documento `users/{uid}`.
+- **Paso explícito de rol en el alta con Google (nuevo).** Tras el Google Sign-In y
+  **antes** de crear `users/{uid}`, la app pregunta de forma clara: *"¿esta cuenta la vas
+  a usar tú, la persona adulta, o es la cuenta de tu hijo/a?"*. La respuesta fija el
+  `role`. La rama **"soy el adulto/tutor"** queda protegida por un **reto de adulto**
+  (la operación aritmética simple de ADR-003 §4, la misma puerta parental que ya guarda
+  las acciones sensibles) — así declararse tutor por Google **no** es una autodeclaración
+  sin fricción; la rama **"es la cuenta de mi hijo/a"** no lleva reto (es el camino honesto
+  y esperado del niño). El mecanismo y su razón de proporcionalidad los fija Seguridad en
+  §7.
+- **Verificación cruzada en reglas — ahora _asimétrica_ (defensa en profundidad).**
+  Firestore expone el proveedor real y no falsificable en
+  `request.auth.token.firebase.sign_in_provider`. Con un solo proveedor por rol la regla
+  podía exigir la doble equivalencia; al abrir Google al tutor, la parte determinista que
+  **se conserva** en la creación es:
+  - `provider=="password" ⟹ role=="tutor"` (un alta por contraseña **nunca** puede crear
+    un niño). ✔ Se mantiene.
+  - `role=="kid" ⟹ provider=="google.com"` (un niño **nunca** puede existir con contraseña).
+    ✔ Se mantiene.
+  - `provider=="google.com" ⟹ role ∈ {tutor, kid}` (**la única pareja que la regla ya no
+    puede prohibir**): con Google, ambos roles son válidos y la regla los admite; **quién
+    decide es el paso explícito de alta + el reto de adulto en la UI**, no el proveedor.
+
+  Es decir: las reglas siguen impidiendo las combinaciones imposibles (un niño con
+  contraseña, o cualquier `kid` que no venga de Google), pero **ya no pueden distinguir por
+  sí solas un tutor-Google de un niño-Google**. Ese hueco se cubre en la UI (paso explícito
+  + reto de adulto) y su riesgo lo valora y acota Seguridad en §7. La frontera de acceso
+  (`uid` + `email_verified`) **no cambia** y sigue acotando el impacto de cualquier rol mal
+  puesto (ver la nota de seguridad más abajo).
 
 **Por qué un campo explícito y no derivar el rol del proveedor a secas** (que sería
 más corto): el proveedor es un *método de autenticación*, no un *rol semántico*.
 Acoplar permanentemente "rol = proveedor" ataría el modelo a esa equivalencia; el día
 que se quisiera, por ejemplo, permitir a un adulto entrar con Google por comodidad, el
-modelo se rompería y exigiría migración de datos. Con el rol como campo estable, la
+modelo se rompería y exigiría migración de datos. **Ese día ha llegado con la revisión
+2026-08-04, y la decisión se valida: abrir Google al tutor _no exige migrar ni un dato_**
+—`role` ya era un campo estable e independiente del proveedor; solo se relaja una
+restricción de reglas y se añade el paso de alta—. Con el rol como campo estable, la
 app y las reglas ramifican sobre un valor semántico; la verificación cruzada con el
-proveedor es una **restricción de esta fase** que puede relajarse en el futuro sin
-tocar los datos. Es el punto de equilibrio entre lo más simple y lo más robusto:
+proveedor era una **restricción de esta fase** que ahora se **relaja parcialmente** (deja
+de aplicar al caso `google.com`, ver §2) sin tocar los datos. Es el punto de equilibrio entre lo más simple y lo más robusto:
 **no añade Cloud Functions ni custom claims** (que serían la alternativa "de libro"
 pero más pesada — ver Alternativas), y aun así el rol no es falsificable porque las
 reglas lo anclan al proveedor.
@@ -154,6 +197,14 @@ de reglar y de mantener.
 - `role`, `consentimiento` y `createdAt` **inmutables**; **allowlist de campos** por
   documento (se rechazan campos desconocidos) — se extiende la allowlist de ADR-003 §9
   a la forma `kid`.
+- **Verificación cruzada proveedor↔rol, _asimétrica_** (revisión 2026-08-04, detalle en
+  §1). En la **creación**, las reglas exigen solo las dos invariantes que siguen siendo
+  deterministas: `provider=="password" ⟹ role=="tutor"` y `role=="kid" ⟹
+  provider=="google.com"`. La pareja `(google.com, tutor)` **se admite** (el tutor puede
+  entrar con Google); las reglas ya **no** distinguen un tutor-Google de un niño-Google —
+  esa distinción la fija el paso explícito de alta + el reto de adulto en la UI (§1), no la
+  regla. Consecuencia neta que las reglas **sí** garantizan: **ninguna cuenta de
+  contraseña puede ser un niño** y **ningún niño puede existir sin Google**.
 - **Ramificación por rol:** bajo un `users/{uid}` con `role=="tutor"` se permite la
   subcolección `children/{childId}/courses/{curso}` y **se prohíbe** `courses/{curso}`
   directo en la raíz; con `role=="kid"` se permite `courses/{curso}` directo y **se
@@ -195,6 +246,14 @@ ningún sitio**: solo se toma el `uid`. El `mote`/`avatar` se piden en un alta m
 > de Auth" de ADR-003, **ahora aplicada a datos de un menor** (su email/nombre/foto de
 > Google residen en la infraestructura global de Auth). Se traslada al Abogado como
 > extensión de ese punto abierto.
+>
+> **Tutor con Google (revisión 2026-08-04).** Cuando el **tutor** entra con Google, su
+> propio `displayName`/`photoURL` de Google pasan también a residir en Auth (antes, con
+> solo email/contraseña, Auth guardaba únicamente su email). En **Firestore** no cambia
+> nada: el `displayName` del tutor sigue siendo el que él elige, **nunca** el de Google, y
+> su foto no se persiste. Es dato del **adulto** (no de un menor), de menor sensibilidad,
+> cubierto por el mismo punto abierto de residencia de datos de Auth de ADR-003; se anota
+> para el Abogado por completitud.
 
 ### 4. Consentimiento — requisito legal (Abogado), pendiente de especificar en UI
 
@@ -305,6 +364,57 @@ anteriores:
 Seguridad **no bloquea** el diseño; sus condiciones críticas están resueltas y las altas
 son requisitos explícitos de la implementación de Inc. 3.
 
+#### Re-consulta 2026-08-04 — el tutor entra también con Google (veredicto incorporado)
+
+Al abrir Google Sign-In al tutor, el proveedor deja de verificar el rol en el caso Google:
+`role` pasa a ser, para ese caso, una **autodeclaración en la UI** (el paso explícito de
+alta), no algo verificable contra el proveedor. Seguridad valora el riesgo y su
+proporcionalidad. **Veredicto: ⚠️ Condicionado**, condiciones incorporadas:
+
+- **(Alta — mitigación exigida) Reto de adulto en la rama "tutor" del alta con Google.**
+  Declararse tutor por Google **debe** exigir el mismo **reto de adulto** (aritmética
+  simple) que ADR-003 §4 ya usa como puerta parental para acciones sensibles. **No se
+  introduce maquinaria nueva**: se reutiliza un patrón existente. Un niño que use su propia
+  cuenta Google y se declare "adulto" se topa con la misma fricción que ya protege borrar
+  hijos o cambiar credenciales. La rama "es la cuenta de mi hijo/a" no lleva reto. ✔
+  Incorporado en §1.
+- **(Etiquetado honesto, no es un fallo) El reto de adulto es fricción de UI, no una
+  garantía de reglas.** Las reglas **no pueden** validar que el reto se pasó (el cliente
+  calcula la aritmética), igual que no pueden verificar la edad real de nadie. Se documenta
+  como lo que es: eleva la barrera contra la autodeclaración **accidental o casual** de un
+  niño, no es una prueba criptográfica de adultez.
+- **Por qué esto es proporcionado y Seguridad _no_ exige algo más pesado** (custom claim vía
+  Cloud Function, re-verificación reforzada, etc.):
+  1. **La frontera de acceso no se toca.** Sigue siendo `uid` + `email_verified`. Un rol
+     mal puesto **solo afecta al propio subárbol del `uid`**; jamás abre datos de otra
+     cuenta. El peor caso real no es un ataque a terceros, sino **un niño que se declara
+     tutor sobre su propia cuenta** y obtiene capacidades de tutor (crear/borrar perfiles de
+     hijo, gestionar consentimiento) **sobre sí mismo** — impacto bajo y contenido.
+  2. **La parte legalmente sensible ya está guardada.** Lo delicado de que un menor se
+     declare adulto es "conceder" el consentimiento parental (RGPD Art. 8, §4). Pero ese
+     consentimiento **ya exige el mismo reto de adulto + lectura y aceptación del texto**
+     (§4) y es **inmutable**. El alta-tutor-Google queda así con **doble toque de adulto**
+     (reto al declarar rol + reto/aceptación al consentir), coherente con §4.
+  3. **Un custom claim no añade aseguramiento real de adultez.** Movería la autodeclaración
+     del cliente a una Cloud Function alimentada por la **misma** aserción del cliente: haría
+     el rol infalsificable en el token, pero la frontera ya acota el impacto y el rol solo da
+     *forma* al documento (§1). Es el mismo trade-off de la **Alternativa 2**, ya descartada
+     por desproporcionado; abrir Google al tutor no cambia ese balance.
+  4. **Guardas ya presentes que refuerzan la proporcionalidad:** `email_verified` (true por
+     construcción en Google), allowlist de campos, prohibición de PII, consentimiento
+     inmutable, y App Check + restricción de API key por SHA-256 de ADR-003 §7/§8 (que
+     **cubren igual** la ruta de Google del tutor — añadir el proveedor no relaja ninguna).
+- **(Media — tests) Ampliar los tests de reglas del emulador** a la asimetría nueva:
+  `(password, kid)` denegado, `kid` sin Google denegado, `(google.com, tutor)` **admitido**
+  (documentado como caso gobernado por la UI, no por la regla), `(google.com, kid)` admitido.
+  Requisito de Inc. 3.
+
+**Conclusión de Seguridad:** con el reto de adulto en la rama tutor-Google + las guardas ya
+existentes, el riesgo de autodeclaración de rol es **aceptable y proporcionado**; Seguridad
+**no bloquea** y **no exige** mecanismos adicionales más pesados. La suficiencia del reto de
+adulto **como consentimiento parental** (distinto de como control de rol) sigue siendo punto
+del **Abogado** (§4), no de Seguridad.
+
 ---
 
 ## Consecuencias
@@ -343,11 +453,18 @@ son requisitos explícitos de la implementación de Inc. 3.
   infraestructura global de Firebase Auth. Extiende a datos de menor el punto abierto de
   residencia de datos de Auth de ADR-003. Mitigación: nada en Firestore; el Abogado
   confirma DPA/SCCs/DPF y la base de licitud (mismo circuito que ADR-003 + Inc. 6).
-- **Confusión de rol en el alta:** un adulto que por error entrase con Google quedaría
-  como cuenta de niño (sin perfiles de hijo). Mitigación: la UI del alta debe separar
-  claramente las dos rutas (a especificar en Inc. 3); el ancla rol⇔proveedor evita
-  formas de documento inconsistentes, pero no evita que un humano elija la ruta
-  equivocada.
+- **Confusión / autodeclaración de rol en el alta con Google (revisión 2026-08-04):** al
+  admitir Google para ambos roles, el proveedor ya no fija el rol en ese caso y `role` es
+  una **autodeclaración** en el paso explícito de alta. Dos caras del mismo riesgo: (a) un
+  **adulto** que elija por error "es la cuenta de mi hijo/a" queda como cuenta de niño
+  (rol inmutable → tendría que empezar de nuevo con otra cuenta o ruta); (b) un **niño**
+  que se declare "adulto" obtiene capacidades de tutor **sobre su propia cuenta**.
+  Mitigación: **reto de adulto en la rama "tutor"** del alta con Google (§1, §7) + UI que
+  separe con claridad las dos rutas y confirme antes de crear el documento; el impacto está
+  **acotado por la frontera** (`uid` + `email_verified`) al propio subárbol de la cuenta, y
+  la concesión de consentimiento —lo legalmente sensible— lleva su propio reto de adulto y
+  es inmutable (§4). La suficiencia de esa mitigación **como consentimiento parental** la
+  valora el Abogado (§4).
 
 ## Puntos que salen de este ADR (no los resuelve el Arquitecto)
 
@@ -371,6 +488,12 @@ permanente a "proveedor = rol". El día que se quisiera otra combinación (p. ej
 que entra con Google) obligaría a migrar datos y reescribir reglas. El campo `role`
 explícito e inmutable da un ancla semántica estable; el proveedor se usa solo como
 verificación cruzada de esta fase, relajable después sin tocar datos.
+**Confirmado por la revisión 2026-08-04:** justo esa combinación (adulto con Google) se
+pidió, y gracias al `role` explícito se abre **sin migrar ni un dato** — solo se relaja la
+regla de verificación cruzada para el caso `google.com` (§2) y se añade el paso de rol en
+el alta. Si el rol se hubiera derivado del proveedor, esta petición habría exigido migrar
+todos los documentos existentes. La alternativa queda **descartada y, además, validada por
+los hechos**.
 
 ### Alternativa 2 — Rol en un custom claim fijado por Cloud Function en el alta
 Poner el rol en el token (custom claim) vía Admin SDK. **Por qué se descarta (por ahora):**
