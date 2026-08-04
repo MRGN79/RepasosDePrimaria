@@ -15,6 +15,10 @@ import { lengua2 } from "./exercises/lengua2";
 import { ciencias2 } from "./exercises/ciencias2";
 import { sociales2 } from "./exercises/sociales2";
 import { ingles2 } from "./exercises/ingles2";
+import { curso1 } from "./exercises/curso1";
+import { curso4 } from "./exercises/curso4";
+import { curso5 } from "./exercises/curso5";
+import { curso6 } from "./exercises/curso6";
 
 export const ALL_EXERCISES: EjercicioAny[] = [
   // 3.º de Primaria (nivel "3")
@@ -30,6 +34,11 @@ export const ALL_EXERCISES: EjercicioAny[] = [
   ...ciencias2,
   ...sociales2,
   ...ingles2,
+  // 1.º, 4.º, 5.º y 6.º de Primaria (MVP ligero: un tema por materia)
+  ...curso1,
+  ...curso4,
+  ...curso5,
+  ...curso6,
 ];
 
 const EXERCISE_MAP = new Map(ALL_EXERCISES.map((e) => [e.id, e]));

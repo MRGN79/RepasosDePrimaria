@@ -25,7 +25,11 @@
       "count_100": "Números hasta 100",
       "add_nocarry": "Sumas sin llevar",
       "sub_noborrow": "Restas sin llevar",
-      "times_2_5_10": "Tablas del 2, 5 y 10"
+      "times_2_5_10": "Tablas del 2, 5 y 10",
+      "add_to_10": "Sumas hasta 10",
+      "multiply_2digit": "Multiplicación por dos cifras",
+      "decimals": "Los números decimales",
+      "percentages": "Los porcentajes"
     }
   },
   "spanish": {
@@ -45,7 +49,11 @@
       "spelling_specific": "Ortografía específica",
       "syllables": "Sílabas",
       "capitals": "Mayúsculas",
-      "singular_plural": "Singular y plural"
+      "singular_plural": "Singular y plural",
+      "vowels": "Las vocales",
+      "verb_tenses": "Los tiempos verbales",
+      "subject_predicate": "Sujeto y predicado",
+      "diphthong_hiatus": "Diptongos e hiatos"
     }
   },
   "science": {
@@ -63,7 +71,11 @@
       "solar_system": "The Solar System",
       "five_senses": "The five senses",
       "human_body": "The human body",
-      "animals_basic": "Animals"
+      "animals_basic": "Animals",
+      "living_nonliving": "Living and non-living things",
+      "food_chains": "Food chains",
+      "circulatory": "The circulatory system",
+      "energy_sources": "Energy and its sources"
     }
   },
   "social": {
@@ -77,7 +89,11 @@
       "time": "El tiempo histórico",
       "family": "La familia",
       "school": "El colegio",
-      "neighborhood": "El barrio"
+      "neighborhood": "El barrio",
+      "seasons": "Las estaciones del año",
+      "water_cycle": "El ciclo del agua",
+      "climate": "El clima",
+      "european_union": "La Unión Europea"
     }
   },
   "english": {
@@ -92,7 +108,9 @@
       "family": "Family",
       "numbers_1_20": "Numbers 1-20",
       "colors": "Colours",
-      "animals_pets": "Pets"
+      "animals_pets": "Pets",
+      "daily_routines": "Daily routines",
+      "food": "Food and meals"
     }
   },
   "cuarto4": {

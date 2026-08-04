@@ -1190,6 +1190,58 @@
       "q10": {
         "prompt": "El número 15 está entre el 10 y el 20."
       }
+    },
+    "decimals5": {
+      "q1": {
+        "prompt": "En el número 3,5, la cifra 5 ocupa el lugar de las décimas."
+      },
+      "q2": {
+        "prompt": "0,5 es lo mismo que un medio."
+      },
+      "q3": {
+        "prompt": "¿Qué número es el mayor?",
+        "a": "2,7",
+        "b": "2,07",
+        "c": "2,007"
+      },
+      "q4": {
+        "prompt": "La coma decimal separa la parte entera de la parte decimal."
+      },
+      "q5": {
+        "prompt": "¿Cuánto es 1,2 + 0,3?",
+        "a": "1,5",
+        "b": "1,23",
+        "c": "4,2"
+      },
+      "q6": {
+        "prompt": "0,25 es mayor que 0,3."
+      }
+    },
+    "percentages6": {
+      "q1": {
+        "prompt": "El 50 % de un número es lo mismo que su mitad."
+      },
+      "q2": {
+        "prompt": "El 100 % significa la cantidad completa."
+      },
+      "q3": {
+        "prompt": "¿Cuánto es el 10 % de 100?",
+        "a": "10",
+        "b": "1",
+        "c": "100"
+      },
+      "q4": {
+        "prompt": "El 25 % es lo mismo que un cuarto."
+      },
+      "q5": {
+        "prompt": "¿Cuánto es el 50 % de 20?",
+        "a": "10",
+        "b": "5",
+        "c": "20"
+      },
+      "q6": {
+        "prompt": "Un porcentaje expresa una parte de cada 100."
+      }
     }
   },
   "spanish": {
@@ -3199,6 +3251,110 @@
       "q10": {
         "prompt": "La palabra «árboles» está en singular."
       }
+    },
+    "vowels1": {
+      "q1": {
+        "prompt": "Las vocales son cinco: a, e, i, o, u."
+      },
+      "q2": {
+        "prompt": "La letra «m» es una vocal."
+      },
+      "q3": {
+        "prompt": "¿Cuántas vocales hay en total?",
+        "a": "5",
+        "b": "4",
+        "c": "6"
+      },
+      "q4": {
+        "prompt": "La palabra «oso» empieza por vocal."
+      },
+      "q5": {
+        "prompt": "¿Cuál de estas letras es una vocal?",
+        "a": "p",
+        "b": "i",
+        "c": "t"
+      },
+      "q6": {
+        "prompt": "La «u» es una vocal."
+      }
+    },
+    "verbtenses4": {
+      "q1": {
+        "prompt": "El verbo es la palabra que expresa una acción, como «correr» o «saltar»."
+      },
+      "q2": {
+        "prompt": "El verbo «comí» está en tiempo futuro."
+      },
+      "q3": {
+        "prompt": "¿En qué tiempo está el verbo «jugaré»?",
+        "a": "Futuro",
+        "b": "Pasado",
+        "c": "Presente"
+      },
+      "q4": {
+        "prompt": "El verbo «estudio» está en tiempo presente."
+      },
+      "q5": {
+        "prompt": "¿Cuál de estas formas verbales está en pasado?",
+        "a": "cantaré",
+        "b": "canté",
+        "c": "canto"
+      },
+      "q6": {
+        "prompt": "Los verbos pueden estar en pasado, presente y futuro."
+      }
+    },
+    "subjectpredicate5": {
+      "q1": {
+        "prompt": "El sujeto es la parte de la oración que indica quién realiza la acción."
+      },
+      "q2": {
+        "prompt": "En la oración «El perro ladra», el sujeto es «ladra»."
+      },
+      "q3": {
+        "prompt": "En la oración «María canta una canción», ¿cuál es el sujeto?",
+        "a": "María",
+        "b": "canta",
+        "c": "una canción"
+      },
+      "q4": {
+        "prompt": "El predicado indica lo que hace o cómo es el sujeto."
+      },
+      "q5": {
+        "prompt": "En «Los niños juegan en el parque», ¿cuál es el predicado?",
+        "a": "juegan en el parque",
+        "b": "Los niños",
+        "c": "el parque"
+      },
+      "q6": {
+        "prompt": "Toda oración se puede dividir en sujeto y predicado."
+      }
+    },
+    "diphthong6": {
+      "q1": {
+        "prompt": "Un diptongo son dos vocales que se pronuncian juntas, en la misma sílaba."
+      },
+      "q2": {
+        "prompt": "La palabra «día» tiene un diptongo."
+      },
+      "q3": {
+        "prompt": "¿En cuál de estas palabras hay un diptongo?",
+        "a": "aire",
+        "b": "leer",
+        "c": "caer"
+      },
+      "q4": {
+        "prompt": "En un hiato, dos vocales seguidas se pronuncian en sílabas distintas."
+      },
+      "q5": {
+        "prompt": "¿Cuál de estas palabras tiene un hiato?",
+        "a": "poeta",
+        "b": "peine",
+        "c": "aire"
+      },
+      "q6": {
+        "prompt": "Las vocales a, e y o son vocales abiertas (fuertes)."
+      }
     }
   },
   "science": {
@@ -4755,6 +4911,110 @@
       },
       "q10": {
         "prompt": "Cuidar el barrio y mantenerlo limpio es tarea de todos."
+      }
+    },
+    "seasons1": {
+      "q1": {
+        "prompt": "El año tiene cuatro estaciones."
+      },
+      "q2": {
+        "prompt": "En invierno suele hacer frío."
+      },
+      "q3": {
+        "prompt": "¿Qué estación viene después de la primavera?",
+        "a": "El verano",
+        "b": "El invierno",
+        "c": "El otoño"
+      },
+      "q4": {
+        "prompt": "En otoño se caen muchas hojas de los árboles."
+      },
+      "q5": {
+        "prompt": "¿En qué estación solemos ir a la playa?",
+        "a": "En verano",
+        "b": "En invierno",
+        "c": "En otoño"
+      },
+      "q6": {
+        "prompt": "En primavera florecen muchas plantas."
+      }
+    },
+    "watercycle4": {
+      "q1": {
+        "prompt": "El ciclo del agua explica cómo se mueve el agua por la Tierra."
+      },
+      "q2": {
+        "prompt": "Cuando el agua se calienta, puede convertirse en vapor de agua. Esto es la evaporación."
+      },
+      "q3": {
+        "prompt": "¿Cómo se llama el agua que cae de las nubes como lluvia o nieve?",
+        "a": "Precipitación",
+        "b": "Evaporación",
+        "c": "Filtración"
+      },
+      "q4": {
+        "prompt": "Las nubes se forman cuando el vapor de agua se enfría. Esto es la condensación."
+      },
+      "q5": {
+        "prompt": "¿Dónde ocurre la mayor parte de la evaporación?",
+        "a": "En océanos, mares y ríos",
+        "b": "Dentro de las cuevas",
+        "c": "En el subsuelo profundo"
+      },
+      "q6": {
+        "prompt": "El ciclo del agua se repite una y otra vez."
+      }
+    },
+    "climate5": {
+      "q1": {
+        "prompt": "El clima es el tiempo atmosférico habitual de un lugar a lo largo de muchos años."
+      },
+      "q2": {
+        "prompt": "El tiempo atmosférico y el clima significan exactamente lo mismo."
+      },
+      "q3": {
+        "prompt": "¿Qué clima es caluroso y seco, con muy poca lluvia?",
+        "a": "Clima desértico",
+        "b": "Clima polar",
+        "c": "Clima oceánico"
+      },
+      "q4": {
+        "prompt": "Los lugares cercanos a los polos suelen tener un clima frío."
+      },
+      "q5": {
+        "prompt": "¿Qué factor influye en el clima de un lugar?",
+        "a": "Su distancia al mar",
+        "b": "Su bandera",
+        "c": "Su nombre"
+      },
+      "q6": {
+        "prompt": "El termómetro se usa para medir la temperatura."
+      }
+    },
+    "eu6": {
+      "q1": {
+        "prompt": "La Unión Europea es un grupo de países europeos que colaboran entre sí."
+      },
+      "q2": {
+        "prompt": "España no pertenece a la Unión Europea."
+      },
+      "q3": {
+        "prompt": "¿Qué moneda se usa en muchos países de la Unión Europea?",
+        "a": "El euro",
+        "b": "El dólar",
+        "c": "La libra"
+      },
+      "q4": {
+        "prompt": "España es miembro de la Unión Europea."
+      },
+      "q5": {
+        "prompt": "La Unión Europea está formada por países de, ¿qué continente?",
+        "a": "Europa",
+        "b": "Asia",
+        "c": "África"
+      },
+      "q6": {
+        "prompt": "Los países de la Unión Europea cooperan en comercio y en otros asuntos."
       }
     }
   },

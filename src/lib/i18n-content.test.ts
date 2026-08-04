@@ -5,6 +5,10 @@ import { BADGES } from "./badges";
 import { AVATARS, NICKNAMES } from "./profile";
 import materias from "@content/materias.json";
 import materias2 from "@content/materias-2.json";
+import materias1 from "@content/materias-1.json";
+import materias4 from "@content/materias-4.json";
+import materias5 from "@content/materias-5.json";
+import materias6 from "@content/materias-6.json";
 import type { CatalogoMaterias } from "@content/types";
 
 import enExercises from "@locales/en/exercises.json";
@@ -131,10 +135,14 @@ describe("claves i18n de medallas, avatares y apodos (content, ambos idiomas)", 
 
 describe("índice de materias/temas: títulos y zonas i18n", () => {
   // Los títulos de materia/tema del menú siguen el idioma de la UI: existen en
-  // ambos idiomas para todos los cursos con contenido (3.º y 2.º).
+  // ambos idiomas para todos los cursos con contenido (1.º a 6.º).
   const catalogs: [string, CatalogoMaterias][] = [
-    ["3.º", materias as CatalogoMaterias],
+    ["1.º", materias1 as CatalogoMaterias],
     ["2.º", materias2 as CatalogoMaterias],
+    ["3.º", materias as CatalogoMaterias],
+    ["4.º", materias4 as CatalogoMaterias],
+    ["5.º", materias5 as CatalogoMaterias],
+    ["6.º", materias6 as CatalogoMaterias],
   ];
   for (const [curso, catalog] of catalogs) {
     it(`${curso}: cada materia y cada tema tienen tituloKey resoluble en ambos idiomas`, () => {

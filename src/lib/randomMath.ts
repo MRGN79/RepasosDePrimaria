@@ -21,7 +21,10 @@ export type MathOpType =
   // --- 2.º de Primaria (números hasta 99, sin llevadas) ---
   | "add-nocarry" // suma de 2 números ≤ 99 sin llevar ninguna columna
   | "sub-noborrow" // resta de 2 números ≤ 99 sin llevar (sin pedir prestado)
-  | "times-easy"; // tablas iniciales: 2, 5 o 10 × factor 1-10
+  | "times-easy" // tablas iniciales: 2, 5 o 10 × factor 1-10
+  // --- 1.º (sumas hasta 10) y 4.º (multiplicación por dos cifras) ---
+  | "add-to-ten" // suma de 2 números con resultado ≤ 10
+  | "multiply-two-digit"; // 2 cifras × 2 cifras
 
 export interface GeneratedMath {
   type: MathOpType;
@@ -109,6 +112,18 @@ export function generarOperandos(
       const b = randInt(1, 10, rng);
       return { type, a, b, operator: "×", answer: a * b };
     }
+    case "add-to-ten": {
+      // 1.º: dos sumandos ≥ 1 con resultado ≤ 10.
+      const a = randInt(1, 9, rng);
+      const b = randInt(1, 10 - a, rng);
+      return { type, a, b, operator: "+", answer: a + b };
+    }
+    case "multiply-two-digit": {
+      // 4.º: dos factores de dos cifras (10-99).
+      const a = randInt(10, 99, rng);
+      const b = randInt(10, 99, rng);
+      return { type, a, b, operator: "×", answer: a * b };
+    }
   }
 }
 
@@ -124,6 +139,9 @@ const TOPIC_TO_OP: Record<string, MathOpType> = {
   "operations.add_nocarry": "add-nocarry",
   "operations.sub_noborrow": "sub-noborrow",
   "operations.times_2_5_10": "times-easy",
+  // 1.º y 4.º
+  "operations.add_to_10": "add-to-ten",
+  "operations.multiply_2digit": "multiply-two-digit",
 };
 
 export function opForTopic(topicId: string): MathOpType | null {

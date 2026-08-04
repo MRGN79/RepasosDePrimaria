@@ -8,9 +8,12 @@ import {
 
 /*
  * Catálogo dependiente del curso (ADR-002 + adenda multi-curso con contenido).
- * Los cursos con contenido (2.º y 3.º) muestran sus temas jugables; los cursos
- * sin contenido ofrecen las 5 troncales marcadas "Pronto", sin relleno. Qué
- * cursos tienen contenido se deriva del registro, no de una constante fija.
+ * Tras el MVP ligero de 1.º/4.º/5.º/6.º, los seis cursos tienen contenido y
+ * muestran sus temas jugables. Qué cursos tienen contenido se deriva del
+ * registro, no de una constante fija: activar un curso sólo requiere su índice
+ * y su contenido. La rama "curso sin contenido" (5 troncales "Pronto", sin
+ * relleno) sigue viva como comportamiento por defecto para cualquier curso
+ * futuro que aún no tenga su paquete.
  */
 
 // Stub de traducción: devuelve la propia clave, suficiente para inspeccionar
@@ -18,11 +21,9 @@ import {
 const t = (key: string) => key;
 
 describe("courseHasContent", () => {
-  it("2.º y 3.º tienen contenido; el resto no en esta fase", () => {
-    expect(courseHasContent("2")).toBe(true);
-    expect(courseHasContent("3")).toBe(true);
-    for (const c of ["1", "4", "5", "6"] as const) {
-      expect(courseHasContent(c)).toBe(false);
+  it("los seis cursos de Primaria tienen contenido", () => {
+    for (const c of ["1", "2", "3", "4", "5", "6"] as const) {
+      expect(courseHasContent(c)).toBe(true);
     }
   });
 });
@@ -51,20 +52,20 @@ describe("buildSubjectVMs por curso", () => {
     expect(subjects.some((s) => s.id === "cuarto")).toBe(false);
   });
 
-  it("cursos sin contenido: sólo las 5 troncales, todas Pronto y sin 'cuarto'", () => {
+  it("curso 5 (MVP ligero): las 5 troncales con contenido, ninguna Pronto y sin 'cuarto'", () => {
     const subjects = buildSubjectVMs("5", t);
     const ids = subjects.map((s) => s.id).sort();
     expect(ids).toEqual(["ciencias", "ingles", "lengua", "matematicas", "sociales"]);
-    expect(subjects.every((s) => s.soon === true)).toBe(true);
+    expect(subjects.every((s) => s.soon === false)).toBe(true);
     expect(subjects.some((s) => s.id === "cuarto")).toBe(false);
   });
 });
 
 describe("buildTopicVMs por curso", () => {
-  it("curso sin contenido: todos los temas son Pronto", () => {
+  it("curso 5 (MVP ligero): su tema de matemáticas tiene contenido (no Pronto)", () => {
     const topics = buildTopicVMs("5", "matematicas", t);
     expect(topics.length).toBeGreaterThan(0);
-    expect(topics.every((tp) => tp.soon === true)).toBe(true);
+    expect(topics.some((tp) => tp.soon === false)).toBe(true);
   });
 
   it("curso 3: hay temas disponibles (no todos Pronto)", () => {

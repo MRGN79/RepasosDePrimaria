@@ -12,14 +12,22 @@
  */
 import materias3Data from "@content/materias.json";
 import materias2Data from "@content/materias-2.json";
+import materias1Data from "@content/materias-1.json";
+import materias4Data from "@content/materias-4.json";
+import materias5Data from "@content/materias-5.json";
+import materias6Data from "@content/materias-6.json";
 import type { CatalogoMaterias, Materia } from "@content/types";
 import { topicsWithContent, coursesWithContent } from "@content/registry";
 import type { Curso } from "@/lib/storage";
 
 /** Índice de materias/temas por curso. Los cursos ausentes no tienen contenido. */
 const CATALOGS: Partial<Record<Curso, CatalogoMaterias>> = {
+  "1": materias1Data as CatalogoMaterias,
   "2": materias2Data as CatalogoMaterias,
   "3": materias3Data as CatalogoMaterias,
+  "4": materias4Data as CatalogoMaterias,
+  "5": materias5Data as CatalogoMaterias,
+  "6": materias6Data as CatalogoMaterias,
 };
 
 /**

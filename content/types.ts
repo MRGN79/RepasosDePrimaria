@@ -72,7 +72,10 @@ export type OperacionMate =
   // 2.º de Primaria (números hasta 99, sin llevadas)
   | "add-nocarry"
   | "sub-noborrow"
-  | "times-easy";
+  | "times-easy"
+  // 1.º de Primaria (sumas hasta 10) y 4.º (multiplicación por dos cifras)
+  | "add-to-ten"
+  | "multiply-two-digit";
 
 export interface EjercicioGenerado {
   id: string;

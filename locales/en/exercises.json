@@ -1190,6 +1190,58 @@
       "q10": {
         "prompt": "15 is between 10 and 20."
       }
+    },
+    "decimals5": {
+      "q1": {
+        "prompt": "In the number 3.5, the digit 5 is in the tenths place."
+      },
+      "q2": {
+        "prompt": "0.5 is the same as one half."
+      },
+      "q3": {
+        "prompt": "Which number is the greatest?",
+        "a": "2.7",
+        "b": "2.07",
+        "c": "2.007"
+      },
+      "q4": {
+        "prompt": "The decimal point separates the whole part from the decimal part."
+      },
+      "q5": {
+        "prompt": "What is 1.2 + 0.3?",
+        "a": "1.5",
+        "b": "1.23",
+        "c": "4.2"
+      },
+      "q6": {
+        "prompt": "0.25 is greater than 0.3."
+      }
+    },
+    "percentages6": {
+      "q1": {
+        "prompt": "50% of a number is the same as half of it."
+      },
+      "q2": {
+        "prompt": "100% means the whole amount."
+      },
+      "q3": {
+        "prompt": "What is 10% of 100?",
+        "a": "10",
+        "b": "1",
+        "c": "100"
+      },
+      "q4": {
+        "prompt": "25% is the same as one quarter."
+      },
+      "q5": {
+        "prompt": "What is 50% of 20?",
+        "a": "10",
+        "b": "5",
+        "c": "20"
+      },
+      "q6": {
+        "prompt": "A percentage shows a part out of 100."
+      }
     }
   },
   "spanish": {
@@ -3105,6 +3157,110 @@
       "q10": {
         "prompt": "Bees make honey."
       }
+    },
+    "livingnonliving1": {
+      "q1": {
+        "prompt": "A dog is a living thing."
+      },
+      "q2": {
+        "prompt": "A rock is a living thing."
+      },
+      "q3": {
+        "prompt": "Which one is a living thing?",
+        "a": "A tree",
+        "b": "A chair",
+        "c": "A stone"
+      },
+      "q4": {
+        "prompt": "Living things grow and need food and water."
+      },
+      "q5": {
+        "prompt": "Which one is NOT a living thing?",
+        "a": "A cat",
+        "b": "A flower",
+        "c": "A car"
+      },
+      "q6": {
+        "prompt": "A toy robot is a living thing."
+      }
+    },
+    "foodchains4": {
+      "q1": {
+        "prompt": "A food chain shows what living things eat."
+      },
+      "q2": {
+        "prompt": "Plants make their own food using sunlight."
+      },
+      "q3": {
+        "prompt": "What is usually at the start of a food chain?",
+        "a": "A plant",
+        "b": "A lion",
+        "c": "A rock"
+      },
+      "q4": {
+        "prompt": "Animals that eat only plants are called herbivores."
+      },
+      "q5": {
+        "prompt": "An animal that eats other animals is a...",
+        "a": "Carnivore",
+        "b": "Herbivore",
+        "c": "Plant"
+      },
+      "q6": {
+        "prompt": "The sun provides the energy for most food chains."
+      }
+    },
+    "circulatory5": {
+      "q1": {
+        "prompt": "The heart pumps blood around the body."
+      },
+      "q2": {
+        "prompt": "Blood travels through the body inside blood vessels."
+      },
+      "q3": {
+        "prompt": "Which organ pumps the blood?",
+        "a": "The heart",
+        "b": "The stomach",
+        "c": "The brain"
+      },
+      "q4": {
+        "prompt": "The circulatory system carries oxygen to all parts of the body."
+      },
+      "q5": {
+        "prompt": "What do we call the tubes that carry blood?",
+        "a": "Blood vessels",
+        "b": "Bones",
+        "c": "Nerves"
+      },
+      "q6": {
+        "prompt": "The heart is a muscle."
+      }
+    },
+    "energy6": {
+      "q1": {
+        "prompt": "Energy makes things move, work or change."
+      },
+      "q2": {
+        "prompt": "The sun is an important source of energy."
+      },
+      "q3": {
+        "prompt": "Which of these is a renewable source of energy?",
+        "a": "Wind",
+        "b": "Coal",
+        "c": "Oil"
+      },
+      "q4": {
+        "prompt": "Electricity is a form of energy we use every day."
+      },
+      "q5": {
+        "prompt": "Which of these is a fossil fuel?",
+        "a": "Petroleum (oil)",
+        "b": "Sunlight",
+        "c": "Wind"
+      },
+      "q6": {
+        "prompt": "Renewable energy sources will run out very soon."
+      }
     }
   },
   "social": {
@@ -4429,6 +4585,110 @@
       },
       "q10": {
         "prompt": "Keeping the neighbourhood clean is everyone's job."
+      }
+    },
+    "seasons1": {
+      "q1": {
+        "prompt": "There are four seasons in a year."
+      },
+      "q2": {
+        "prompt": "In winter the weather is usually cold."
+      },
+      "q3": {
+        "prompt": "Which season comes after spring?",
+        "a": "Summer",
+        "b": "Winter",
+        "c": "Autumn"
+      },
+      "q4": {
+        "prompt": "Leaves often fall from the trees in autumn."
+      },
+      "q5": {
+        "prompt": "In which season do we usually go to the beach?",
+        "a": "Summer",
+        "b": "Winter",
+        "c": "Autumn"
+      },
+      "q6": {
+        "prompt": "Many flowers bloom in spring."
+      }
+    },
+    "watercycle4": {
+      "q1": {
+        "prompt": "The water cycle explains how water moves around the Earth."
+      },
+      "q2": {
+        "prompt": "When water heats up, it can turn into water vapour. This is evaporation."
+      },
+      "q3": {
+        "prompt": "What do we call water that falls from the clouds as rain or snow?",
+        "a": "Precipitation",
+        "b": "Evaporation",
+        "c": "Filtration"
+      },
+      "q4": {
+        "prompt": "Clouds form when water vapour cools down. This is condensation."
+      },
+      "q5": {
+        "prompt": "Where does most evaporation happen?",
+        "a": "In oceans, seas and rivers",
+        "b": "Inside caves",
+        "c": "Deep underground"
+      },
+      "q6": {
+        "prompt": "The water cycle repeats again and again."
+      }
+    },
+    "climate5": {
+      "q1": {
+        "prompt": "Climate is the usual weather of a place over many years."
+      },
+      "q2": {
+        "prompt": "Weather and climate mean exactly the same thing."
+      },
+      "q3": {
+        "prompt": "Which climate is hot and dry, with very little rain?",
+        "a": "Desert climate",
+        "b": "Polar climate",
+        "c": "Oceanic climate"
+      },
+      "q4": {
+        "prompt": "Places near the poles usually have a cold climate."
+      },
+      "q5": {
+        "prompt": "Which factor influences the climate of a place?",
+        "a": "Its distance from the sea",
+        "b": "Its flag",
+        "c": "Its name"
+      },
+      "q6": {
+        "prompt": "A thermometer is used to measure temperature."
+      }
+    },
+    "eu6": {
+      "q1": {
+        "prompt": "The European Union is a group of European countries that work together."
+      },
+      "q2": {
+        "prompt": "Spain does not belong to the European Union."
+      },
+      "q3": {
+        "prompt": "Which currency is used in many European Union countries?",
+        "a": "The euro",
+        "b": "The dollar",
+        "c": "The pound"
+      },
+      "q4": {
+        "prompt": "Spain is a member of the European Union."
+      },
+      "q5": {
+        "prompt": "The European Union is formed by countries from which continent?",
+        "a": "Europe",
+        "b": "Asia",
+        "c": "Africa"
+      },
+      "q6": {
+        "prompt": "Countries in the European Union cooperate on trade and other matters."
       }
     }
   },
@@ -5942,6 +6202,110 @@
       },
       "q10": {
         "prompt": "We should feed our pets and take care of them."
+      }
+    },
+    "greetings1": {
+      "q1": {
+        "prompt": "We say 'Good morning' in the morning."
+      },
+      "q2": {
+        "prompt": "'Goodbye' is a way to say hello."
+      },
+      "q3": {
+        "prompt": "What do you say when you meet someone?",
+        "a": "Hello",
+        "b": "Goodbye",
+        "c": "Thank you"
+      },
+      "q4": {
+        "prompt": "We say 'Good night' before going to sleep."
+      },
+      "q5": {
+        "prompt": "How can you answer 'How are you?'",
+        "a": "I'm fine, thank you",
+        "b": "See you",
+        "c": "Sit down"
+      },
+      "q6": {
+        "prompt": "'Please' and 'thank you' are polite words."
+      }
+    },
+    "family4": {
+      "q1": {
+        "prompt": "Your mother's son is your brother."
+      },
+      "q2": {
+        "prompt": "Your grandmother is your father's daughter."
+      },
+      "q3": {
+        "prompt": "Who is your father's brother?",
+        "a": "Your uncle",
+        "b": "Your cousin",
+        "c": "Your nephew"
+      },
+      "q4": {
+        "prompt": "Your parents are your mother and father."
+      },
+      "q5": {
+        "prompt": "What do you call the child of your aunt and uncle?",
+        "a": "Cousin",
+        "b": "Sister",
+        "c": "Grandparent"
+      },
+      "q6": {
+        "prompt": "A sister is a female member of the family."
+      }
+    },
+    "routines5": {
+      "q1": {
+        "prompt": "'I wake up' is something you do in the morning."
+      },
+      "q2": {
+        "prompt": "'I go to bed' is a morning routine."
+      },
+      "q3": {
+        "prompt": "What do you usually do first in the morning?",
+        "a": "Wake up",
+        "b": "Go to sleep",
+        "c": "Have dinner"
+      },
+      "q4": {
+        "prompt": "'To have breakfast' means to eat in the morning."
+      },
+      "q5": {
+        "prompt": "Which activity do you usually do at night?",
+        "a": "Go to bed",
+        "b": "Wake up",
+        "c": "Get dressed"
+      },
+      "q6": {
+        "prompt": "'Brush your teeth' is part of a daily routine."
+      }
+    },
+    "food6": {
+      "q1": {
+        "prompt": "An apple is a kind of fruit."
+      },
+      "q2": {
+        "prompt": "Bread is a kind of fruit."
+      },
+      "q3": {
+        "prompt": "Which of these is a vegetable?",
+        "a": "Carrot",
+        "b": "Banana",
+        "c": "Chicken"
+      },
+      "q4": {
+        "prompt": "Breakfast, lunch and dinner are meals of the day."
+      },
+      "q5": {
+        "prompt": "Which drink comes from cows?",
+        "a": "Milk",
+        "b": "Orange juice",
+        "c": "Water"
+      },
+      "q6": {
+        "prompt": "We use a fork and a knife to eat."
       }
     }
   },
