@@ -170,3 +170,18 @@ export function currentTutor(): User | null {
 export function isTutorEmailVerified(): boolean {
   return getFirebaseAuth().currentUser?.emailVerified ?? false;
 }
+
+/**
+ * Recarga el usuario y fuerza el refresh del ID token para que el claim
+ * `email_verified` se propague a las reglas de Firestore sin reiniciar sesión
+ * (ADR-003 §2, §9). Devuelve si el email ya está verificado.
+ */
+export async function refreshVerification(): Promise<AuthResult<boolean>> {
+  return guarded(async () => {
+    const user = getFirebaseAuth().currentUser;
+    if (!user) throw { code: "auth/no-current-user" };
+    await user.reload();
+    await user.getIdToken(true);
+    return user.emailVerified;
+  });
+}

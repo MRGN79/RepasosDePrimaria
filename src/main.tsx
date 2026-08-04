@@ -14,8 +14,7 @@ import "./styles/base.css";
 import "./styles/print.css";
 
 import i18n from "./i18n";
-import { GameProvider } from "./state/gameStore";
-import { App } from "./App";
+import { AppRoot } from "./AppRoot";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Root element #root not found");
@@ -23,9 +22,7 @@ if (!rootElement) throw new Error("Root element #root not found");
 createRoot(rootElement).render(
   <StrictMode>
     <I18nextProvider i18n={i18n}>
-      <GameProvider>
-        <App />
-      </GameProvider>
+      <AppRoot />
     </I18nextProvider>
   </StrictMode>,
 );

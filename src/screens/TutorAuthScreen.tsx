@@ -18,6 +18,8 @@ interface TutorAuthScreenProps {
   onModeChange: (mode: AuthMode) => void;
   onSubmit: (email: string, password: string) => void;
   onForgotPassword: (email: string) => void;
+  /** si se pasa, muestra el botón "Continuar con Google" (ADR-004 §1). */
+  onGoogle?: () => void;
   busy?: boolean;
   /** clave i18n de error a mostrar (ej. "auth:errors.invalidCredentials"). */
   errorKey?: string | null;
@@ -30,11 +32,12 @@ export function TutorAuthScreen({
   onModeChange,
   onSubmit,
   onForgotPassword,
+  onGoogle,
   busy = false,
   errorKey,
   infoKey,
 }: TutorAuthScreenProps) {
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation(["auth", "account"]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -103,6 +106,17 @@ export function TutorAuthScreen({
             {isSignUp ? t("action.signUp") : t("action.signIn")}
           </Button>
         </form>
+
+        {onGoogle ? (
+          <>
+            <p className={styles.orDivider} aria-hidden="true">
+              ·
+            </p>
+            <Button type="button" variant="secondary" size="lg" disabled={busy} onClick={onGoogle}>
+              {t("account:google.button")}
+            </Button>
+          </>
+        ) : null}
 
         <div className={styles.actions}>
           {!isSignUp ? (

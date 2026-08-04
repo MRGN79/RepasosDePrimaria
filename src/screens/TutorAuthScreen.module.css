@@ -103,3 +103,9 @@
   outline-offset: var(--tdp-focus-ring-offset);
   border-radius: var(--tdp-radius-sm);
 }
+
+.orDivider {
+  text-align: center;
+  color: var(--color-text-muted, #888);
+  margin: 0.25rem 0;
+}
