@@ -24,3 +24,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Worktrees temporales de agentes (Agent tool, isolation: worktree)
+.claude/worktrees/
