@@ -1,38 +1,38 @@
 {
   "privacy": {
     "title": "Política de privacidad",
-    "updated": "Última actualización: 3 de agosto de 2026",
-    "intro": "Repasos de Primaria es una app educativa gratuita. El contenido lo usa un niño o niña sin cuenta; solo un adulto (madre, padre o tutor) puede, si lo desea, crear una cuenta para guardar el progreso en la nube. Aquí te explicamos qué datos se tratan y cómo.",
+    "updated": "Última actualización: 4 de agosto de 2026",
+    "intro": "Repasos de Primaria es una app educativa gratuita. Un niño o niña puede jugar sin cuenta, con un perfil dentro de la cuenta de un adulto, o con su propia cuenta de Google si ya la tiene. Aquí te explicamos qué datos se tratan y cómo, según cada caso.",
     "design": {
-      "title": "Los datos del niño no salen del dispositivo",
-      "body": "El niño no tiene cuenta, ni correo, ni ningún dato que lo identifique. Su progreso (racha, estrellas, medallas, preferencias) se guarda en el propio dispositivo. El PIN que protege un perfil es solo un pestillo local y nunca sale del dispositivo."
+      "title": "Dos formas de jugar: perfil bajo la cuenta del tutor, o cuenta propia del niño",
+      "body": "Modelo A (por defecto): el adulto crea la cuenta y, dentro de ella, un perfil de hijo con apodo y avatar de una lista cerrada; el niño no tiene cuenta propia ni correo. Modelo B: si el niño ya tiene su propia cuenta de Google, puede iniciar sesión él mismo; en ese caso sí tiene cuenta y correo, gestionados por Firebase Authentication igual que la cuenta del adulto, aunque en Firestore nunca guardamos su correo, nombre ni foto. En ambos modelos, antes de dar el alta se pide un reto de adulto (una cuenta sencilla), que es solo una medida razonable, no una verificación fuerte de identidad. El progreso del niño (racha, estrellas, medallas, preferencias) se guarda siempre en el propio dispositivo; el PIN de pestillo local (solo Modelo A) nunca sale del dispositivo."
     },
     "whatWeProcess": {
       "title": "Qué datos tratamos",
-      "body": "Solo si un adulto crea una cuenta:",
+      "body": "Solo si hay una cuenta activa (Modelo A o B):",
       "bullets": [
-        "El correo y la contraseña del adulto, para crear e iniciar su sesión. Se gestionan mediante Firebase Authentication (Google); nunca vemos ni guardamos la contraseña en claro.",
-        "El progreso de aprendizaje de cada perfil de hijo y su apodo y avatar (elegidos de una lista cerrada), para guardarlos y sincronizarlos entre los dispositivos del adulto en Cloud Firestore (región europea).",
-        "Estado actual: la cuenta del adulto ya está construida; el guardado del progreso en la nube está diseñado y aún pendiente de activarse para usuarios reales."
+        "El correo y la contraseña del adulto, o el correo/nombre/foto de la cuenta de Google del adulto o del niño al iniciar sesión con Google. Se gestionan mediante Firebase Authentication (Google); nunca vemos ni guardamos una contraseña en claro.",
+        "El progreso de aprendizaje del perfil de hijo o de la cuenta del niño, y su apodo y avatar (elegidos de una lista cerrada), para guardarlos y sincronizarlos en Cloud Firestore (región europea). De la cuenta de Google del niño, en Firestore solo se guarda un identificador técnico, nunca su correo, nombre o foto.",
+        "Estado actual: todo esto ya está construido en el código; no hay tratamiento efectivo de datos de ningún usuario real hasta que exista un proyecto Firebase real."
       ]
     },
     "whatWeDont": {
       "title": "Qué datos NO tratamos",
       "body": "Nunca tratamos lo siguiente:",
       "bullets": [
-        "Ningún dato que identifique al niño: ni nombre real, ni fecha de nacimiento, ni foto, ni voz, ni correo.",
-        "El PIN del niño no se guarda en la nube de ninguna forma; vive solo en el dispositivo.",
-        "El correo del adulto no se copia a la base de datos de progreso: reside únicamente en Firebase Authentication.",
+        "En Cloud Firestore, ningún dato identificativo: ni nombre real, ni fecha de nacimiento, ni foto, ni voz, ni correo —del adulto ni del niño—. El apodo procede de una lista cerrada.",
+        "El PIN del niño no se guarda en la nube de ninguna forma; vive solo en el dispositivo (solo aplica al Modelo A).",
+        "Ni el correo del adulto ni el del niño (Modelo B) se copian a la base de datos de progreso: residen únicamente en Firebase Authentication.",
         "No usamos cookies de terceros, ni analítica, ni publicidad, ni rastreadores."
       ]
     },
     "legalBasis": {
       "title": "Base jurídica y consentimiento",
-      "body": "El consentimiento y el control residen en el adulto responsable, no en el niño. El adulto da su consentimiento informado antes de que se guarde nada en la nube, y ese consentimiento queda registrado con su fecha y versión. La app está pensada para niños por debajo de la edad de consentimiento digital (14 años en España, art. 7 LOPD-GDD), por eso el tratamiento se apoya en el consentimiento del adulto (art. 6.1.a y 6.1.b RGPD). No hay perfilado, decisiones automatizadas ni publicidad dirigida a menores."
+      "body": "Modelo A: el consentimiento y el control residen en el adulto responsable, no en el niño; el adulto da su consentimiento informado antes de guardar nada en la nube. Modelo B: es el propio niño quien inicia sesión, tras superar el reto de adulto y la pantalla de consentimiento. Ese reto es una medida razonable, no una verificación fuerte de identidad o edad; si basta como consentimiento parental válido para la cuenta propia de un menor (art. 8 RGPD, art. 7 LOPD-GDD) es un punto pendiente de confirmar por un profesional del derecho colegiado, no solo por revisión automatizada. La app está pensada para niños por debajo de la edad de consentimiento digital (14 años en España, art. 7 LOPD-GDD), por eso el tratamiento se apoya en el consentimiento del adulto responsable (art. 6.1.a y 6.1.b RGPD). No hay perfilado, decisiones automatizadas ni publicidad dirigida a menores."
     },
     "location": {
       "title": "Dónde se guardan los datos y transferencias internacionales",
-      "body": "El progreso y los perfiles de hijo se guardan en Cloud Firestore en región europea y no salen del Espacio Económico Europeo en reposo. El correo del adulto se gestiona con Firebase Authentication, que se ejecuta sobre la infraestructura global de Google y no es fijable a una región de la UE: eso puede suponer una transferencia internacional de ese correo. Google actúa como encargado del tratamiento bajo su Data Processing Addendum, con las Cláusulas Contractuales Tipo (SCCs 2021) y, cuando aplica, el Data Privacy Framework UE-EEUU. El único dato personal que llega a esa infraestructura global es el correo del adulto: ningún dato del niño pasa por ahí."
+      "body": "El progreso y los perfiles de hijo se guardan en Cloud Firestore en región europea y no salen del Espacio Económico Europeo en reposo. El correo del adulto y, en el Modelo B, el correo/nombre/foto de la cuenta de Google del niño se gestionan con Firebase Authentication, que se ejecuta sobre la infraestructura global de Google y no es fijable a una región de la UE: eso puede suponer una transferencia internacional de esos datos. Google actúa como encargado del tratamiento bajo su Data Processing Addendum, con las Cláusulas Contractuales Tipo (SCCs 2021) y, cuando aplica, el Data Privacy Framework UE-EEUU. Firestore, en cambio, nunca guarda esos datos identificativos: solo un identificador técnico."
     },
     "retention": {
       "title": "Conservación y borrado",

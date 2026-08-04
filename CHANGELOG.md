@@ -86,6 +86,20 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Se retira la publicación del sitio en GitHub Pages: el canal de distribución
   pasa a ser la app instalable, no una página web con URL pública.
 
+### Fixed
+
+- Accesibilidad de las pantallas de alta de cuenta (elección de rol, reto de
+  adulto, selector "cambiar de niño" con PIN, elección de avatar y apodo):
+  contraste de bordes de inputs/opciones corregido, selección de avatar ya no
+  depende solo del color (se añade una marca ✓), y objetivos táctiles ajustados
+  al tamaño mínimo del proyecto.
+- La política de privacidad, la DPIA y el mapeo de Play Data Safety se
+  actualizan para reflejar con exactitud la cuenta propia del niño con Google
+  (ADR-004): ya no afirman sin matices que "el niño no tiene cuenta ni correo"
+  cuando el niño usa su propia cuenta de Google, en cuyo caso su
+  correo/nombre/foto residen en Firebase Authentication igual que los del
+  adulto (nunca en la base de datos de progreso).
+
 ## [0.5.0] — 2026-08-03
 
 ### Added
