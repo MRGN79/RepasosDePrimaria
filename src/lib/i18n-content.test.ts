@@ -4,6 +4,7 @@ import { esGenerado, type EjercicioAny } from "@content/types";
 import { BADGES } from "./badges";
 import { AVATARS, NICKNAMES } from "./profile";
 import materias from "@content/materias.json";
+import materias2 from "@content/materias-2.json";
 import type { CatalogoMaterias } from "@content/types";
 
 import enExercises from "@locales/en/exercises.json";
@@ -129,17 +130,24 @@ describe("claves i18n de medallas, avatares y apodos (content, ambos idiomas)", 
 });
 
 describe("índice de materias/temas: títulos y zonas i18n", () => {
-  const catalog = materias as CatalogoMaterias;
-  it("cada materia tiene tituloKey y cada tema tituloKey resoluble en ambos idiomas", () => {
-    for (const m of catalog.materias) {
-      for (const lng of ["en", "es"] as const) {
-        expect(exists(m.tituloKey, lng), `${m.tituloKey} en ${lng}`).toBe(true);
-      }
-      for (const tp of m.temas) {
+  // Los títulos de materia/tema del menú siguen el idioma de la UI: existen en
+  // ambos idiomas para todos los cursos con contenido (3.º y 2.º).
+  const catalogs: [string, CatalogoMaterias][] = [
+    ["3.º", materias as CatalogoMaterias],
+    ["2.º", materias2 as CatalogoMaterias],
+  ];
+  for (const [curso, catalog] of catalogs) {
+    it(`${curso}: cada materia y cada tema tienen tituloKey resoluble en ambos idiomas`, () => {
+      for (const m of catalog.materias) {
         for (const lng of ["en", "es"] as const) {
-          expect(exists(tp.tituloKey, lng), `${tp.tituloKey} en ${lng}`).toBe(true);
+          expect(exists(m.tituloKey, lng), `${m.tituloKey} en ${lng}`).toBe(true);
+        }
+        for (const tp of m.temas) {
+          for (const lng of ["en", "es"] as const) {
+            expect(exists(tp.tituloKey, lng), `${tp.tituloKey} en ${lng}`).toBe(true);
+          }
         }
       }
-    }
-  });
+    });
+  }
 });

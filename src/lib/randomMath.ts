@@ -17,7 +17,11 @@ export type MathOpType =
   | "sub" // restas, resultado ≥ 0
   | "times-tables" // factor 1-10 × factor 1-10
   | "multiply-one-digit" // 2-3 cifras × 1 cifra
-  | "division-exact"; // divisor 1-9, cociente ≤ 99, resto 0
+  | "division-exact" // divisor 1-9, cociente ≤ 99, resto 0
+  // --- 2.º de Primaria (números hasta 99, sin llevadas) ---
+  | "add-nocarry" // suma de 2 números ≤ 99 sin llevar ninguna columna
+  | "sub-noborrow" // resta de 2 números ≤ 99 sin llevar (sin pedir prestado)
+  | "times-easy"; // tablas iniciales: 2, 5 o 10 × factor 1-10
 
 export interface GeneratedMath {
   type: MathOpType;
@@ -76,16 +80,50 @@ export function generarOperandos(
       const dividendo = divisor * cociente;
       return { type, a: dividendo, b: divisor, operator: "÷", answer: cociente };
     }
+    case "add-nocarry": {
+      // 2.º: dos números ≤ 99 cuya suma no obliga a llevar ninguna columna.
+      // a tiene decenas (10-90) y unidades; b se elige para que ninguna columna
+      // supere 9. Resultado ≤ 99.
+      const aTens = randInt(1, 9, rng);
+      const aUnits = randInt(0, 9, rng);
+      const bTens = randInt(0, 9 - aTens, rng);
+      const bUnits = randInt(0, 9 - aUnits, rng);
+      const a = aTens * 10 + aUnits;
+      const b = bTens * 10 + bUnits;
+      return { type, a, b, operator: "+", answer: a + b };
+    }
+    case "sub-noborrow": {
+      // 2.º: minuendo ≥ sustraendo columna a columna → no hay que pedir prestado.
+      const aTens = randInt(1, 9, rng);
+      const aUnits = randInt(0, 9, rng);
+      const bTens = randInt(0, aTens, rng);
+      const bUnits = randInt(0, aUnits, rng);
+      const a = aTens * 10 + aUnits;
+      const b = bTens * 10 + bUnits;
+      return { type, a, b, operator: "−", answer: a - b };
+    }
+    case "times-easy": {
+      // 2.º: tablas iniciales 2, 5 y 10 (LOMLOE 2.º) × factor 1-10.
+      const tables = [2, 5, 10] as const;
+      const a = tables[Math.floor(rng() * tables.length)];
+      const b = randInt(1, 10, rng);
+      return { type, a, b, operator: "×", answer: a * b };
+    }
   }
 }
 
 /** Mapea un id de tema de mates a su tipo de operación generable, o null si no genera. */
 const TOPIC_TO_OP: Record<string, MathOpType> = {
+  // 3.º
   "operations.add_carry": "add",
   "operations.sub_borrow": "sub",
   "operations.times_tables": "times-tables",
   "operations.multiply": "multiply-one-digit",
   "operations.division_intro": "division-exact",
+  // 2.º
+  "operations.add_nocarry": "add-nocarry",
+  "operations.sub_noborrow": "sub-noborrow",
+  "operations.times_2_5_10": "times-easy",
 };
 
 export function opForTopic(topicId: string): MathOpType | null {

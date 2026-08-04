@@ -1146,6 +1146,50 @@
       "q32": {
         "prompt": "1/3 > 1/4 porque las partes son más grandes al dividir en 3 que en 4."
       }
+    },
+    "count100": {
+      "q1": {
+        "prompt": "El número que va justo después del 9 es el 10."
+      },
+      "q2": {
+        "prompt": "El número 20 tiene 2 decenas."
+      },
+      "q3": {
+        "prompt": "¿Qué número va justo antes del 30?",
+        "a": "29",
+        "b": "31",
+        "c": "28"
+      },
+      "q4": {
+        "prompt": "El 50 es mayor que el 40."
+      },
+      "q5": {
+        "prompt": "¿Cuántas decenas tiene el número 40?",
+        "a": "4",
+        "b": "14",
+        "c": "40"
+      },
+      "q6": {
+        "prompt": "Si contamos de 10 en 10: 10, 20, 30."
+      },
+      "q7": {
+        "prompt": "¿Qué número va justo después del 59?",
+        "a": "58",
+        "b": "60",
+        "c": "69"
+      },
+      "q8": {
+        "prompt": "El número 100 se escribe con un 1 y dos ceros."
+      },
+      "q9": {
+        "prompt": "¿Cuál es el número mayor?",
+        "a": "77",
+        "b": "87",
+        "c": "78"
+      },
+      "q10": {
+        "prompt": "El número 15 está entre el 10 y el 20."
+      }
     }
   },
   "spanish": {
@@ -3023,6 +3067,138 @@
       "q32": {
         "prompt": "Las palabras «hoja», «hierba» y «humo» llevan «h» al principio aunque no suene."
       }
+    },
+    "syll2": {
+      "q1": {
+        "prompt": "La palabra «sol» tiene una sílaba."
+      },
+      "q2": {
+        "prompt": "La palabra «casa» tiene dos sílabas."
+      },
+      "q3": {
+        "prompt": "¿Cuántas sílabas tiene la palabra «mariposa»?",
+        "a": "4",
+        "b": "3",
+        "c": "2"
+      },
+      "q4": {
+        "prompt": "La palabra «pan» tiene dos sílabas."
+      },
+      "q5": {
+        "prompt": "¿Cuántas sílabas tiene la palabra «gato»?",
+        "a": "2",
+        "b": "3",
+        "c": "1"
+      },
+      "q6": {
+        "prompt": "La palabra «elefante» tiene cuatro sílabas."
+      },
+      "q7": {
+        "prompt": "¿Qué palabra tiene tres sílabas?",
+        "a": "pelota",
+        "b": "flor",
+        "c": "mar"
+      },
+      "q8": {
+        "prompt": "La palabra «luna» tiene dos sílabas."
+      },
+      "q9": {
+        "prompt": "¿Cuántas sílabas tiene la palabra «zapato»?",
+        "a": "3",
+        "b": "2",
+        "c": "4"
+      },
+      "q10": {
+        "prompt": "La palabra «chocolate» tiene cuatro sílabas."
+      }
+    },
+    "caps2": {
+      "q1": {
+        "prompt": "Las frases empiezan siempre con letra mayúscula."
+      },
+      "q2": {
+        "prompt": "Los nombres de personas se escriben con mayúscula al principio."
+      },
+      "q3": {
+        "prompt": "¿Cuál de estas frases está bien escrita?",
+        "a": "Mi perro se llama Toby.",
+        "b": "mi perro se llama toby.",
+        "c": "mi perro se llama Toby."
+      },
+      "q4": {
+        "prompt": "La palabra «Madrid» se escribe con mayúscula porque es el nombre de una ciudad."
+      },
+      "q5": {
+        "prompt": "¿Qué palabra necesita empezar con mayúscula?",
+        "a": "Ana",
+        "b": "mesa",
+        "c": "silla"
+      },
+      "q6": {
+        "prompt": "Después de un punto empezamos la siguiente frase con mayúscula."
+      },
+      "q7": {
+        "prompt": "¿Cuál de estas palabras es un nombre propio?",
+        "a": "Lucía",
+        "b": "niña",
+        "c": "gato"
+      },
+      "q8": {
+        "prompt": "La palabra «lunes» es el nombre de una persona."
+      },
+      "q9": {
+        "prompt": "¿Cómo se escribe bien el nombre de un país?",
+        "a": "España",
+        "b": "españa",
+        "c": "eSpaña"
+      },
+      "q10": {
+        "prompt": "El nombre de tu colegio se escribe con mayúscula."
+      }
+    },
+    "plural2": {
+      "q1": {
+        "prompt": "El plural de «gato» es «gatos»."
+      },
+      "q2": {
+        "prompt": "La palabra «casa» está en singular."
+      },
+      "q3": {
+        "prompt": "¿Cuál es el plural de «flor»?",
+        "a": "flores",
+        "b": "flor",
+        "c": "flors"
+      },
+      "q4": {
+        "prompt": "El plural de «lápiz» es «lápices»."
+      },
+      "q5": {
+        "prompt": "¿Cuál es el singular de «niños»?",
+        "a": "niño",
+        "b": "niñas",
+        "c": "niño s"
+      },
+      "q6": {
+        "prompt": "La palabra «perros» está en plural."
+      },
+      "q7": {
+        "prompt": "¿Cuál es el plural de «pez»?",
+        "a": "peces",
+        "b": "pezs",
+        "c": "pez"
+      },
+      "q8": {
+        "prompt": "El plural de «sol» es «soles»."
+      },
+      "q9": {
+        "prompt": "¿Cuál de estas palabras está en plural?",
+        "a": "mesas",
+        "b": "mesa",
+        "c": "silla"
+      },
+      "q10": {
+        "prompt": "La palabra «árboles» está en singular."
+      }
     }
   },
   "science": {
@@ -4447,6 +4623,138 @@
       },
       "q51": {
         "prompt": "La historia solo estudia los hechos ocurridos hace más de 100 años."
+      }
+    },
+    "family2": {
+      "q1": {
+        "prompt": "La madre y el padre forman parte de la familia."
+      },
+      "q2": {
+        "prompt": "Los abuelos son los padres de tu madre o de tu padre."
+      },
+      "q3": {
+        "prompt": "¿Quién es el hermano de tu madre?",
+        "a": "tu tío",
+        "b": "tu primo",
+        "c": "tu abuelo"
+      },
+      "q4": {
+        "prompt": "Los hermanos comparten los mismos padres."
+      },
+      "q5": {
+        "prompt": "¿Cómo se llama la hija de tus tíos?",
+        "a": "prima",
+        "b": "hermana",
+        "c": "abuela"
+      },
+      "q6": {
+        "prompt": "En una familia las personas se cuidan unas a otras."
+      },
+      "q7": {
+        "prompt": "¿Quién es la madre de tu padre?",
+        "a": "tu abuela",
+        "b": "tu tía",
+        "c": "tu prima"
+      },
+      "q8": {
+        "prompt": "Todas las familias son iguales."
+      },
+      "q9": {
+        "prompt": "¿Qué hacemos en familia?",
+        "a": "ayudarnos",
+        "b": "ignorarnos",
+        "c": "pelearnos siempre"
+      },
+      "q10": {
+        "prompt": "En una familia puede haber personas de distintas edades."
+      }
+    },
+    "school2": {
+      "q1": {
+        "prompt": "En el colegio aprendemos cosas nuevas."
+      },
+      "q2": {
+        "prompt": "El profesor o la profesora nos ayuda a aprender."
+      },
+      "q3": {
+        "prompt": "¿Dónde guardamos los libros en clase?",
+        "a": "en la mochila o la estantería",
+        "b": "en la nevera",
+        "c": "en el jardín"
+      },
+      "q4": {
+        "prompt": "En el patio jugamos durante el recreo."
+      },
+      "q5": {
+        "prompt": "¿Qué usamos para escribir en el colegio?",
+        "a": "el lápiz",
+        "b": "el tenedor",
+        "c": "la almohada"
+      },
+      "q6": {
+        "prompt": "Debemos respetar a nuestros compañeros."
+      },
+      "q7": {
+        "prompt": "¿Qué hacemos cuando alguien habla en clase?",
+        "a": "escuchamos",
+        "b": "gritamos",
+        "c": "nos vamos"
+      },
+      "q8": {
+        "prompt": "En la biblioteca del colegio hay libros para leer."
+      },
+      "q9": {
+        "prompt": "¿Qué aprendemos a hacer con nuestros compañeros?",
+        "a": "compartir",
+        "b": "empujar",
+        "c": "molestar"
+      },
+      "q10": {
+        "prompt": "Ir al colegio nos ayuda a aprender y a hacer amigos."
+      }
+    },
+    "neigh2": {
+      "q1": {
+        "prompt": "En el barrio hay tiendas, calles y casas."
+      },
+      "q2": {
+        "prompt": "El parque es un lugar del barrio para jugar."
+      },
+      "q3": {
+        "prompt": "¿Dónde compramos el pan?",
+        "a": "en la panadería",
+        "b": "en la farmacia",
+        "c": "en la piscina"
+      },
+      "q4": {
+        "prompt": "El médico o la médica trabaja en el centro de salud."
+      },
+      "q5": {
+        "prompt": "¿Quién apaga los incendios?",
+        "a": "los bomberos",
+        "b": "los cocineros",
+        "c": "los pintores"
+      },
+      "q6": {
+        "prompt": "Debemos cruzar la calle por el paso de peatones."
+      },
+      "q7": {
+        "prompt": "¿Dónde echamos una carta para enviarla?",
+        "a": "en el buzón",
+        "b": "en el árbol",
+        "c": "en la fuente"
+      },
+      "q8": {
+        "prompt": "En el barrio vivimos cerca de nuestros vecinos."
+      },
+      "q9": {
+        "prompt": "¿Quién nos ayuda si hay un problema en la calle?",
+        "a": "la policía",
+        "b": "nadie",
+        "c": "los peces"
+      },
+      "q10": {
+        "prompt": "Cuidar el barrio y mantenerlo limpio es tarea de todos."
       }
     }
   },

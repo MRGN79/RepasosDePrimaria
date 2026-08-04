@@ -112,7 +112,7 @@ describe("emparejar (checkMatchAnswer)", () => {
 
 describe("buildSession (construcción de la tanda)", () => {
   it("tema generado produce N instancias con respuesta numérica válida", () => {
-    const items = buildSession("matematicas", "operations.times_tables", 5, seededRng(1));
+    const items = buildSession("3", "matematicas", "operations.times_tables", 5, seededRng(1));
     expect(items).toHaveLength(5);
     for (const it of items) {
       expect(esGenerado(it.exercise)).toBe(true);
@@ -122,7 +122,7 @@ describe("buildSession (construcción de la tanda)", () => {
   });
 
   it("tema estático devuelve hasta `length` ejercicios del tema", () => {
-    const items = buildSession("matematicas", "numbers.even_odd", 5, seededRng(2));
+    const items = buildSession("3", "matematicas", "numbers.even_odd", 5, seededRng(2));
     expect(items.length).toBeGreaterThan(0);
     expect(items.length).toBeLessThanOrEqual(5);
     for (const it of items) {
@@ -131,16 +131,16 @@ describe("buildSession (construcción de la tanda)", () => {
   });
 
   it("usa la longitud por defecto cuando no se especifica", () => {
-    const items = buildSession("matematicas", "operations.add_carry");
+    const items = buildSession("3", "matematicas", "operations.add_carry");
     expect(items).toHaveLength(DEFAULT_SESSION_LENGTH);
   });
 
   it("tema sin contenido devuelve sesión vacía sin lanzar", () => {
-    expect(buildSession("matematicas", "tema.inexistente", 5, seededRng(3))).toEqual([]);
+    expect(buildSession("3", "matematicas", "tema.inexistente", 5, seededRng(3))).toEqual([]);
   });
 
   it("mezcla de materia entera produce ejercicios de esa materia", () => {
-    const items = buildSession("ciencias", null, 6, seededRng(9));
+    const items = buildSession("3", "ciencias", null, 6, seededRng(9));
     expect(items.length).toBeGreaterThan(0);
     for (const it of items) {
       expect(it.exercise.materia).toBe("ciencias");
@@ -150,7 +150,7 @@ describe("buildSession (construcción de la tanda)", () => {
 
 describe("buildPrintSheet (ficha congelada y coherente)", () => {
   it("genera la cantidad pedida y congela los operandos de mates", () => {
-    const sheet = buildPrintSheet("matematicas", "operations.division_intro", 10, seededRng(4));
+    const sheet = buildPrintSheet("3", "matematicas", "operations.division_intro", 10, seededRng(4));
     expect(sheet).toHaveLength(10);
     for (const item of sheet) {
       expect(esGenerado(item.exercise)).toBe(true);
@@ -161,7 +161,7 @@ describe("buildPrintSheet (ficha congelada y coherente)", () => {
   });
 
   it("solo incluye ejercicios imprimibles", () => {
-    const sheet = buildPrintSheet("lengua", "vocabulary.synonyms_antonyms", 4, seededRng(5));
+    const sheet = buildPrintSheet("3", "lengua", "vocabulary.synonyms_antonyms", 4, seededRng(5));
     expect(sheet.length).toBeGreaterThan(0);
     for (const item of sheet) {
       expect(item.exercise.imprimible).toBe(true);
@@ -169,6 +169,6 @@ describe("buildPrintSheet (ficha congelada y coherente)", () => {
   });
 
   it("tema sin contenido imprimible devuelve ficha vacía", () => {
-    expect(buildPrintSheet("matematicas", "tema.inexistente", 10, seededRng(6))).toEqual([]);
+    expect(buildPrintSheet("3", "matematicas", "tema.inexistente", 10, seededRng(6))).toEqual([]);
   });
 });

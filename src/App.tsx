@@ -135,7 +135,7 @@ export function App() {
         topics: buildTopicVMs(curso, s.id, t)
           .filter((tp) => !tp.soon)
           .flatMap((tp) => {
-            const exercises = exercisesByTopic(s.id, tp.id);
+            const exercises = exercisesByTopic(curso, s.id, tp.id);
             if (exercises.every(esGenerado)) return [];
             const total = exercises.length;
             return [{
@@ -204,7 +204,7 @@ export function App() {
         onStartDailyGoal={() => {
           if (!contentReady) return;
           const excludeIds = new Set(state.progress.correctExerciseIds);
-          const prebuilt = buildDailySession(3, Math.random, excludeIds);
+          const prebuilt = buildDailySession(curso, 3, Math.random, excludeIds);
           if (prebuilt.length === 0) return;
           setRoute({
             name: "session",
@@ -267,6 +267,7 @@ export function App() {
   if (route.name === "session") {
     return (
       <SessionContainer
+        curso={curso}
         materia={route.materia}
         tema={route.tema}
         isDailyGoal={route.isDailyGoal}
@@ -359,13 +360,13 @@ export function App() {
         onSelectSubject={(id) => setSelectedSubject(id as Materia)}
         onSelectTopic={(tema) => {
           if (!selectedSubject) return;
-          setPrintItems(buildPrintSheet(selectedSubject, tema));
+          setPrintItems(buildPrintSheet(curso, selectedSubject, tema));
           setRoute({ name: "printSheet", materia: selectedSubject, tema });
         }}
         onToggleSolutions={setIncludeSolutions}
         onCreate={() => {
           if (!selectedSubject) return;
-          setPrintItems(buildPrintSheet(selectedSubject, null));
+          setPrintItems(buildPrintSheet(curso, selectedSubject, null));
           setRoute({ name: "printSheet", materia: selectedSubject, tema: null });
         }}
         canCreate={selectedSubject !== null}

@@ -45,6 +45,9 @@ describe("generarOperandos: invariantes comunes", () => {
     "times-tables",
     "multiply-one-digit",
     "division-exact",
+    "add-nocarry",
+    "sub-noborrow",
+    "times-easy",
   ];
   it("devuelve siempre el tipo pedido y operandos enteros", () => {
     for (const type of allTypes) {
@@ -144,6 +147,44 @@ describe("division-exact (división exacta)", () => {
   });
 });
 
+describe("2.º de Primaria: suma sin llevar (add-nocarry)", () => {
+  it("ninguna columna suma más de 9 (no hay llevada) y el resultado es ≤ 99", () => {
+    forEachSample("add-nocarry", ITERATIONS, ({ a, b, answer }) => {
+      expect(a).toBeGreaterThanOrEqual(0);
+      expect(a).toBeLessThanOrEqual(99);
+      expect(b).toBeGreaterThanOrEqual(0);
+      expect(b).toBeLessThanOrEqual(99);
+      expect((a % 10) + (b % 10)).toBeLessThanOrEqual(9); // unidades sin llevar
+      expect(Math.floor(a / 10) + Math.floor(b / 10)).toBeLessThanOrEqual(9); // decenas sin llevar
+      expect(answer).toBe(a + b);
+      expect(answer).toBeLessThanOrEqual(99);
+    });
+  });
+});
+
+describe("2.º de Primaria: resta sin llevar (sub-noborrow)", () => {
+  it("cada columna del minuendo es ≥ la del sustraendo (no se pide prestado) y el resultado es ≥ 0", () => {
+    forEachSample("sub-noborrow", ITERATIONS, ({ a, b, answer }) => {
+      expect(a).toBeGreaterThanOrEqual(b);
+      expect(a % 10).toBeGreaterThanOrEqual(b % 10); // unidades sin pedir prestado
+      expect(Math.floor(a / 10)).toBeGreaterThanOrEqual(Math.floor(b / 10)); // decenas
+      expect(answer).toBe(a - b);
+      expect(answer).toBeGreaterThanOrEqual(0);
+    });
+  });
+});
+
+describe("2.º de Primaria: tablas iniciales (times-easy)", () => {
+  it("un factor es 2, 5 o 10 y el otro está entre 1 y 10", () => {
+    forEachSample("times-easy", ITERATIONS, ({ a, b, answer }) => {
+      expect([2, 5, 10]).toContain(a);
+      expect(b).toBeGreaterThanOrEqual(1);
+      expect(b).toBeLessThanOrEqual(10);
+      expect(answer).toBe(a * b);
+    });
+  });
+});
+
 describe("opForTopic", () => {
   it("mapea los temas conocidos a su operación", () => {
     expect(opForTopic("operations.add_carry")).toBe("add");
@@ -151,6 +192,10 @@ describe("opForTopic", () => {
     expect(opForTopic("operations.times_tables")).toBe("times-tables");
     expect(opForTopic("operations.multiply")).toBe("multiply-one-digit");
     expect(opForTopic("operations.division_intro")).toBe("division-exact");
+    // 2.º
+    expect(opForTopic("operations.add_nocarry")).toBe("add-nocarry");
+    expect(opForTopic("operations.sub_noborrow")).toBe("sub-noborrow");
+    expect(opForTopic("operations.times_2_5_10")).toBe("times-easy");
   });
   it("devuelve null para un tema sin generador", () => {
     expect(opForTopic("numbers.even_odd")).toBeNull();

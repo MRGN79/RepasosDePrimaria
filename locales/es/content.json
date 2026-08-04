@@ -21,7 +21,11 @@
       "shapes": "Figuras y geometría",
       "time": "El tiempo",
       "length": "Longitud y medida",
-      "fractions": "Fracciones"
+      "fractions": "Fracciones",
+      "count_100": "Números hasta 100",
+      "add_nocarry": "Sumas sin llevar",
+      "sub_noborrow": "Restas sin llevar",
+      "times_2_5_10": "Tablas del 2, 5 y 10"
     }
   },
   "spanish": {
@@ -38,7 +42,10 @@
       "punctuation": "Signos de puntuación",
       "comprehension": "Lectura comprensiva",
       "text_types": "Tipos de texto",
-      "spelling_specific": "Ortografía específica"
+      "spelling_specific": "Ortografía específica",
+      "syllables": "Sílabas",
+      "capitals": "Mayúsculas",
+      "singular_plural": "Singular y plural"
     }
   },
   "science": {
@@ -53,7 +60,10 @@
       "states": "States of matter",
       "skeleton": "The Skeleton and Muscles",
       "forces": "Forces and Movement",
-      "solar_system": "The Solar System"
+      "solar_system": "The Solar System",
+      "five_senses": "The five senses",
+      "human_body": "The human body",
+      "animals_basic": "Animals"
     }
   },
   "social": {
@@ -64,7 +74,10 @@
       "maps": "Mapas y puntos cardinales",
       "spain": "España: relieve y comunidades",
       "population": "La población y el trabajo",
-      "time": "El tiempo histórico"
+      "time": "El tiempo histórico",
+      "family": "La familia",
+      "school": "El colegio",
+      "neighborhood": "El barrio"
     }
   },
   "english": {
@@ -76,7 +89,10 @@
       "animals": "Animals",
       "greetings": "Greetings",
       "numbers": "Numbers",
-      "family": "Family"
+      "family": "Family",
+      "numbers_1_20": "Numbers 1-20",
+      "colors": "Colours",
+      "animals_pets": "Pets"
     }
   },
   "cuarto4": {
