@@ -20,6 +20,8 @@ import {
   sendPasswordResetEmail,
   onAuthStateChanged,
   reauthenticateWithCredential,
+  signInWithPopup,
+  GoogleAuthProvider,
   EmailAuthProvider,
   type User,
   type Unsubscribe,
@@ -91,6 +93,34 @@ export async function signInTutor(email: string, password: string): Promise<Auth
     const cred = await signInWithEmailAndPassword(auth, email, password);
     return cred.user;
   });
+}
+
+/**
+ * Inicio de sesión / alta con Google (ADR-004 §1). Sirve para AMBOS roles: el
+ * proveedor no fija el rol en este caso — la UI lo decide después (paso de rol
+ * + reto de adulto para la rama tutor). De la cuenta de Google solo se usará el
+ * `uid` (ADR-004 §3): este módulo no persiste email/nombre/foto en ningún sitio.
+ *
+ * En el WebView nativo de Android, el flujo de popup requiere un plugin nativo
+ * de Google Sign-In y un proyecto Firebase real; en navegador y contra el
+ * emulador funciona directamente. Ver `.claude/pending-actions.md`.
+ */
+export async function signInWithGoogle(): Promise<AuthResult<User>> {
+  return guarded(async () => {
+    const auth = getFirebaseAuth();
+    const provider = new GoogleAuthProvider();
+    const cred = await signInWithPopup(auth, provider);
+    return cred.user;
+  });
+}
+
+/**
+ * Proveedor de autenticación del usuario actual ("password" | "google.com" | …).
+ * Se usa para saber si una cuenta puede elegir rol (Google) o es tutor por
+ * construcción (password). No es PII: es el método de acceso.
+ */
+export function providerIdOf(user: User): string | null {
+  return user.providerData[0]?.providerId ?? null;
 }
 
 export async function signOutTutor(): Promise<AuthResult<void>> {
