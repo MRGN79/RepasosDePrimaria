@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { SessionScreen } from "./SessionScreen";
 import { ResultsScreen } from "./ResultsScreen";
 import { Feedback, CelebrationModal, Button } from "@/components";
-import type { Materia } from "@content/types";
+import type { Materia, Nivel } from "@content/types";
 import { useSession } from "@/hooks/useSession";
 import { useGameStore } from "@/state/gameContext";
 import type { ConsolidationResult } from "@/state/consolidation";
@@ -16,6 +16,7 @@ import { badgeDef } from "@/lib/badges";
 import type { PreparedExercise } from "@/lib/session";
 
 type SessionContainerProps = {
+  curso: Nivel;
   materia: Materia;
   tema: string | null;
   isDailyGoal: boolean;
@@ -26,6 +27,7 @@ type SessionContainerProps = {
 };
 
 export function SessionContainer({
+  curso,
   materia,
   tema,
   isDailyGoal,
@@ -49,7 +51,7 @@ export function SessionContainer({
     check,
     next,
     summary,
-  } = useSession(materia, tema, undefined, prebuilt, excludeIds);
+  } = useSession(curso, materia, tema, undefined, prebuilt, excludeIds);
 
   const [confirmExit, setConfirmExit] = useState(false);
   const [result, setResult] = useState<ConsolidationResult | null>(null);

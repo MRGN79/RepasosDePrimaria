@@ -12,7 +12,7 @@
  */
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { EjercicioAny, Materia } from "@content/types";
+import type { EjercicioAny, Materia, Nivel } from "@content/types";
 import { esGenerado } from "@content/types";
 import { fixedLanguageFor } from "@content/registry";
 import type { OptionStatus, MatchItem } from "@/components";
@@ -91,6 +91,7 @@ export interface UseSessionResult {
 }
 
 export function useSession(
+  curso: Nivel,
   materia: Materia,
   tema: string | null,
   length?: number,
@@ -101,7 +102,7 @@ export function useSession(
 
   // La secuencia se construye una sola vez por montaje de la sesión.
   const [items] = useState<PreparedExercise[]>(() =>
-    prebuilt ?? buildSession(materia, tema, length, Math.random, excludeIds),
+    prebuilt ?? buildSession(curso, materia, tema, length, Math.random, excludeIds),
   );
 
   const [index, setIndex] = useState(0);

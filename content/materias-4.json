@@ -1,0 +1,71 @@
+{
+  "materias": [
+    {
+      "id": "matematicas",
+      "tituloKey": "content:math.title",
+      "colorToken": "--tdp-subject-math",
+      "icon": "star",
+      "temas": [
+        {
+          "id": "operations.multiply_2digit",
+          "tituloKey": "content:math.topic.multiply_2digit",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "lengua",
+      "tituloKey": "content:spanish.title",
+      "colorToken": "--tdp-subject-spanish",
+      "icon": "backpack",
+      "temas": [
+        {
+          "id": "grammar.verb_tenses",
+          "tituloKey": "content:spanish.topic.verb_tenses",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "ciencias",
+      "tituloKey": "content:science.title",
+      "colorToken": "--tdp-subject-science",
+      "icon": "rocket",
+      "langTagKey": "content:science.langTag",
+      "temas": [
+        {
+          "id": "ecosystems.food_chains",
+          "tituloKey": "content:science.topic.food_chains",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "sociales",
+      "tituloKey": "content:social.title",
+      "colorToken": "--tdp-subject-social",
+      "icon": "home",
+      "temas": [
+        {
+          "id": "geography.water_cycle",
+          "tituloKey": "content:social.topic.water_cycle",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "ingles",
+      "tituloKey": "content:english.title",
+      "colorToken": "--tdp-subject-english",
+      "icon": "streak",
+      "langTagKey": "content:english.langTag",
+      "temas": [
+        {
+          "id": "en_vocabulary.family",
+          "tituloKey": "content:english.topic.family",
+          "disponible": true
+        }
+      ]
+    }
+  ]
+}

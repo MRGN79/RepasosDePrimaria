@@ -1146,6 +1146,102 @@
       "q32": {
         "prompt": "1/3 > 1/4 porque las partes son más grandes al dividir en 3 que en 4."
       }
+    },
+    "count100": {
+      "q1": {
+        "prompt": "El número que va justo después del 9 es el 10."
+      },
+      "q2": {
+        "prompt": "El número 20 tiene 2 decenas."
+      },
+      "q3": {
+        "prompt": "¿Qué número va justo antes del 30?",
+        "a": "29",
+        "b": "31",
+        "c": "28"
+      },
+      "q4": {
+        "prompt": "El 50 es mayor que el 40."
+      },
+      "q5": {
+        "prompt": "¿Cuántas decenas tiene el número 40?",
+        "a": "4",
+        "b": "14",
+        "c": "40"
+      },
+      "q6": {
+        "prompt": "Si contamos de 10 en 10: 10, 20, 30."
+      },
+      "q7": {
+        "prompt": "¿Qué número va justo después del 59?",
+        "a": "58",
+        "b": "60",
+        "c": "69"
+      },
+      "q8": {
+        "prompt": "El número 100 se escribe con un 1 y dos ceros."
+      },
+      "q9": {
+        "prompt": "¿Cuál es el número mayor?",
+        "a": "77",
+        "b": "87",
+        "c": "78"
+      },
+      "q10": {
+        "prompt": "El número 15 está entre el 10 y el 20."
+      }
+    },
+    "decimals5": {
+      "q1": {
+        "prompt": "En el número 3,5, la cifra 5 ocupa el lugar de las décimas."
+      },
+      "q2": {
+        "prompt": "0,5 es lo mismo que un medio."
+      },
+      "q3": {
+        "prompt": "¿Qué número es el mayor?",
+        "a": "2,7",
+        "b": "2,07",
+        "c": "2,007"
+      },
+      "q4": {
+        "prompt": "La coma decimal separa la parte entera de la parte decimal."
+      },
+      "q5": {
+        "prompt": "¿Cuánto es 1,2 + 0,3?",
+        "a": "1,5",
+        "b": "1,23",
+        "c": "4,2"
+      },
+      "q6": {
+        "prompt": "0,25 es mayor que 0,3."
+      }
+    },
+    "percentages6": {
+      "q1": {
+        "prompt": "El 50 % de un número es lo mismo que su mitad."
+      },
+      "q2": {
+        "prompt": "El 100 % significa la cantidad completa."
+      },
+      "q3": {
+        "prompt": "¿Cuánto es el 10 % de 100?",
+        "a": "10",
+        "b": "1",
+        "c": "100"
+      },
+      "q4": {
+        "prompt": "El 25 % es lo mismo que un cuarto."
+      },
+      "q5": {
+        "prompt": "¿Cuánto es el 50 % de 20?",
+        "a": "10",
+        "b": "5",
+        "c": "20"
+      },
+      "q6": {
+        "prompt": "Un porcentaje expresa una parte de cada 100."
+      }
     }
   },
   "spanish": {
@@ -3023,6 +3119,242 @@
       "q32": {
         "prompt": "Las palabras «hoja», «hierba» y «humo» llevan «h» al principio aunque no suene."
       }
+    },
+    "syll2": {
+      "q1": {
+        "prompt": "La palabra «sol» tiene una sílaba."
+      },
+      "q2": {
+        "prompt": "La palabra «casa» tiene dos sílabas."
+      },
+      "q3": {
+        "prompt": "¿Cuántas sílabas tiene la palabra «mariposa»?",
+        "a": "4",
+        "b": "3",
+        "c": "2"
+      },
+      "q4": {
+        "prompt": "La palabra «pan» tiene dos sílabas."
+      },
+      "q5": {
+        "prompt": "¿Cuántas sílabas tiene la palabra «gato»?",
+        "a": "2",
+        "b": "3",
+        "c": "1"
+      },
+      "q6": {
+        "prompt": "La palabra «elefante» tiene cuatro sílabas."
+      },
+      "q7": {
+        "prompt": "¿Qué palabra tiene tres sílabas?",
+        "a": "pelota",
+        "b": "flor",
+        "c": "mar"
+      },
+      "q8": {
+        "prompt": "La palabra «luna» tiene dos sílabas."
+      },
+      "q9": {
+        "prompt": "¿Cuántas sílabas tiene la palabra «zapato»?",
+        "a": "3",
+        "b": "2",
+        "c": "4"
+      },
+      "q10": {
+        "prompt": "La palabra «chocolate» tiene cuatro sílabas."
+      }
+    },
+    "caps2": {
+      "q1": {
+        "prompt": "Las frases empiezan siempre con letra mayúscula."
+      },
+      "q2": {
+        "prompt": "Los nombres de personas se escriben con mayúscula al principio."
+      },
+      "q3": {
+        "prompt": "¿Cuál de estas frases está bien escrita?",
+        "a": "Mi perro se llama Toby.",
+        "b": "mi perro se llama toby.",
+        "c": "mi perro se llama Toby."
+      },
+      "q4": {
+        "prompt": "La palabra «Madrid» se escribe con mayúscula porque es el nombre de una ciudad."
+      },
+      "q5": {
+        "prompt": "¿Qué palabra necesita empezar con mayúscula?",
+        "a": "Ana",
+        "b": "mesa",
+        "c": "silla"
+      },
+      "q6": {
+        "prompt": "Después de un punto empezamos la siguiente frase con mayúscula."
+      },
+      "q7": {
+        "prompt": "¿Cuál de estas palabras es un nombre propio?",
+        "a": "Lucía",
+        "b": "niña",
+        "c": "gato"
+      },
+      "q8": {
+        "prompt": "La palabra «lunes» es el nombre de una persona."
+      },
+      "q9": {
+        "prompt": "¿Cómo se escribe bien el nombre de un país?",
+        "a": "España",
+        "b": "españa",
+        "c": "eSpaña"
+      },
+      "q10": {
+        "prompt": "El nombre de tu colegio se escribe con mayúscula."
+      }
+    },
+    "plural2": {
+      "q1": {
+        "prompt": "El plural de «gato» es «gatos»."
+      },
+      "q2": {
+        "prompt": "La palabra «casa» está en singular."
+      },
+      "q3": {
+        "prompt": "¿Cuál es el plural de «flor»?",
+        "a": "flores",
+        "b": "flor",
+        "c": "flors"
+      },
+      "q4": {
+        "prompt": "El plural de «lápiz» es «lápices»."
+      },
+      "q5": {
+        "prompt": "¿Cuál es el singular de «niños»?",
+        "a": "niño",
+        "b": "niñas",
+        "c": "niño s"
+      },
+      "q6": {
+        "prompt": "La palabra «perros» está en plural."
+      },
+      "q7": {
+        "prompt": "¿Cuál es el plural de «pez»?",
+        "a": "peces",
+        "b": "pezs",
+        "c": "pez"
+      },
+      "q8": {
+        "prompt": "El plural de «sol» es «soles»."
+      },
+      "q9": {
+        "prompt": "¿Cuál de estas palabras está en plural?",
+        "a": "mesas",
+        "b": "mesa",
+        "c": "silla"
+      },
+      "q10": {
+        "prompt": "La palabra «árboles» está en singular."
+      }
+    },
+    "vowels1": {
+      "q1": {
+        "prompt": "Las vocales son cinco: a, e, i, o, u."
+      },
+      "q2": {
+        "prompt": "La letra «m» es una vocal."
+      },
+      "q3": {
+        "prompt": "¿Cuántas vocales hay en total?",
+        "a": "5",
+        "b": "4",
+        "c": "6"
+      },
+      "q4": {
+        "prompt": "La palabra «oso» empieza por vocal."
+      },
+      "q5": {
+        "prompt": "¿Cuál de estas letras es una vocal?",
+        "a": "p",
+        "b": "i",
+        "c": "t"
+      },
+      "q6": {
+        "prompt": "La «u» es una vocal."
+      }
+    },
+    "verbtenses4": {
+      "q1": {
+        "prompt": "El verbo es la palabra que expresa una acción, como «correr» o «saltar»."
+      },
+      "q2": {
+        "prompt": "El verbo «comí» está en tiempo futuro."
+      },
+      "q3": {
+        "prompt": "¿En qué tiempo está el verbo «jugaré»?",
+        "a": "Futuro",
+        "b": "Pasado",
+        "c": "Presente"
+      },
+      "q4": {
+        "prompt": "El verbo «estudio» está en tiempo presente."
+      },
+      "q5": {
+        "prompt": "¿Cuál de estas formas verbales está en pasado?",
+        "a": "cantaré",
+        "b": "canté",
+        "c": "canto"
+      },
+      "q6": {
+        "prompt": "Los verbos pueden estar en pasado, presente y futuro."
+      }
+    },
+    "subjectpredicate5": {
+      "q1": {
+        "prompt": "El sujeto es la parte de la oración que indica quién realiza la acción."
+      },
+      "q2": {
+        "prompt": "En la oración «El perro ladra», el sujeto es «ladra»."
+      },
+      "q3": {
+        "prompt": "En la oración «María canta una canción», ¿cuál es el sujeto?",
+        "a": "María",
+        "b": "canta",
+        "c": "una canción"
+      },
+      "q4": {
+        "prompt": "El predicado indica lo que hace o cómo es el sujeto."
+      },
+      "q5": {
+        "prompt": "En «Los niños juegan en el parque», ¿cuál es el predicado?",
+        "a": "juegan en el parque",
+        "b": "Los niños",
+        "c": "el parque"
+      },
+      "q6": {
+        "prompt": "Toda oración se puede dividir en sujeto y predicado."
+      }
+    },
+    "diphthong6": {
+      "q1": {
+        "prompt": "Un diptongo son dos vocales que se pronuncian juntas, en la misma sílaba."
+      },
+      "q2": {
+        "prompt": "La palabra «día» tiene un diptongo."
+      },
+      "q3": {
+        "prompt": "¿En cuál de estas palabras hay un diptongo?",
+        "a": "aire",
+        "b": "leer",
+        "c": "caer"
+      },
+      "q4": {
+        "prompt": "En un hiato, dos vocales seguidas se pronuncian en sílabas distintas."
+      },
+      "q5": {
+        "prompt": "¿Cuál de estas palabras tiene un hiato?",
+        "a": "poeta",
+        "b": "peine",
+        "c": "aire"
+      },
+      "q6": {
+        "prompt": "Las vocales a, e y o son vocales abiertas (fuertes)."
+      }
     }
   },
   "science": {
@@ -4447,6 +4779,242 @@
       },
       "q51": {
         "prompt": "La historia solo estudia los hechos ocurridos hace más de 100 años."
+      }
+    },
+    "family2": {
+      "q1": {
+        "prompt": "La madre y el padre forman parte de la familia."
+      },
+      "q2": {
+        "prompt": "Los abuelos son los padres de tu madre o de tu padre."
+      },
+      "q3": {
+        "prompt": "¿Quién es el hermano de tu madre?",
+        "a": "tu tío",
+        "b": "tu primo",
+        "c": "tu abuelo"
+      },
+      "q4": {
+        "prompt": "Los hermanos comparten los mismos padres."
+      },
+      "q5": {
+        "prompt": "¿Cómo se llama la hija de tus tíos?",
+        "a": "prima",
+        "b": "hermana",
+        "c": "abuela"
+      },
+      "q6": {
+        "prompt": "En una familia las personas se cuidan unas a otras."
+      },
+      "q7": {
+        "prompt": "¿Quién es la madre de tu padre?",
+        "a": "tu abuela",
+        "b": "tu tía",
+        "c": "tu prima"
+      },
+      "q8": {
+        "prompt": "Todas las familias son iguales."
+      },
+      "q9": {
+        "prompt": "¿Qué hacemos en familia?",
+        "a": "ayudarnos",
+        "b": "ignorarnos",
+        "c": "pelearnos siempre"
+      },
+      "q10": {
+        "prompt": "En una familia puede haber personas de distintas edades."
+      }
+    },
+    "school2": {
+      "q1": {
+        "prompt": "En el colegio aprendemos cosas nuevas."
+      },
+      "q2": {
+        "prompt": "El profesor o la profesora nos ayuda a aprender."
+      },
+      "q3": {
+        "prompt": "¿Dónde guardamos los libros en clase?",
+        "a": "en la mochila o la estantería",
+        "b": "en la nevera",
+        "c": "en el jardín"
+      },
+      "q4": {
+        "prompt": "En el patio jugamos durante el recreo."
+      },
+      "q5": {
+        "prompt": "¿Qué usamos para escribir en el colegio?",
+        "a": "el lápiz",
+        "b": "el tenedor",
+        "c": "la almohada"
+      },
+      "q6": {
+        "prompt": "Debemos respetar a nuestros compañeros."
+      },
+      "q7": {
+        "prompt": "¿Qué hacemos cuando alguien habla en clase?",
+        "a": "escuchamos",
+        "b": "gritamos",
+        "c": "nos vamos"
+      },
+      "q8": {
+        "prompt": "En la biblioteca del colegio hay libros para leer."
+      },
+      "q9": {
+        "prompt": "¿Qué aprendemos a hacer con nuestros compañeros?",
+        "a": "compartir",
+        "b": "empujar",
+        "c": "molestar"
+      },
+      "q10": {
+        "prompt": "Ir al colegio nos ayuda a aprender y a hacer amigos."
+      }
+    },
+    "neigh2": {
+      "q1": {
+        "prompt": "En el barrio hay tiendas, calles y casas."
+      },
+      "q2": {
+        "prompt": "El parque es un lugar del barrio para jugar."
+      },
+      "q3": {
+        "prompt": "¿Dónde compramos el pan?",
+        "a": "en la panadería",
+        "b": "en la farmacia",
+        "c": "en la piscina"
+      },
+      "q4": {
+        "prompt": "El médico o la médica trabaja en el centro de salud."
+      },
+      "q5": {
+        "prompt": "¿Quién apaga los incendios?",
+        "a": "los bomberos",
+        "b": "los cocineros",
+        "c": "los pintores"
+      },
+      "q6": {
+        "prompt": "Debemos cruzar la calle por el paso de peatones."
+      },
+      "q7": {
+        "prompt": "¿Dónde echamos una carta para enviarla?",
+        "a": "en el buzón",
+        "b": "en el árbol",
+        "c": "en la fuente"
+      },
+      "q8": {
+        "prompt": "En el barrio vivimos cerca de nuestros vecinos."
+      },
+      "q9": {
+        "prompt": "¿Quién nos ayuda si hay un problema en la calle?",
+        "a": "la policía",
+        "b": "nadie",
+        "c": "los peces"
+      },
+      "q10": {
+        "prompt": "Cuidar el barrio y mantenerlo limpio es tarea de todos."
+      }
+    },
+    "seasons1": {
+      "q1": {
+        "prompt": "El año tiene cuatro estaciones."
+      },
+      "q2": {
+        "prompt": "En invierno suele hacer frío."
+      },
+      "q3": {
+        "prompt": "¿Qué estación viene después de la primavera?",
+        "a": "El verano",
+        "b": "El invierno",
+        "c": "El otoño"
+      },
+      "q4": {
+        "prompt": "En otoño se caen muchas hojas de los árboles."
+      },
+      "q5": {
+        "prompt": "¿En qué estación solemos ir a la playa?",
+        "a": "En verano",
+        "b": "En invierno",
+        "c": "En otoño"
+      },
+      "q6": {
+        "prompt": "En primavera florecen muchas plantas."
+      }
+    },
+    "watercycle4": {
+      "q1": {
+        "prompt": "El ciclo del agua explica cómo se mueve el agua por la Tierra."
+      },
+      "q2": {
+        "prompt": "Cuando el agua se calienta, puede convertirse en vapor de agua. Esto es la evaporación."
+      },
+      "q3": {
+        "prompt": "¿Cómo se llama el agua que cae de las nubes como lluvia o nieve?",
+        "a": "Precipitación",
+        "b": "Evaporación",
+        "c": "Filtración"
+      },
+      "q4": {
+        "prompt": "Las nubes se forman cuando el vapor de agua se enfría. Esto es la condensación."
+      },
+      "q5": {
+        "prompt": "¿Dónde ocurre la mayor parte de la evaporación?",
+        "a": "En océanos, mares y ríos",
+        "b": "Dentro de las cuevas",
+        "c": "En el subsuelo profundo"
+      },
+      "q6": {
+        "prompt": "El ciclo del agua se repite una y otra vez."
+      }
+    },
+    "climate5": {
+      "q1": {
+        "prompt": "El clima es el tiempo atmosférico habitual de un lugar a lo largo de muchos años."
+      },
+      "q2": {
+        "prompt": "El tiempo atmosférico y el clima significan exactamente lo mismo."
+      },
+      "q3": {
+        "prompt": "¿Qué clima es caluroso y seco, con muy poca lluvia?",
+        "a": "Clima desértico",
+        "b": "Clima polar",
+        "c": "Clima oceánico"
+      },
+      "q4": {
+        "prompt": "Los lugares cercanos a los polos suelen tener un clima frío."
+      },
+      "q5": {
+        "prompt": "¿Qué factor influye en el clima de un lugar?",
+        "a": "Su distancia al mar",
+        "b": "Su bandera",
+        "c": "Su nombre"
+      },
+      "q6": {
+        "prompt": "El termómetro se usa para medir la temperatura."
+      }
+    },
+    "eu6": {
+      "q1": {
+        "prompt": "La Unión Europea es un grupo de países europeos que colaboran entre sí."
+      },
+      "q2": {
+        "prompt": "España no pertenece a la Unión Europea."
+      },
+      "q3": {
+        "prompt": "¿Qué moneda se usa en muchos países de la Unión Europea?",
+        "a": "El euro",
+        "b": "El dólar",
+        "c": "La libra"
+      },
+      "q4": {
+        "prompt": "España es miembro de la Unión Europea."
+      },
+      "q5": {
+        "prompt": "La Unión Europea está formada por países de, ¿qué continente?",
+        "a": "Europa",
+        "b": "Asia",
+        "c": "África"
+      },
+      "q6": {
+        "prompt": "Los países de la Unión Europea cooperan en comercio y en otros asuntos."
       }
     }
   },

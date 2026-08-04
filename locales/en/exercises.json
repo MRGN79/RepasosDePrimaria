@@ -1146,6 +1146,102 @@
       "q32": {
         "prompt": "1/3 > 1/4 because the pieces are bigger when you divide into 3 than into 4."
       }
+    },
+    "count100": {
+      "q1": {
+        "prompt": "The number right after 9 is 10."
+      },
+      "q2": {
+        "prompt": "The number 20 has 2 tens."
+      },
+      "q3": {
+        "prompt": "Which number comes right before 30?",
+        "a": "29",
+        "b": "31",
+        "c": "28"
+      },
+      "q4": {
+        "prompt": "50 is greater than 40."
+      },
+      "q5": {
+        "prompt": "How many tens does the number 40 have?",
+        "a": "4",
+        "b": "14",
+        "c": "40"
+      },
+      "q6": {
+        "prompt": "Counting by tens: 10, 20, 30."
+      },
+      "q7": {
+        "prompt": "Which number comes right after 59?",
+        "a": "58",
+        "b": "60",
+        "c": "69"
+      },
+      "q8": {
+        "prompt": "100 is written with a 1 and two zeros."
+      },
+      "q9": {
+        "prompt": "Which is the largest number?",
+        "a": "77",
+        "b": "87",
+        "c": "78"
+      },
+      "q10": {
+        "prompt": "15 is between 10 and 20."
+      }
+    },
+    "decimals5": {
+      "q1": {
+        "prompt": "In the number 3.5, the digit 5 is in the tenths place."
+      },
+      "q2": {
+        "prompt": "0.5 is the same as one half."
+      },
+      "q3": {
+        "prompt": "Which number is the greatest?",
+        "a": "2.7",
+        "b": "2.07",
+        "c": "2.007"
+      },
+      "q4": {
+        "prompt": "The decimal point separates the whole part from the decimal part."
+      },
+      "q5": {
+        "prompt": "What is 1.2 + 0.3?",
+        "a": "1.5",
+        "b": "1.23",
+        "c": "4.2"
+      },
+      "q6": {
+        "prompt": "0.25 is greater than 0.3."
+      }
+    },
+    "percentages6": {
+      "q1": {
+        "prompt": "50% of a number is the same as half of it."
+      },
+      "q2": {
+        "prompt": "100% means the whole amount."
+      },
+      "q3": {
+        "prompt": "What is 10% of 100?",
+        "a": "10",
+        "b": "1",
+        "c": "100"
+      },
+      "q4": {
+        "prompt": "25% is the same as one quarter."
+      },
+      "q5": {
+        "prompt": "What is 50% of 20?",
+        "a": "10",
+        "b": "5",
+        "c": "20"
+      },
+      "q6": {
+        "prompt": "A percentage shows a part out of 100."
+      }
     }
   },
   "spanish": {
@@ -2929,6 +3025,242 @@
       "q32": {
         "prompt": "The word 'galaxy' refers to a vast collection of stars, gas and dust held together by gravity."
       }
+    },
+    "senses2": {
+      "q1": {
+        "prompt": "We use our eyes to see."
+      },
+      "q2": {
+        "prompt": "We use our ears to hear."
+      },
+      "q3": {
+        "prompt": "Which part of the body do we use to smell?",
+        "a": "the nose",
+        "b": "the eyes",
+        "c": "the hands"
+      },
+      "q4": {
+        "prompt": "We taste food with our tongue."
+      },
+      "q5": {
+        "prompt": "Which part of the body do we use to touch?",
+        "a": "the hands",
+        "b": "the ears",
+        "c": "the nose"
+      },
+      "q6": {
+        "prompt": "We have five senses."
+      },
+      "q7": {
+        "prompt": "Which sense do we use to enjoy music?",
+        "a": "hearing",
+        "b": "smell",
+        "c": "taste"
+      },
+      "q8": {
+        "prompt": "We use our eyes to hear."
+      },
+      "q9": {
+        "prompt": "Which sense tells us that honey is sweet?",
+        "a": "taste",
+        "b": "sight",
+        "c": "hearing"
+      },
+      "q10": {
+        "prompt": "We use our nose to smell flowers."
+      }
+    },
+    "body2": {
+      "q1": {
+        "prompt": "Your hand has five fingers."
+      },
+      "q2": {
+        "prompt": "We walk with our legs."
+      },
+      "q3": {
+        "prompt": "Which part of the body do we use to think?",
+        "a": "the brain",
+        "b": "the foot",
+        "c": "the elbow"
+      },
+      "q4": {
+        "prompt": "Your heart moves blood around your body."
+      },
+      "q5": {
+        "prompt": "Where are your teeth?",
+        "a": "in the mouth",
+        "b": "in the hand",
+        "c": "in the knee"
+      },
+      "q6": {
+        "prompt": "We have two arms."
+      },
+      "q7": {
+        "prompt": "Which part joins your head to the rest of your body?",
+        "a": "the neck",
+        "b": "the knee",
+        "c": "the ankle"
+      },
+      "q8": {
+        "prompt": "You have ten toes on your two feet."
+      },
+      "q9": {
+        "prompt": "Which part of the leg do we bend to sit down?",
+        "a": "the knee",
+        "b": "the elbow",
+        "c": "the wrist"
+      },
+      "q10": {
+        "prompt": "Your skin covers your whole body."
+      }
+    },
+    "animals2": {
+      "q1": {
+        "prompt": "A dog is an animal."
+      },
+      "q2": {
+        "prompt": "Fish live in water."
+      },
+      "q3": {
+        "prompt": "Which animal can fly?",
+        "a": "a bird",
+        "b": "a cow",
+        "c": "a fish"
+      },
+      "q4": {
+        "prompt": "A cow gives us milk."
+      },
+      "q5": {
+        "prompt": "Which animal says 'meow'?",
+        "a": "a cat",
+        "b": "a dog",
+        "c": "a duck"
+      },
+      "q6": {
+        "prompt": "Birds have feathers."
+      },
+      "q7": {
+        "prompt": "Where do fish live?",
+        "a": "in the water",
+        "b": "in the trees",
+        "c": "under the ground"
+      },
+      "q8": {
+        "prompt": "A rabbit has long ears."
+      },
+      "q9": {
+        "prompt": "Which animal has a very long neck?",
+        "a": "a giraffe",
+        "b": "a mouse",
+        "c": "a frog"
+      },
+      "q10": {
+        "prompt": "Bees make honey."
+      }
+    },
+    "livingnonliving1": {
+      "q1": {
+        "prompt": "A dog is a living thing."
+      },
+      "q2": {
+        "prompt": "A rock is a living thing."
+      },
+      "q3": {
+        "prompt": "Which one is a living thing?",
+        "a": "A tree",
+        "b": "A chair",
+        "c": "A stone"
+      },
+      "q4": {
+        "prompt": "Living things grow and need food and water."
+      },
+      "q5": {
+        "prompt": "Which one is NOT a living thing?",
+        "a": "A cat",
+        "b": "A flower",
+        "c": "A car"
+      },
+      "q6": {
+        "prompt": "A toy robot is a living thing."
+      }
+    },
+    "foodchains4": {
+      "q1": {
+        "prompt": "A food chain shows what living things eat."
+      },
+      "q2": {
+        "prompt": "Plants make their own food using sunlight."
+      },
+      "q3": {
+        "prompt": "What is usually at the start of a food chain?",
+        "a": "A plant",
+        "b": "A lion",
+        "c": "A rock"
+      },
+      "q4": {
+        "prompt": "Animals that eat only plants are called herbivores."
+      },
+      "q5": {
+        "prompt": "An animal that eats other animals is a...",
+        "a": "Carnivore",
+        "b": "Herbivore",
+        "c": "Plant"
+      },
+      "q6": {
+        "prompt": "The sun provides the energy for most food chains."
+      }
+    },
+    "circulatory5": {
+      "q1": {
+        "prompt": "The heart pumps blood around the body."
+      },
+      "q2": {
+        "prompt": "Blood travels through the body inside blood vessels."
+      },
+      "q3": {
+        "prompt": "Which organ pumps the blood?",
+        "a": "The heart",
+        "b": "The stomach",
+        "c": "The brain"
+      },
+      "q4": {
+        "prompt": "The circulatory system carries oxygen to all parts of the body."
+      },
+      "q5": {
+        "prompt": "What do we call the tubes that carry blood?",
+        "a": "Blood vessels",
+        "b": "Bones",
+        "c": "Nerves"
+      },
+      "q6": {
+        "prompt": "The heart is a muscle."
+      }
+    },
+    "energy6": {
+      "q1": {
+        "prompt": "Energy makes things move, work or change."
+      },
+      "q2": {
+        "prompt": "The sun is an important source of energy."
+      },
+      "q3": {
+        "prompt": "Which of these is a renewable source of energy?",
+        "a": "Wind",
+        "b": "Coal",
+        "c": "Oil"
+      },
+      "q4": {
+        "prompt": "Electricity is a form of energy we use every day."
+      },
+      "q5": {
+        "prompt": "Which of these is a fossil fuel?",
+        "a": "Petroleum (oil)",
+        "b": "Sunlight",
+        "c": "Wind"
+      },
+      "q6": {
+        "prompt": "Renewable energy sources will run out very soon."
+      }
     }
   },
   "social": {
@@ -4121,6 +4453,242 @@
       },
       "q51": {
         "prompt": "History only studies events that happened more than 100 years ago."
+      }
+    },
+    "family2": {
+      "q1": {
+        "prompt": "A mother and a father are part of the family."
+      },
+      "q2": {
+        "prompt": "Your grandparents are the parents of your mother or your father."
+      },
+      "q3": {
+        "prompt": "Who is your mother's brother?",
+        "a": "your uncle",
+        "b": "your cousin",
+        "c": "your grandfather"
+      },
+      "q4": {
+        "prompt": "Brothers and sisters share the same parents."
+      },
+      "q5": {
+        "prompt": "What do you call the daughter of your aunt and uncle?",
+        "a": "cousin",
+        "b": "sister",
+        "c": "grandmother"
+      },
+      "q6": {
+        "prompt": "In a family, people take care of one another."
+      },
+      "q7": {
+        "prompt": "Who is your father's mother?",
+        "a": "your grandmother",
+        "b": "your aunt",
+        "c": "your cousin"
+      },
+      "q8": {
+        "prompt": "All families are exactly the same."
+      },
+      "q9": {
+        "prompt": "What do we do as a family?",
+        "a": "help each other",
+        "b": "ignore each other",
+        "c": "always argue"
+      },
+      "q10": {
+        "prompt": "A family can have people of different ages."
+      }
+    },
+    "school2": {
+      "q1": {
+        "prompt": "At school we learn new things."
+      },
+      "q2": {
+        "prompt": "The teacher helps us learn."
+      },
+      "q3": {
+        "prompt": "Where do we keep our books in class?",
+        "a": "in our bag or on the shelf",
+        "b": "in the fridge",
+        "c": "in the garden"
+      },
+      "q4": {
+        "prompt": "We play in the playground at break time."
+      },
+      "q5": {
+        "prompt": "What do we use to write at school?",
+        "a": "a pencil",
+        "b": "a fork",
+        "c": "a pillow"
+      },
+      "q6": {
+        "prompt": "We should respect our classmates."
+      },
+      "q7": {
+        "prompt": "What do we do when someone is speaking in class?",
+        "a": "we listen",
+        "b": "we shout",
+        "c": "we leave"
+      },
+      "q8": {
+        "prompt": "The school library has books to read."
+      },
+      "q9": {
+        "prompt": "What do we learn to do with our classmates?",
+        "a": "to share",
+        "b": "to push",
+        "c": "to bother them"
+      },
+      "q10": {
+        "prompt": "Going to school helps us learn and make friends."
+      }
+    },
+    "neigh2": {
+      "q1": {
+        "prompt": "A neighbourhood has shops, streets and houses."
+      },
+      "q2": {
+        "prompt": "The park is a place in the neighbourhood where we can play."
+      },
+      "q3": {
+        "prompt": "Where do we buy bread?",
+        "a": "at the bakery",
+        "b": "at the pharmacy",
+        "c": "at the swimming pool"
+      },
+      "q4": {
+        "prompt": "A doctor works at the health centre."
+      },
+      "q5": {
+        "prompt": "Who puts out fires?",
+        "a": "firefighters",
+        "b": "cooks",
+        "c": "painters"
+      },
+      "q6": {
+        "prompt": "We should cross the street at the crossing."
+      },
+      "q7": {
+        "prompt": "Where do we post a letter to send it?",
+        "a": "in the postbox",
+        "b": "in the tree",
+        "c": "in the fountain"
+      },
+      "q8": {
+        "prompt": "In a neighbourhood we live near our neighbours."
+      },
+      "q9": {
+        "prompt": "Who helps us if there is a problem in the street?",
+        "a": "the police",
+        "b": "nobody",
+        "c": "the fish"
+      },
+      "q10": {
+        "prompt": "Keeping the neighbourhood clean is everyone's job."
+      }
+    },
+    "seasons1": {
+      "q1": {
+        "prompt": "There are four seasons in a year."
+      },
+      "q2": {
+        "prompt": "In winter the weather is usually cold."
+      },
+      "q3": {
+        "prompt": "Which season comes after spring?",
+        "a": "Summer",
+        "b": "Winter",
+        "c": "Autumn"
+      },
+      "q4": {
+        "prompt": "Leaves often fall from the trees in autumn."
+      },
+      "q5": {
+        "prompt": "In which season do we usually go to the beach?",
+        "a": "Summer",
+        "b": "Winter",
+        "c": "Autumn"
+      },
+      "q6": {
+        "prompt": "Many flowers bloom in spring."
+      }
+    },
+    "watercycle4": {
+      "q1": {
+        "prompt": "The water cycle explains how water moves around the Earth."
+      },
+      "q2": {
+        "prompt": "When water heats up, it can turn into water vapour. This is evaporation."
+      },
+      "q3": {
+        "prompt": "What do we call water that falls from the clouds as rain or snow?",
+        "a": "Precipitation",
+        "b": "Evaporation",
+        "c": "Filtration"
+      },
+      "q4": {
+        "prompt": "Clouds form when water vapour cools down. This is condensation."
+      },
+      "q5": {
+        "prompt": "Where does most evaporation happen?",
+        "a": "In oceans, seas and rivers",
+        "b": "Inside caves",
+        "c": "Deep underground"
+      },
+      "q6": {
+        "prompt": "The water cycle repeats again and again."
+      }
+    },
+    "climate5": {
+      "q1": {
+        "prompt": "Climate is the usual weather of a place over many years."
+      },
+      "q2": {
+        "prompt": "Weather and climate mean exactly the same thing."
+      },
+      "q3": {
+        "prompt": "Which climate is hot and dry, with very little rain?",
+        "a": "Desert climate",
+        "b": "Polar climate",
+        "c": "Oceanic climate"
+      },
+      "q4": {
+        "prompt": "Places near the poles usually have a cold climate."
+      },
+      "q5": {
+        "prompt": "Which factor influences the climate of a place?",
+        "a": "Its distance from the sea",
+        "b": "Its flag",
+        "c": "Its name"
+      },
+      "q6": {
+        "prompt": "A thermometer is used to measure temperature."
+      }
+    },
+    "eu6": {
+      "q1": {
+        "prompt": "The European Union is a group of European countries that work together."
+      },
+      "q2": {
+        "prompt": "Spain does not belong to the European Union."
+      },
+      "q3": {
+        "prompt": "Which currency is used in many European Union countries?",
+        "a": "The euro",
+        "b": "The dollar",
+        "c": "The pound"
+      },
+      "q4": {
+        "prompt": "Spain is a member of the European Union."
+      },
+      "q5": {
+        "prompt": "The European Union is formed by countries from which continent?",
+        "a": "Europe",
+        "b": "Asia",
+        "c": "Africa"
+      },
+      "q6": {
+        "prompt": "Countries in the European Union cooperate on trade and other matters."
       }
     }
   },
@@ -5502,6 +6070,242 @@
         "a": "cousins",
         "b": "nephews",
         "c": "grandchildren"
+      }
+    },
+    "num2": {
+      "q1": {
+        "prompt": "The number after 'six' is 'seven'."
+      },
+      "q2": {
+        "prompt": "'Ten' comes before 'eleven'."
+      },
+      "q3": {
+        "prompt": "How do you write the number 5?",
+        "a": "five",
+        "b": "four",
+        "c": "nine"
+      },
+      "q4": {
+        "prompt": "'Twelve' is the number 12."
+      },
+      "q5": {
+        "prompt": "Which word means the number 20?",
+        "a": "twenty",
+        "b": "twelve",
+        "c": "two"
+      },
+      "q6": {
+        "prompt": "'Three' comes after 'two'."
+      },
+      "q7": {
+        "prompt": "Which number is 'fifteen'?",
+        "a": "15",
+        "b": "50",
+        "c": "5"
+      },
+      "q8": {
+        "prompt": "'Eight' is the number 8."
+      },
+      "q9": {
+        "prompt": "Which word means the number 10?",
+        "a": "ten",
+        "b": "nine",
+        "c": "eleven"
+      },
+      "q10": {
+        "prompt": "'One' is the first number when we count."
+      }
+    },
+    "colors2": {
+      "q1": {
+        "prompt": "On a sunny day the sky is blue."
+      },
+      "q2": {
+        "prompt": "Grass is green."
+      },
+      "q3": {
+        "prompt": "What colour is a banana?",
+        "a": "yellow",
+        "b": "blue",
+        "c": "purple"
+      },
+      "q4": {
+        "prompt": "Snow is white."
+      },
+      "q5": {
+        "prompt": "What colour is a ripe strawberry?",
+        "a": "red",
+        "b": "green",
+        "c": "black"
+      },
+      "q6": {
+        "prompt": "The sun looks yellow."
+      },
+      "q7": {
+        "prompt": "What colour is an orange?",
+        "a": "orange",
+        "b": "blue",
+        "c": "pink"
+      },
+      "q8": {
+        "prompt": "At night the sky looks dark, almost black."
+      },
+      "q9": {
+        "prompt": "What colour are most leaves in summer?",
+        "a": "green",
+        "b": "pink",
+        "c": "grey"
+      },
+      "q10": {
+        "prompt": "A red apple is red."
+      }
+    },
+    "pets2": {
+      "q1": {
+        "prompt": "A dog can be a pet."
+      },
+      "q2": {
+        "prompt": "A cat says 'meow'."
+      },
+      "q3": {
+        "prompt": "Which pet barks?",
+        "a": "a dog",
+        "b": "a fish",
+        "c": "a bird"
+      },
+      "q4": {
+        "prompt": "A pet fish can live in a fish tank at home."
+      },
+      "q5": {
+        "prompt": "Which pet has soft fur and says 'meow'?",
+        "a": "a cat",
+        "b": "a duck",
+        "c": "a cow"
+      },
+      "q6": {
+        "prompt": "A rabbit is a small animal with long ears."
+      },
+      "q7": {
+        "prompt": "What does a pet dog like to do?",
+        "a": "play",
+        "b": "fly",
+        "c": "swim in the sea"
+      },
+      "q8": {
+        "prompt": "A parrot is a bird that some people keep as a pet."
+      },
+      "q9": {
+        "prompt": "Where does a pet fish live?",
+        "a": "in water",
+        "b": "in a tree",
+        "c": "under the bed"
+      },
+      "q10": {
+        "prompt": "We should feed our pets and take care of them."
+      }
+    },
+    "greetings1": {
+      "q1": {
+        "prompt": "We say 'Good morning' in the morning."
+      },
+      "q2": {
+        "prompt": "'Goodbye' is a way to say hello."
+      },
+      "q3": {
+        "prompt": "What do you say when you meet someone?",
+        "a": "Hello",
+        "b": "Goodbye",
+        "c": "Thank you"
+      },
+      "q4": {
+        "prompt": "We say 'Good night' before going to sleep."
+      },
+      "q5": {
+        "prompt": "How can you answer 'How are you?'",
+        "a": "I'm fine, thank you",
+        "b": "See you",
+        "c": "Sit down"
+      },
+      "q6": {
+        "prompt": "'Please' and 'thank you' are polite words."
+      }
+    },
+    "family4": {
+      "q1": {
+        "prompt": "Your mother's son is your brother."
+      },
+      "q2": {
+        "prompt": "Your grandmother is your father's daughter."
+      },
+      "q3": {
+        "prompt": "Who is your father's brother?",
+        "a": "Your uncle",
+        "b": "Your cousin",
+        "c": "Your nephew"
+      },
+      "q4": {
+        "prompt": "Your parents are your mother and father."
+      },
+      "q5": {
+        "prompt": "What do you call the child of your aunt and uncle?",
+        "a": "Cousin",
+        "b": "Sister",
+        "c": "Grandparent"
+      },
+      "q6": {
+        "prompt": "A sister is a female member of the family."
+      }
+    },
+    "routines5": {
+      "q1": {
+        "prompt": "'I wake up' is something you do in the morning."
+      },
+      "q2": {
+        "prompt": "'I go to bed' is a morning routine."
+      },
+      "q3": {
+        "prompt": "What do you usually do first in the morning?",
+        "a": "Wake up",
+        "b": "Go to sleep",
+        "c": "Have dinner"
+      },
+      "q4": {
+        "prompt": "'To have breakfast' means to eat in the morning."
+      },
+      "q5": {
+        "prompt": "Which activity do you usually do at night?",
+        "a": "Go to bed",
+        "b": "Wake up",
+        "c": "Get dressed"
+      },
+      "q6": {
+        "prompt": "'Brush your teeth' is part of a daily routine."
+      }
+    },
+    "food6": {
+      "q1": {
+        "prompt": "An apple is a kind of fruit."
+      },
+      "q2": {
+        "prompt": "Bread is a kind of fruit."
+      },
+      "q3": {
+        "prompt": "Which of these is a vegetable?",
+        "a": "Carrot",
+        "b": "Banana",
+        "c": "Chicken"
+      },
+      "q4": {
+        "prompt": "Breakfast, lunch and dinner are meals of the day."
+      },
+      "q5": {
+        "prompt": "Which drink comes from cows?",
+        "a": "Milk",
+        "b": "Orange juice",
+        "c": "Water"
+      },
+      "q6": {
+        "prompt": "We use a fork and a knife to eat."
       }
     }
   },

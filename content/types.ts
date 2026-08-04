@@ -16,7 +16,14 @@ export type Materia =
   | "sociales"
   | "cuarto";
 
-export type Nivel = "3" | "4";
+/*
+ * Nivel = curso de Primaria al que pertenece un ejercicio. Se alinea con el
+ * rango de `Curso` (src/lib/storage) para poder filtrar el contenido por curso
+ * en el registro (ADR-002, adenda multi-curso con contenido). El registro usa
+ * `Ejercicio.nivel` como discriminador de curso: dos cursos con contenido activo
+ * nunca mezclan sus ejercicios aunque compartan id de tema.
+ */
+export type Nivel = "1" | "2" | "3" | "4" | "5" | "6";
 
 export type TipoEjercicio =
   | "opcion-multiple"
@@ -61,7 +68,14 @@ export type OperacionMate =
   | "sub"
   | "times-tables"
   | "multiply-one-digit"
-  | "division-exact";
+  | "division-exact"
+  // 2.º de Primaria (números hasta 99, sin llevadas)
+  | "add-nocarry"
+  | "sub-noborrow"
+  | "times-easy"
+  // 1.º de Primaria (sumas hasta 10) y 4.º (multiplicación por dos cifras)
+  | "add-to-ten"
+  | "multiply-two-digit";
 
 export interface EjercicioGenerado {
   id: string;

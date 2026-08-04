@@ -6,7 +6,7 @@
  * También provee la verificación de respuesta por tipo de ejercicio. Puro y
  * testeable: la aleatoriedad (barajado, operandos) es inyectable.
  */
-import type { EjercicioAny, Materia } from "@content/types";
+import type { EjercicioAny, Materia, Nivel } from "@content/types";
 import { esGenerado } from "@content/types";
 import {
   exercisesByTopic,
@@ -55,13 +55,16 @@ export function prepareExercise(
  * vacío, se usa el pool completo (el niño ha terminado la asignatura: empieza de nuevo).
  */
 export function buildSession(
+  curso: Nivel,
   materia: Materia,
   tema: string | null,
   length: number = DEFAULT_SESSION_LENGTH,
   rng: Rng = Math.random,
   excludeIds: ReadonlySet<string> = new Set(),
 ): PreparedExercise[] {
-  const fullPool = tema ? exercisesByTopic(materia, tema) : exercisesBySubject(materia);
+  const fullPool = tema
+    ? exercisesByTopic(curso, materia, tema)
+    : exercisesBySubject(curso, materia);
   if (fullPool.length === 0) return [];
   const filtered = fullPool.filter((e) => !excludeIds.has(e.id));
   const pool = filtered.length > 0 ? filtered : fullPool;
@@ -167,12 +170,13 @@ export function buildReviewSession(
  * `excludeIds` filtra las preguntas ya dominadas por el niño.
  */
 export function buildDailySession(
+  curso: Nivel,
   perSubject = 3,
   rng: Rng = Math.random,
   excludeIds: ReadonlySet<string> = new Set(),
 ): PreparedExercise[] {
   const all = ALL_SUBJECTS.flatMap((materia) =>
-    buildSession(materia, null, perSubject, rng, excludeIds),
+    buildSession(curso, materia, null, perSubject, rng, excludeIds),
   );
   return shuffle(all, rng);
 }

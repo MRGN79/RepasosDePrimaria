@@ -21,7 +21,15 @@
       "shapes": "Shapes and geometry",
       "time": "Time and measurement",
       "length": "Length and distance",
-      "fractions": "Fractions"
+      "fractions": "Fractions",
+      "count_100": "Numbers to 100",
+      "add_nocarry": "Addition without carrying",
+      "sub_noborrow": "Subtraction without borrowing",
+      "times_2_5_10": "2, 5 and 10 times tables",
+      "add_to_10": "Adding up to 10",
+      "multiply_2digit": "Two-digit multiplication",
+      "decimals": "Decimal numbers",
+      "percentages": "Percentages"
     }
   },
   "spanish": {
@@ -38,7 +46,14 @@
       "punctuation": "Punctuation marks",
       "comprehension": "Reading comprehension",
       "text_types": "Types of text",
-      "spelling_specific": "Specific spelling rules"
+      "spelling_specific": "Specific spelling rules",
+      "syllables": "Syllables",
+      "capitals": "Capital letters",
+      "singular_plural": "Singular and plural",
+      "vowels": "Vowels",
+      "verb_tenses": "Verb tenses",
+      "subject_predicate": "Subject and predicate",
+      "diphthong_hiatus": "Diphthongs and hiatus"
     }
   },
   "science": {
@@ -53,7 +68,14 @@
       "states": "States of matter",
       "skeleton": "The Skeleton and Muscles",
       "forces": "Forces and Movement",
-      "solar_system": "The Solar System"
+      "solar_system": "The Solar System",
+      "five_senses": "The five senses",
+      "human_body": "The human body",
+      "animals_basic": "Animals",
+      "living_nonliving": "Living and non-living things",
+      "food_chains": "Food chains",
+      "circulatory": "The circulatory system",
+      "energy_sources": "Energy and its sources"
     }
   },
   "social": {
@@ -64,7 +86,14 @@
       "maps": "Maps and compass points",
       "spain": "Spain: landscape and regions",
       "population": "Population and work",
-      "time": "Historical time"
+      "time": "Historical time",
+      "family": "Family",
+      "school": "School",
+      "neighborhood": "The neighbourhood",
+      "seasons": "The seasons",
+      "water_cycle": "The water cycle",
+      "climate": "Climate",
+      "european_union": "The European Union"
     }
   },
   "english": {
@@ -76,7 +105,12 @@
       "animals": "Animals",
       "greetings": "Greetings",
       "numbers": "Numbers",
-      "family": "Family"
+      "family": "Family",
+      "numbers_1_20": "Numbers 1-20",
+      "colors": "Colours",
+      "animals_pets": "Pets",
+      "daily_routines": "Daily routines",
+      "food": "Food and meals"
     }
   },
   "cuarto4": {

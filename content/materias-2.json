@@ -1,0 +1,126 @@
+{
+  "materias": [
+    {
+      "id": "matematicas",
+      "tituloKey": "content:math.title",
+      "colorToken": "--tdp-subject-math",
+      "icon": "star",
+      "temas": [
+        {
+          "id": "numbers.count_100",
+          "tituloKey": "content:math.topic.count_100",
+          "disponible": true
+        },
+        {
+          "id": "operations.add_nocarry",
+          "tituloKey": "content:math.topic.add_nocarry",
+          "disponible": true
+        },
+        {
+          "id": "operations.sub_noborrow",
+          "tituloKey": "content:math.topic.sub_noborrow",
+          "disponible": true
+        },
+        {
+          "id": "operations.times_2_5_10",
+          "tituloKey": "content:math.topic.times_2_5_10",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "lengua",
+      "tituloKey": "content:spanish.title",
+      "colorToken": "--tdp-subject-spanish",
+      "icon": "backpack",
+      "temas": [
+        {
+          "id": "phonology.syllables",
+          "tituloKey": "content:spanish.topic.syllables",
+          "disponible": true
+        },
+        {
+          "id": "orthography.capitals",
+          "tituloKey": "content:spanish.topic.capitals",
+          "disponible": true
+        },
+        {
+          "id": "grammar.singular_plural",
+          "tituloKey": "content:spanish.topic.singular_plural",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "ciencias",
+      "tituloKey": "content:science.title",
+      "colorToken": "--tdp-subject-science",
+      "icon": "rocket",
+      "langTagKey": "content:science.langTag",
+      "temas": [
+        {
+          "id": "senses.five_senses",
+          "tituloKey": "content:science.topic.five_senses",
+          "disponible": true
+        },
+        {
+          "id": "body.human_body",
+          "tituloKey": "content:science.topic.human_body",
+          "disponible": true
+        },
+        {
+          "id": "living_things.animals_basic",
+          "tituloKey": "content:science.topic.animals_basic",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "sociales",
+      "tituloKey": "content:social.title",
+      "colorToken": "--tdp-subject-social",
+      "icon": "home",
+      "temas": [
+        {
+          "id": "community.family",
+          "tituloKey": "content:social.topic.family",
+          "disponible": true
+        },
+        {
+          "id": "community.school",
+          "tituloKey": "content:social.topic.school",
+          "disponible": true
+        },
+        {
+          "id": "community.neighborhood",
+          "tituloKey": "content:social.topic.neighborhood",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "ingles",
+      "tituloKey": "content:english.title",
+      "colorToken": "--tdp-subject-english",
+      "icon": "streak",
+      "langTagKey": "content:english.langTag",
+      "temas": [
+        {
+          "id": "en_vocabulary.numbers_1_20",
+          "tituloKey": "content:english.topic.numbers_1_20",
+          "disponible": true
+        },
+        {
+          "id": "en_vocabulary.colors",
+          "tituloKey": "content:english.topic.colors",
+          "disponible": true
+        },
+        {
+          "id": "en_vocabulary.animals_pets",
+          "tituloKey": "content:english.topic.animals_pets",
+          "disponible": true
+        }
+      ]
+    }
+  ]
+}

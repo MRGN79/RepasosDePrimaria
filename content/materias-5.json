@@ -1,0 +1,71 @@
+{
+  "materias": [
+    {
+      "id": "matematicas",
+      "tituloKey": "content:math.title",
+      "colorToken": "--tdp-subject-math",
+      "icon": "star",
+      "temas": [
+        {
+          "id": "numbers.decimals",
+          "tituloKey": "content:math.topic.decimals",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "lengua",
+      "tituloKey": "content:spanish.title",
+      "colorToken": "--tdp-subject-spanish",
+      "icon": "backpack",
+      "temas": [
+        {
+          "id": "grammar.subject_predicate",
+          "tituloKey": "content:spanish.topic.subject_predicate",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "ciencias",
+      "tituloKey": "content:science.title",
+      "colorToken": "--tdp-subject-science",
+      "icon": "rocket",
+      "langTagKey": "content:science.langTag",
+      "temas": [
+        {
+          "id": "human_body.circulatory",
+          "tituloKey": "content:science.topic.circulatory",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "sociales",
+      "tituloKey": "content:social.title",
+      "colorToken": "--tdp-subject-social",
+      "icon": "home",
+      "temas": [
+        {
+          "id": "geography.climate",
+          "tituloKey": "content:social.topic.climate",
+          "disponible": true
+        }
+      ]
+    },
+    {
+      "id": "ingles",
+      "tituloKey": "content:english.title",
+      "colorToken": "--tdp-subject-english",
+      "icon": "streak",
+      "langTagKey": "content:english.langTag",
+      "temas": [
+        {
+          "id": "en_vocabulary.daily_routines",
+          "tituloKey": "content:english.topic.daily_routines",
+          "disponible": true
+        }
+      ]
+    }
+  ]
+}
