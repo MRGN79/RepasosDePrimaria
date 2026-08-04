@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   build:
-    name: Lint + Build
+    name: Lint + Test + Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,5 +36,34 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Unit tests
+        run: npm run test:run
+
       - name: Build
         run: npm run build
+
+  rules:
+    name: Firestore security rules (emulator)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Java (JDK 21)
+        # El emulador de Firestore corre sobre la JVM.
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Firestore rules tests (emulator)
+        run: npm run test:rules
