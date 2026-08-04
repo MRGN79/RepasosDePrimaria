@@ -19,6 +19,17 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   paquete que se ampliará más adelante, igual que se hizo con 3.º.
 - El progreso, la racha y la misión diaria de cada curso siguen siendo
   independientes: las actividades de 2.º y de 3.º nunca se mezclan.
+- **Primer contenido de 1.º, 4.º, 5.º y 6.º de Primaria (paquete ligero).** Los
+  cuatro cursos que quedaban dejan de aparecer como "Pronto" y ofrecen ya, en cada
+  una de las cinco materias, un tema jugable alineado al currículo oficial de cada
+  curso: en 1.º, sumas hasta 10, las vocales, seres vivos y no vivos, las
+  estaciones y los saludos en inglés; en 4.º, la multiplicación por dos cifras,
+  los tiempos verbales, las cadenas alimentarias, el ciclo del agua y la familia
+  en inglés; en 5.º, los números decimales, sujeto y predicado, el aparato
+  circulatorio, el clima y las rutinas diarias; y en 6.º, los porcentajes, los
+  diptongos e hiatos, la energía y sus fuentes, la Unión Europea y la comida en
+  inglés. Es un primer paquete pensado para poder navegar y probar todos los
+  cursos; se ampliará más adelante, igual que en 2.º y 3.º.
 
 - **Política de privacidad** accesible desde Ajustes, en español e inglés.
   Explica en lenguaje claro qué datos se guardan (la cuenta del adulto y el
