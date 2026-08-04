@@ -9,6 +9,17 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- **Contenido de 2.º de Primaria (primer paquete).** Al elegir el curso de 2.º,
+  las cinco materias muestran ya actividades reales (antes aparecían como
+  "Pronto"), alineadas al currículo oficial de 2.º: en Matemáticas, números hasta
+  100, sumas y restas sin llevar y las tablas del 2, el 5 y el 10; en Lengua,
+  sílabas, mayúsculas y singular/plural; en Natural Science, los sentidos, el
+  cuerpo humano y los animales; en Sociales, la familia, el colegio y el barrio;
+  y en English, los números 1–20, los colores y las mascotas. Es un primer
+  paquete que se ampliará más adelante, igual que se hizo con 3.º.
+- El progreso, la racha y la misión diaria de cada curso siguen siendo
+  independientes: las actividades de 2.º y de 3.º nunca se mezclan.
+
 - **Política de privacidad** accesible desde Ajustes, en español e inglés.
   Explica en lenguaje claro qué datos se guardan (la cuenta del adulto y el
   progreso de cada perfil de hijo, sin ningún dato que identifique al niño), en

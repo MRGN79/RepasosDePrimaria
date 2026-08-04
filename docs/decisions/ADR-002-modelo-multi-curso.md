@@ -145,5 +145,85 @@ dispositivo; duplicarlas sorprendería al usuario al cambiar de curso. El perfil
 se mantiene por curso (caso hermanos) pero con herencia para evitar fricción.
 
 ---
+
+## Adenda (2026-08-04): del catálogo consciente de curso al catálogo con contenido por curso
+
+**Estado:** Aceptado · **Decidido por:** Arquitecto
+
+### Contexto de la adenda
+
+El ADR original dejó fuera a propósito el contenido: "sólo 3.º tiene contenido…
+no se toca el contenido existente ni el registro". Al abordar el **primer paquete
+de contenido de 2.º de Primaria** (MVP ligero), esa frontera se cruza y aparece un
+riesgo latente que el diseño original no cubría: el registro de ejercicios
+(`content/registry.ts`) filtraba **sólo por materia + tema**, sin curso. Con dos
+cursos con contenido activo simultáneamente, dos temas homónimos de cursos
+distintos mezclarían sus ejercicios (misión diaria, sesión por tema, ficha
+imprimible). Los síntomas concretos:
+
+- `content/materias.json` era una lista plana única (la taxonomía de 3.º), sin
+  dimensión de curso.
+- `exercisesByTopic` / `topicsWithContent` no consideraban el curso.
+- `Nivel = "3" | "4"` no cubría el resto de cursos y `Ejercicio.nivel` no se usaba
+  para filtrar.
+- `src/lib/catalog.ts` codificaba `COURSE_WITH_CONTENT = "3"` como constante fija;
+  `courseHasContent` y `buildSubjectVMs`/`buildTopicVMs` asumían **un único curso
+  con contenido en toda la app**.
+
+### Decisión de la adenda
+
+1. **`Ejercicio.nivel` es el discriminador de curso.** `Nivel` se alinea con
+   `Curso` (`"1".."6"`). Todas las consultas del registro filtran también por
+   `nivel`, de modo que dos cursos con contenido nunca mezclan ejercicios aunque
+   compartan id de tema. Las firmas pasan a
+   `exercisesByTopic(curso, materia, tema)`, `exercisesBySubject(curso, materia)`,
+   `topicsWithContent(curso, materia)`.
+
+2. **El catálogo pasa a ser un índice por curso.** Cada curso con contenido tiene
+   su propio fichero (`content/materias.json` = 3.º, `content/materias-2.json` =
+   2.º), cargados en un mapa `curso → CatalogoMaterias` en `catalog.ts`. Se
+   descarta un único JSON con todos los cursos incrustados para no reescribir el
+   índice grande de 3.º ni su suite i18n, y porque ficheros separados son más
+   legibles y fáciles de revisar por curso.
+
+3. **"Qué cursos tienen contenido" se DERIVA del registro, no de una constante.**
+   `courseHasContent(curso)` consulta `coursesWithContent()` (el conjunto de
+   `nivel` presentes en el contenido real). Añadir un tercer curso en el futuro
+   sólo requiere su índice y su contenido: no se vuelve a tocar esta función ni el
+   catálogo. Se elimina `COURSE_WITH_CONTENT`.
+
+4. **`buildSubjectVMs`/`buildTopicVMs` funcionan con N cursos con contenido.** Un
+   curso con contenido recorre **su propio** índice; los cursos sin contenido
+   siguen mostrando las 5 troncales en "Pronto" (se reutiliza la metadata de
+   materia —icono, color, título— de 3.º, que es común a toda Primaria).
+
+5. **Generadores de cálculo propios de 2.º.** Se añaden a `randomMath.ts` tres
+   operaciones alineadas a LOMLOE 2.º —`add-nocarry` (suma sin llevar ≤ 99),
+   `sub-noborrow` (resta sin pedir prestado) y `times-easy` (tablas del 2, 5 y
+   10)— reutilizando el patrón de ejercicio generado (D-6) en lugar de escribir
+   cientos de combinaciones a mano.
+
+El threading del curso se propaga hasta la UI (`buildSession`, `buildDailySession`,
+`buildPrintSheet`, `useSession`, `SessionContainer`, `App.tsx`) tomando siempre el
+curso activo del store (`currentCourse`).
+
+### Consecuencias
+
+- **Aislamiento garantizado por tests** (`registry.multicourse.test.ts`): conjuntos
+  de ejercicios disjuntos por curso, sesiones y misión diaria acotadas al curso.
+- El aislamiento de **progreso** entre cursos ya lo daba el ADR original
+  (`courses[curso].progress`, keyeado por tema dentro de cada curso): aunque dos
+  cursos compartan un id de tema, sus contadores no se cruzan.
+- Añadir un curso nuevo es aditivo: índice + contenido con su `nivel`. Ninguna de
+  las funciones de catálogo/registro vuelve a tocarse.
+
+### Por qué es adenda y no un ADR nuevo
+
+Es una **extensión natural** de la decisión "el catálogo depende del curso"
+(sección 4 del ADR): pasa de *consciente de curso* a *con contenido por curso*. No
+cambia el modelo de persistencia (v2 intacto), ni la vista aplanada, ni las reglas
+de aislamiento de progreso. No hay cambio de rumbo que justifique un ADR-003-bis.
+
+---
 <!-- Copiar este archivo como docs/decisions/ADR-NNN-titulo-en-kebab-case.md -->
 <!-- Nunca reutilizar un número, aunque el ADR se deprece -->

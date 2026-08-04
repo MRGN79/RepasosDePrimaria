@@ -12,6 +12,7 @@ Especificación funcional del Analista Funcional para el arranque del proyecto.
 | [05-user-stories-mvp.md](./05-user-stories-mvp.md) | User stories priorizadas con criterios de aceptación |
 | [06-i18n-textos-ui.md](./06-i18n-textos-ui.md) | Claves i18n con valor EN de referencia |
 | [07-app-android-firebase.md](./07-app-android-firebase.md) | Pivote a app Android (Capacitor) + login del tutor + datos en la nube (Firebase): user stories, criterios y plan de incrementos (ver ADR-003) |
+| [08-catalogo-materias-temas-2do.md](./08-catalogo-materias-temas-2do.md) | Catálogo LOMLOE de 2.º de Primaria (MVP ligero): temas por materia, criterios de aceptación, aislamiento por curso (ver ADR-002 adenda) |
 
 ## Estado y siguientes pasos
 
