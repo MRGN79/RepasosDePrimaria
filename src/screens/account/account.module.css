@@ -173,6 +173,50 @@
   font-size: var(--tdp-font-size-xs);
 }
 
+/*
+ * MigrationNotice (flujos §11.1) — sección reforzante encima de "Crear".
+ * Tratamiento CALMADO (surface-warm), NUNCA estado de error: comunica que el
+ * progreso del dispositivo se suma al perfil, no que algo va mal. El icono de
+ * nube es decorativo (aria-hidden); la información vive en el título + cuerpo.
+ * Texto en --tdp-color-text para contraste ≥4.5:1 sobre surface-warm.
+ */
+.migrationNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--tdp-space-3);
+  padding: var(--tdp-space-4);
+  background: var(--tdp-color-surface-warm);
+  border: var(--tdp-border-width) solid var(--tdp-color-border);
+  border-radius: var(--tdp-radius-lg);
+}
+
+.migrationNoticeIcon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--tdp-color-primary);
+}
+
+.migrationNoticeBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tdp-space-2);
+}
+
+.migrationNoticeTitle {
+  margin: 0;
+  font-size: var(--tdp-font-size-base);
+  font-weight: var(--tdp-font-weight-bold);
+  color: var(--tdp-color-text);
+}
+
+.migrationNoticeText {
+  margin: 0;
+  font-size: var(--tdp-font-size-sm);
+  line-height: var(--tdp-line-height-base);
+  color: var(--tdp-color-text);
+}
+
 .divider {
   display: flex;
   align-items: center;

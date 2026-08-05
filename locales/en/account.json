@@ -38,7 +38,20 @@
     "avatar": "Choose an avatar",
     "nickname": "Choose a nickname",
     "create": "Create profile",
-    "limitReached": "You've reached the maximum number of children for this account."
+    "limitReached": "You've reached the maximum number of children for this account.",
+    "migrationNotice": {
+      "title": "Your progress will move here",
+      "body": "The progress saved on this device will be added to this profile, so nothing is lost.",
+      "multiCourse": "Progress from every course you've played on this device will be transferred."
+    }
+  },
+  "migration": {
+    "regionLabel": "Progress sync",
+    "inProgress": "Saving your progress to the cloud…",
+    "doneToast": "Your progress is safely in the cloud.",
+    "incompleteTitle": "Some progress isn't saved yet",
+    "incompleteBody": "We couldn't finish saving part of your progress to the cloud. It's still safe on this device and we'll keep trying.",
+    "retryAction": "Try again now"
   },
   "selector": {
     "title": "Who's playing?",

@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageLayout, AppHeader, ToggleSwitch, Button, Icon } from "@/components";
+import { AdultChallenge } from "@/components/AdultChallenge";
 import { COURSES, type Language, type Curso } from "@/lib/storage";
 import { courseLabelKey } from "@/lib/catalog";
 import styles from "./SettingsScreen.module.css";
@@ -23,6 +24,13 @@ type SettingsScreenProps = {
   onClearData: () => void;
   onHome: () => void;
   onBack: () => void;
+  /**
+   * Sección "Cuenta" (US-E8). Presente solo con nube activa y sesión: si falta,
+   * la sección NO se renderiza (modo local no tiene cuenta). `onSwitchAccount`
+   * ejecuta el cierre de sesión — vive en AppRoot; aquí solo se dispara tras el
+   * reto de adulto y la confirmación.
+   */
+  account?: { onSwitchAccount: () => void };
 };
 
 export function SettingsScreen({
@@ -39,9 +47,11 @@ export function SettingsScreen({
   onClearData,
   onHome,
   onBack,
+  account,
 }: SettingsScreenProps) {
-  const { t } = useTranslation(["settings", "content", "common", "legal"]);
+  const { t } = useTranslation(["settings", "content", "common", "legal", "account"]);
   const [confirmClear, setConfirmClear] = useState(false);
+  const [accountStep, setAccountStep] = useState<"idle" | "challenge" | "confirm">("idle");
 
   return (
     <PageLayout
@@ -119,6 +129,62 @@ export function SettingsScreen({
             {t("settings:about.privacy")}
           </Button>
         </fieldset>
+
+        {account ? (
+          <fieldset className={styles.group}>
+            <legend className={styles.legend}>{t("settings:account.label")}</legend>
+            <p className={styles.help}>{t("settings:account.help")}</p>
+            {accountStep === "idle" ? (
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => setAccountStep("challenge")}
+              >
+                {t("settings:account.switch")}
+              </Button>
+            ) : null}
+            {accountStep === "challenge" ? (
+              <AdultChallenge
+                onPass={() => setAccountStep("confirm")}
+                onCancel={() => setAccountStep("idle")}
+                headingLevel={2}
+              />
+            ) : null}
+            {accountStep === "confirm" ? (
+              <div
+                className={styles.accountConfirmBox}
+                role="group"
+                aria-labelledby="settings-account-confirm-title"
+              >
+                <p
+                  id="settings-account-confirm-title"
+                  className={styles.accountConfirmTitle}
+                >
+                  {t("settings:account.switchConfirmTitle")}
+                </p>
+                <p className={styles.confirmText}>
+                  {t("settings:account.switchConfirmBody")}
+                </p>
+                <div className={styles.confirmActions}>
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    onClick={() => setAccountStep("idle")}
+                  >
+                    {t("settings:account.switchCancel")}
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    onClick={() => account.onSwitchAccount()}
+                  >
+                    {t("settings:account.switchConfirmButton")}
+                  </Button>
+                </div>
+              </div>
+            ) : null}
+          </fieldset>
+        ) : null}
 
         <fieldset className={[styles.group, styles.dangerGroup].join(" ")}>
           <legend className={styles.legend}>{t("settings:clearData.label")}</legend>

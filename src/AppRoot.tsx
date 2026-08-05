@@ -13,12 +13,13 @@
  * directo, sin PIN). El paso de rol + reto de adulto en la rama Google fija el
  * rol antes de crear el documento (ADR-004 §1).
  */
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { User } from "firebase/auth";
 import { GameProvider } from "@/state/gameStore";
 import { CloudGameProvider } from "@/state/CloudGameProvider";
 import { App } from "@/App";
+import { MigrationStatus, type MigrationPhase } from "@/components";
 import { isCloudEnabled } from "@/lib/firebase/config";
 import {
   onTutorAuthChanged,
@@ -44,7 +45,19 @@ import {
 } from "@/lib/firebase/firestore";
 import { hasPin, verifyPin, setPin } from "@/lib/pinLock";
 import { nicknameKey } from "@/lib/profile";
-import type { Curso, Language } from "@/lib/storage";
+import {
+  loadState,
+  coursesWithProgress,
+  type Curso,
+  type Language,
+} from "@/lib/storage";
+import {
+  beginMigration,
+  resumeMigrationIfPending,
+  migrationMarkerExists,
+  type MigrationTarget,
+  type RunOptions,
+} from "@/lib/firebase/migration";
 import { TutorAuthScreen, type AuthMode } from "@/screens/TutorAuthScreen";
 import { ConsentScreen } from "@/screens/ConsentScreen";
 import { PrivacyPolicyScreen } from "@/screens/PrivacyPolicyScreen";
@@ -105,6 +118,13 @@ function CloudRoot() {
   const [pinTargetChild, setPinTargetChild] = useState<ChildProfile | null>(null);
   const [activeChild, setActiveChild] = useState<ChildProfile | null>(null);
 
+  // Traslado del progreso local a la nube (Épica E). Aviso NO bloqueante: el niño
+  // juega mientras corre en segundo plano.
+  const [migrationPhase, setMigrationPhase] = useState<MigrationPhase | null>(null);
+  const doneTimer = useRef<number | undefined>(undefined);
+  const startedTargets = useRef<Set<string>>(new Set());
+  const activeTargetRef = useRef<MigrationTarget | null>(null);
+
   const provider = user ? providerIdOf(user) : null;
 
   const resetSetup = useCallback(() => {
@@ -122,6 +142,11 @@ function CloudRoot() {
         setUserDoc(null);
         setChildren([]);
         setActiveChild(null);
+        // Higiene: al cerrar sesión no debe quedar estado de PIN colgando.
+        setPinMode(null);
+        setPinTargetChild(null);
+        setLockedIds([]);
+        setMigrationPhase(null);
         resetSetup();
       }
     });
@@ -230,6 +255,43 @@ function CloudRoot() {
     void signOutTutor();
   }, []);
 
+  /* --------------------------- migración de progreso --------------------------- */
+
+  // Observa el runner y mapea sus fases al aviso no bloqueante. El toast de
+  // "completado" se autodescarta (~4,5 s).
+  const migrationOptions = useCallback((): RunOptions => {
+    return {
+      onProgress: ({ phase, pending }) => {
+        window.clearTimeout(doneTimer.current);
+        if (phase === "running") {
+          setMigrationPhase("inProgress");
+        } else if (phase === "incomplete" || pending.length > 0) {
+          setMigrationPhase("incomplete");
+        } else {
+          setMigrationPhase("done");
+          doneTimer.current = window.setTimeout(() => setMigrationPhase(null), 4500);
+        }
+      },
+    };
+  }, []);
+
+  // Arranca el traslado tras crear el PRIMER perfil (tutor o niño). En segundo
+  // plano: no bloquea la navegación al juego. Autoprotegida en el propio módulo.
+  const startMigration = useCallback(
+    (target: MigrationTarget) => {
+      startedTargets.current.add(`${target.uid}:${target.childId}`);
+      void beginMigration(target, migrationOptions()).catch(() => setMigrationPhase(null));
+    },
+    [migrationOptions],
+  );
+
+  // Reintento manual de los cursos pendientes para el perfil activo.
+  const onRetryMigration = useCallback(() => {
+    const target = activeTargetRef.current;
+    if (!target) return;
+    void resumeMigrationIfPending(target, migrationOptions());
+  }, [migrationOptions]);
+
   const onConsentAccept = useCallback(() => {
     void (async () => {
       if (!user || !setupRole) return;
@@ -255,6 +317,8 @@ function CloudRoot() {
           if (setupRole === "tutor") {
             const childId = await createChildProfile(user.uid, p);
             resetSetup();
+            // Traslada el progreso local a este primer perfil (segundo plano).
+            startMigration({ uid: user.uid, childId });
             // Si ahora hay más de un hijo, ofrecer PIN para el nuevo perfil.
             const kids = await listChildren(user.uid);
             setChildren(kids);
@@ -268,6 +332,8 @@ function CloudRoot() {
           } else {
             await createKidAccount(user.uid, locale, p.mote, p.avatar, p.currentCourse);
             resetSetup();
+            // Modelo B: mismo traslado hacia la cuenta de niño (childId null).
+            startMigration({ uid: user.uid, childId: null });
             await refreshAccount();
           }
         } catch (e) {
@@ -278,8 +344,35 @@ function CloudRoot() {
         }
       })();
     },
-    [user, setupRole, locale, resetSetup, refreshAccount],
+    [user, setupRole, locale, resetSetup, refreshAccount, startMigration],
   );
+
+  // Perfil activo actual como destino de migración (para reanudar/reintentar).
+  const activeTarget = useMemo<MigrationTarget | null>(() => {
+    if (!user) return null;
+    if (userDoc?.role === "kid") return { uid: user.uid, childId: null };
+    if (userDoc?.role === "tutor" && activeChild) return { uid: user.uid, childId: activeChild.id };
+    return null;
+  }, [user, userDoc, activeChild]);
+
+  useEffect(() => {
+    activeTargetRef.current = activeTarget;
+  }, [activeTarget]);
+
+  // Reanudación al arrancar (US-E6): cuando un perfil pasa a activo, reintenta una
+  // vez los pendientes destinados a ESE target. Si acabamos de arrancar la
+  // migración aquí (primer perfil), el target ya está marcado y no se duplica.
+  useEffect(() => {
+    if (!activeTarget) return;
+    const key = `${activeTarget.uid}:${activeTarget.childId}`;
+    if (startedTargets.current.has(key)) return;
+    startedTargets.current.add(key);
+    void resumeMigrationIfPending(activeTarget, migrationOptions());
+  }, [activeTarget, migrationOptions]);
+
+  useEffect(() => {
+    return () => window.clearTimeout(doneTimer.current);
+  }, []);
 
   const onSelectChild = useCallback((child: ChildProfile) => {
     void (async () => {
@@ -293,6 +386,29 @@ function CloudRoot() {
   }, []);
 
   /* ------------------------------ render ------------------------------ */
+
+  const account = { onSwitchAccount: onSignOut };
+
+  // Banda no bloqueante del traslado, superpuesta al juego. Frontend controla el
+  // posicionamiento (glue de layout); el aspecto lo define el componente.
+  const migrationOverlay =
+    migrationPhase !== null ? (
+      <div
+        style={{
+          position: "fixed",
+          top: "0.75rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "min(92%, 32rem)",
+          zIndex: 50,
+        }}
+      >
+        <MigrationStatus
+          phase={migrationPhase}
+          onRetry={migrationPhase === "incomplete" ? onRetryMigration : undefined}
+        />
+      </div>
+    ) : null;
 
   if (authLoading || bootLoading) {
     return <Loading />;
@@ -369,11 +485,16 @@ function CloudRoot() {
   }
 
   if (setupStep === "profile") {
+    // El aviso de traslado solo en el PRIMER perfil del dispositivo con avance real.
+    const migCourses = coursesWithProgress(loadState());
+    const showMigrationNotice = !migrationMarkerExists() && migCourses.length > 0;
     return (
       <ProfileSetupScreen
         variant={setupRole === "kid" ? "kid" : "tutorChild"}
         busy={busy}
         errorKey={profileError}
+        showMigrationNotice={showMigrationNotice}
+        migrationCourseCount={migCourses.length}
         onCreate={onProfileCreate}
       />
     );
@@ -427,26 +548,32 @@ function CloudRoot() {
   // Cuenta de niño → juego directo (sin selector ni PIN).
   if (userDoc?.role === "kid") {
     return (
-      <CloudGameProvider
-        uid={user.uid}
-        childId={null}
-        seed={{ avatar: userDoc.avatar, mote: userDoc.mote, currentCourse: userDoc.currentCourse }}
-      >
-        <App />
-      </CloudGameProvider>
+      <>
+        <CloudGameProvider
+          uid={user.uid}
+          childId={null}
+          seed={{ avatar: userDoc.avatar, mote: userDoc.mote, currentCourse: userDoc.currentCourse }}
+        >
+          <App account={account} />
+        </CloudGameProvider>
+        {migrationOverlay}
+      </>
     );
   }
 
   // Cuenta de tutor con perfil activo → juego.
   if (userDoc?.role === "tutor" && activeChild) {
     return (
-      <CloudGameProvider
-        uid={user.uid}
-        childId={activeChild.id}
-        seed={{ avatar: activeChild.avatar, mote: activeChild.mote, currentCourse: activeChild.currentCourse }}
-      >
-        <App />
-      </CloudGameProvider>
+      <>
+        <CloudGameProvider
+          uid={user.uid}
+          childId={activeChild.id}
+          seed={{ avatar: activeChild.avatar, mote: activeChild.mote, currentCourse: activeChild.currentCourse }}
+        >
+          <App account={account} />
+        </CloudGameProvider>
+        {migrationOverlay}
+      </>
     );
   }
 

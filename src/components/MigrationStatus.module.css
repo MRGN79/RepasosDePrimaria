@@ -1,0 +1,140 @@
+/*
+ * MigrationStatus — banda no modal bajo el AppHeader (flujos §11.2).
+ * Tratamiento CALMADO por defecto (surface-warm): estado neutro/informativo,
+ * NO la semántica correcto/incorrecto de Feedback. El estado incompleto NUNCA
+ * usa --tdp-color-error: reutiliza la superficie cálida para no leerse como fallo.
+ * Solo el estado "completado" adopta la superficie de éxito (icono ✓ + texto).
+ */
+
+.root {
+  border-radius: var(--tdp-radius-lg);
+  border: var(--tdp-border-width) solid var(--tdp-color-border);
+  padding: var(--tdp-space-3) var(--tdp-space-4);
+  font-size: var(--tdp-font-size-sm);
+  color: var(--tdp-color-text);
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: var(--tdp-space-3);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tdp-space-3);
+}
+
+.iconWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tdp-space-1);
+  flex: 0 0 auto;
+}
+
+.text {
+  flex: 1 1 auto;
+  font-weight: var(--tdp-font-weight-bold);
+}
+
+.heading {
+  flex: 1 1 auto;
+  font-weight: var(--tdp-font-weight-bold);
+}
+
+.body {
+  margin: 0;
+  line-height: var(--tdp-line-height-base);
+  color: var(--tdp-color-text);
+}
+
+.actions {
+  display: flex;
+}
+
+/* ── Estado A — EN CURSO: superficie cálida + icono primario ─────────────── */
+.inProgress {
+  background-color: var(--tdp-color-surface-warm);
+  border-color: var(--tdp-color-border);
+}
+.inProgress .iconWrap {
+  color: var(--tdp-color-primary);
+}
+
+/* Puntos suspensivos animados: pulso suave, sin parpadeo brusco (A11Y-MOTION-04).
+   Con reduce-motion quedan estáticos pero visibles (tres puntos). */
+.dots {
+  display: inline-flex;
+  gap: var(--tdp-space-1);
+  flex: 0 0 auto;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--tdp-radius-pill);
+  background-color: var(--tdp-color-primary);
+  opacity: 0.45;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dot {
+    animation: dotPulse 1400ms var(--tdp-ease-in-out) infinite;
+  }
+  .dot:nth-child(2) {
+    animation-delay: 200ms;
+  }
+  .dot:nth-child(3) {
+    animation-delay: 400ms;
+  }
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── Estado B — COMPLETADO: superficie de éxito + icono ✓ (no solo color) ── */
+.done {
+  background-color: var(--tdp-color-success-bg);
+  border-color: var(--tdp-color-success);
+  color: var(--tdp-color-success-text);
+}
+.done .iconWrap {
+  color: var(--tdp-color-success-text);
+}
+.done .text {
+  color: var(--tdp-color-success-text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .done {
+    animation: toastIn var(--tdp-duration-base) var(--tdp-ease-out);
+  }
+}
+
+@keyframes toastIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Estado C — INCOMPLETO / RECUPERABLE: calmado, NUNCA rojo de error ───── */
+.incomplete {
+  background-color: var(--tdp-color-surface-warm);
+  border-color: var(--tdp-color-border);
+  border-width: var(--tdp-border-width-strong);
+}
+.incomplete .iconWrap {
+  color: var(--tdp-color-primary);
+}

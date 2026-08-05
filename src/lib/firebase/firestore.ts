@@ -22,6 +22,7 @@ import {
   doc,
   collection,
   getDoc,
+  getDocFromServer,
   getDocs,
   setDoc,
   updateDoc,
@@ -181,6 +182,27 @@ export async function loadCourse(
   const [c0, c1, c2, c3, c4] = coursesPath(uid, childId);
   const ref = childId === null ? doc(db(), c0, c1, c2, curso) : doc(db(), c0, c1, c2, c3, c4, curso);
   const snap = await getDoc(ref);
+  if (!snap.exists()) return null;
+  return cloudDocToCourseState(snap.data());
+}
+
+/**
+ * Como `loadCourse`, pero fuerza la lectura desde el SERVIDOR (`getDocFromServer`),
+ * ignorando la caché offline de Firestore. Es la relectura de verificación del
+ * traslado (verify-before-delete): con la persistencia offline activada, un
+ * `getDoc` normal podría devolver el valor desde la caché local y "confirmar" una
+ * escritura que el servidor aún no tiene. Sin red, esta lectura falla (rechaza),
+ * lo que deja el curso pendiente — el comportamiento correcto: sin red no se puede
+ * afirmar que el servidor lo tiene. Devuelve null si el documento no existe.
+ */
+export async function loadCourseFromServer(
+  uid: string,
+  childId: string | null,
+  curso: Curso,
+): Promise<CourseState | null> {
+  const [c0, c1, c2, c3, c4] = coursesPath(uid, childId);
+  const ref = childId === null ? doc(db(), c0, c1, c2, curso) : doc(db(), c0, c1, c2, c3, c4, curso);
+  const snap = await getDocFromServer(ref);
   if (!snap.exists()) return null;
   return cloudDocToCourseState(snap.data());
 }

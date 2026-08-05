@@ -38,7 +38,20 @@
     "avatar": "Elige un avatar",
     "nickname": "Elige un apodo",
     "create": "Crear perfil",
-    "limitReached": "Has alcanzado el número máximo de hijos para esta cuenta."
+    "limitReached": "Has alcanzado el número máximo de hijos para esta cuenta.",
+    "migrationNotice": {
+      "title": "Tu progreso se guarda aquí",
+      "body": "El progreso guardado en este dispositivo se añadirá a este perfil, así no se pierde nada.",
+      "multiCourse": "Se transferirá el progreso de todos los cursos que hayas jugado en este dispositivo."
+    }
+  },
+  "migration": {
+    "regionLabel": "Guardado del progreso",
+    "inProgress": "Guardando tu progreso en la nube…",
+    "doneToast": "Tu progreso está a salvo en la nube.",
+    "incompleteTitle": "Parte del progreso aún no está guardado",
+    "incompleteBody": "No hemos podido terminar de guardar parte de tu progreso en la nube. Sigue a salvo en este dispositivo y lo seguiremos intentando.",
+    "retryAction": "Reintentar ahora"
   },
   "selector": {
     "title": "¿Quién juega?",

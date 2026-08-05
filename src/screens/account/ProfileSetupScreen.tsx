@@ -6,7 +6,7 @@
  */
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { PageLayout, Button } from "@/components";
+import { PageLayout, Button, Icon } from "@/components";
 import { AVATARS, NICKNAMES, DEFAULT_AVATAR, DEFAULT_NICKNAME } from "@/lib/profile";
 import { COURSES, DEFAULT_COURSE, type Curso } from "@/lib/storage";
 import { courseLabelKey } from "@/lib/catalog";
@@ -17,6 +17,14 @@ interface ProfileSetupScreenProps {
   initialCourse?: Curso;
   busy?: boolean;
   errorKey?: string | null;
+  /**
+   * Muestra el aviso de migración encima de "Crear" (US-E1/E5). Lo evalúa
+   * AppRoot leyendo `storage.ts`; degrada a `false` si no hay progreso local con
+   * avance real o `localStorage` no está disponible (US-E7).
+   */
+  showMigrationNotice?: boolean;
+  /** Nº de cursos con avance real; `>1` activa la línea `multiCourse`. */
+  migrationCourseCount?: number;
   onCreate: (profile: { mote: string; avatar: string; currentCourse: Curso }) => void;
 }
 
@@ -25,6 +33,8 @@ export function ProfileSetupScreen({
   initialCourse,
   busy = false,
   errorKey,
+  showMigrationNotice = false,
+  migrationCourseCount = 0,
   onCreate,
 }: ProfileSetupScreenProps) {
   const { t } = useTranslation(["account", "onboarding", "content"]);
@@ -101,6 +111,31 @@ export function ProfileSetupScreen({
             ))}
           </ul>
         </section>
+
+        {showMigrationNotice ? (
+          <aside
+            className={styles.migrationNotice}
+            role="note"
+            aria-labelledby="ps-migration-title"
+          >
+            <span className={styles.migrationNoticeIcon} aria-hidden="true">
+              <Icon name="cloud" size={28} />
+            </span>
+            <div className={styles.migrationNoticeBody}>
+              <h2 id="ps-migration-title" className={styles.migrationNoticeTitle}>
+                {t("account:profileSetup.migrationNotice.title")}
+              </h2>
+              <p className={styles.migrationNoticeText}>
+                {t("account:profileSetup.migrationNotice.body")}
+              </p>
+              {migrationCourseCount > 1 ? (
+                <p className={styles.migrationNoticeText}>
+                  {t("account:profileSetup.migrationNotice.multiCourse")}
+                </p>
+              ) : null}
+            </div>
+          </aside>
+        ) : null}
 
         {errorKey ? (
           <p className={styles.error} role="alert">

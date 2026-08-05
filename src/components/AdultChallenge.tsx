@@ -14,13 +14,20 @@ import styles from "@/screens/account/account.module.css";
 interface AdultChallengeProps {
   onPass: () => void;
   onCancel?: () => void;
+  /**
+   * Nivel del encabezado del título (WCAG 1.3.1/2.4.6). Por defecto h1, para el
+   * uso a pantalla completa (AppRoot). Cuando se embebe dentro de otra pantalla
+   * con su propio h1 (p. ej. SettingsScreen), pasar 2 para no duplicar nivel.
+   */
+  headingLevel?: 1 | 2 | 3;
 }
 
-export function AdultChallenge({ onPass, onCancel }: AdultChallengeProps) {
+export function AdultChallenge({ onPass, onCancel, headingLevel = 1 }: AdultChallengeProps) {
   const { t } = useTranslation("account");
   const challenge = useMemo(() => generateAdultChallenge(), []);
   const [value, setValue] = useState("");
   const [wrong, setWrong] = useState(false);
+  const Heading = `h${headingLevel}` as const;
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -33,7 +40,7 @@ export function AdultChallenge({ onPass, onCancel }: AdultChallengeProps) {
 
   return (
     <div className={styles.wrap}>
-      <h1 className={styles.title}>{t("adultChallenge.title")}</h1>
+      <Heading className={styles.title}>{t("adultChallenge.title")}</Heading>
       <p className={styles.subtitle}>{t("adultChallenge.body")}</p>
       <form className={styles.field} onSubmit={handleSubmit} noValidate>
         <label className={styles.label} htmlFor="adult-challenge">

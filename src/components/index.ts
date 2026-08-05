@@ -20,6 +20,8 @@ export type { MatchItem } from "./MatchingBoard";
 export { CelebrationModal } from "./CelebrationModal";
 export { ExerciseCard } from "./ExerciseCard";
 export { Feedback } from "./Feedback";
+export { MigrationStatus } from "./MigrationStatus";
+export type { MigrationPhase } from "./MigrationStatus";
 export { SoundToggle } from "./SoundToggle";
 export { ToggleSwitch } from "./ToggleSwitch";
 export { PageLayout } from "./PageLayout";
