@@ -147,6 +147,7 @@ export function SettingsScreen({
               <AdultChallenge
                 onPass={() => setAccountStep("confirm")}
                 onCancel={() => setAccountStep("idle")}
+                headingLevel={2}
               />
             ) : null}
             {accountStep === "confirm" ? (

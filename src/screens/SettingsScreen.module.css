@@ -60,7 +60,7 @@
 
 .confirmActions {
   display: flex;
-  gap: var(--tdp-gap-touch, 12px);
+  gap: var(--tdp-space-5);
 }
 
 .confirmActions > * {
