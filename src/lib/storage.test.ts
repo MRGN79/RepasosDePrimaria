@@ -2,6 +2,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import {
   STORAGE_KEY,
+  MIGRATION_KEY,
   SCHEMA_VERSION,
   DEFAULT_COURSE,
   defaultState,
@@ -13,7 +14,14 @@ import {
   isStorageAvailable,
   activeCourse,
   activeView,
+  loadMigrationState,
+  saveMigrationState,
+  clearMigrationState,
+  courseHasProgress,
+  coursesWithProgress,
+  removeCourseProgress,
   type PersistedState,
+  type MigrationState,
 } from "./storage";
 
 /*
@@ -262,5 +270,140 @@ describe("saveState / disponibilidad", () => {
     expect(isStorageAvailable()).toBe(false);
     expect(() => saveState(defaultState())).not.toThrow();
     if (original) Object.defineProperty(globalThis, "localStorage", original);
+  });
+});
+
+/* --------------------- marcador y estado de migración --------------------- */
+
+function progressedCourse() {
+  const cs = emptyCourseState();
+  cs.stars.total = 5;
+  cs.progress.correctByTopic = { sumas: 2 };
+  cs.progress.subjectsTried = ["matematicas"];
+  return cs;
+}
+
+function sampleMigration(): MigrationState {
+  return {
+    schemaVersion: 1,
+    status: "pending",
+    target: { uid: "u1", childId: "c1" },
+    pendingCourses: ["3", "4"],
+    attempts: 1,
+    lastErrorAt: "2026-08-05T10:00:00.000Z",
+  };
+}
+
+describe("courseHasProgress", () => {
+  it("falso para un curso vacío (solo por defecto)", () => {
+    expect(courseHasProgress(emptyCourseState())).toBe(false);
+  });
+
+  it("el perfil (avatar/apodo) NO cuenta como avance", () => {
+    const cs = emptyCourseState();
+    cs.profile = { avatarId: "fox", nicknameId: "explorer", nicknameCustom: null };
+    expect(courseHasProgress(cs)).toBe(false);
+  });
+
+  it("verdadero si hay estrellas, racha, medallas o progreso", () => {
+    expect(courseHasProgress(progressedCourse())).toBe(true);
+    const streakOnly = emptyCourseState();
+    streakOnly.streak.longest = 3;
+    expect(courseHasProgress(streakOnly)).toBe(true);
+  });
+});
+
+describe("coursesWithProgress", () => {
+  it("devuelve solo los cursos con avance real, en orden 1..6", () => {
+    const state: PersistedState = {
+      ...defaultState(),
+      currentCourse: "5",
+      courses: {
+        "5": progressedCourse(),
+        "2": progressedCourse(),
+        "3": emptyCourseState(),
+      },
+    };
+    expect(coursesWithProgress(state)).toEqual(["2", "5"]);
+  });
+
+  it("vacío si ningún curso tiene avance", () => {
+    expect(coursesWithProgress(defaultState())).toEqual([]);
+  });
+});
+
+describe("removeCourseProgress", () => {
+  it("borra un curso conservando preferences y currentCourse", () => {
+    saveState({
+      ...defaultState(),
+      currentCourse: "3",
+      preferences: { language: "es", sound: false, reducedMotion: true },
+      courses: { "3": progressedCourse(), "4": progressedCourse() },
+    });
+    removeCourseProgress("4");
+    const after = loadState();
+    expect(after.courses["4"]).toBeUndefined();
+    expect(after.courses["3"]).toBeDefined();
+    expect(after.preferences).toEqual({ language: "es", sound: false, reducedMotion: true });
+    expect(after.currentCourse).toBe("3");
+  });
+
+  it("es no-op si el curso no existe", () => {
+    saveState({ ...defaultState(), courses: { "3": progressedCourse() } });
+    expect(() => removeCourseProgress("6")).not.toThrow();
+    expect(loadState().courses["3"]).toBeDefined();
+  });
+});
+
+describe("marcador de migración (tdp:migration)", () => {
+  it("null si no existe", () => {
+    expect(loadMigrationState()).toBeNull();
+  });
+
+  it("round-trip: guarda y lee el mismo estado", () => {
+    const m = sampleMigration();
+    saveMigrationState(m);
+    expect(loadMigrationState()).toEqual(m);
+  });
+
+  it("vive en una clave separada de tdp:v1", () => {
+    saveMigrationState(sampleMigration());
+    saveState(defaultState());
+    expect(localStorage.getItem(MIGRATION_KEY)).not.toBeNull();
+    expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
+    // Borrar el marcador no toca el progreso.
+    clearMigrationState();
+    expect(loadMigrationState()).toBeNull();
+    expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
+  });
+
+  it("lectura defensiva: descarta un marcador corrupto o sin target", () => {
+    localStorage.setItem(MIGRATION_KEY, "no-json");
+    expect(loadMigrationState()).toBeNull();
+    localStorage.setItem(MIGRATION_KEY, JSON.stringify({ schemaVersion: 1, status: "pending" }));
+    expect(loadMigrationState()).toBeNull();
+    localStorage.setItem(MIGRATION_KEY, JSON.stringify({ schemaVersion: 99, target: { uid: "u", childId: null } }));
+    expect(loadMigrationState()).toBeNull();
+  });
+
+  it("normaliza pendingCourses filtrando cursos inválidos", () => {
+    localStorage.setItem(
+      MIGRATION_KEY,
+      JSON.stringify({
+        schemaVersion: 1,
+        status: "pending",
+        target: { uid: "u", childId: null },
+        pendingCourses: ["3", "9", "x"],
+        attempts: 0,
+        lastErrorAt: null,
+      }),
+    );
+    expect(loadMigrationState()?.pendingCourses).toEqual(["3"]);
+  });
+
+  it("acepta childId null (Modelo B) como target válido", () => {
+    const m: MigrationState = { ...sampleMigration(), target: { uid: "kid", childId: null } };
+    saveMigrationState(m);
+    expect(loadMigrationState()?.target).toEqual({ uid: "kid", childId: null });
   });
 });

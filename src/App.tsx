@@ -56,7 +56,16 @@ function formatBadgeDate(dateKey: string, lang: "en" | "es"): string {
   return new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric" }).format(date);
 }
 
-export function App() {
+interface AppProps {
+  /**
+   * Sección "Cuenta" de Ajustes (US-E8). Presente solo con nube activa y sesión;
+   * ausente ⟹ la sección no se renderiza (modo local no tiene cuenta). Se reenvía
+   * tal cual a SettingsScreen. `onSwitchAccount` vive en AppRoot (cierre de sesión).
+   */
+  account?: { onSwitchAccount: () => void };
+}
+
+export function App({ account }: AppProps = {}) {
   const { t, i18n } = useTranslation(["common", "content", "backpack"]);
   const store = useGameStore();
   const { state, removeFailedExerciseIds } = store;
@@ -318,6 +327,7 @@ export function App() {
         }}
         onHome={goHome}
         onBack={goHome}
+        account={account}
       />
     );
   }

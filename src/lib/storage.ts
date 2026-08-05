@@ -305,3 +305,151 @@ export function saveState(state: PersistedState): void {
 export function isStorageAvailable(): boolean {
   return getStorage() !== null;
 }
+
+/* ---------------------------------------------------------------------------
+ * Marcador y estado de reanudación del traslado del progreso local a la nube.
+ *
+ * Vive en una clave PROPIA (`tdp:migration`), separada del progreso (`tdp:v1`):
+ * debe sobrevivir a cerrar sesión (para no re-migrar en un segundo perfil del
+ * mismo dispositivo) y desaparecer al reinstalar la app (Android borra los datos
+ * del WebView, y se van a la vez el progreso y el marcador, quedando coherentes).
+ * Es un marcador a nivel de dispositivo: común a la cuenta de tutor y a la de
+ * niño (se migra hacia el primer perfil creado, del tipo que sea).
+ *
+ * Módulo puro: `MigrationState` son strings y `Curso`; no toca Firebase.
+ * ------------------------------------------------------------------------- */
+
+export const MIGRATION_KEY = "tdp:migration";
+export const MIGRATION_SCHEMA_VERSION = 1 as const;
+
+/** Perfil destino del traslado: `childId` null ⟹ cuenta de niño (Modelo B). */
+export interface MigrationTargetRef {
+  uid: string;
+  childId: string | null;
+}
+
+/** Estado persistido bajo `tdp:migration` (esquema versionado, lectura defensiva). */
+export interface MigrationState {
+  schemaVersion: typeof MIGRATION_SCHEMA_VERSION;
+  status: "pending" | "done";
+  target: MigrationTargetRef;
+  /** cursos con avance aún NO verificados en la nube */
+  pendingCourses: Curso[];
+  /** reintentos consumidos (gobierna el paso a aviso + reintento manual) */
+  attempts: number;
+  lastErrorAt: string | null;
+}
+
+function parseMigrationTarget(raw: unknown): MigrationTargetRef | null {
+  if (!isPlainObject(raw)) return null;
+  if (typeof raw.uid !== "string" || raw.uid.length === 0) return null;
+  const childId = raw.childId;
+  if (childId !== null && typeof childId !== "string") return null;
+  return { uid: raw.uid, childId };
+}
+
+/**
+ * Lee el marcador de migración de `localStorage`. Devuelve null si no existe,
+ * está corrupto, o su forma no es reconocible (lectura defensiva, como el resto
+ * del módulo). Un null significa "aún no ha empezado ninguna migración en este
+ * dispositivo" (por tanto, es el primer perfil).
+ */
+export function loadMigrationState(): MigrationState | null {
+  const ls = getStorage();
+  if (!ls) return null;
+  try {
+    const raw = ls.getItem(MIGRATION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as unknown;
+    if (!isPlainObject(parsed)) return null;
+    if (parsed.schemaVersion !== MIGRATION_SCHEMA_VERSION) return null;
+    const target = parseMigrationTarget(parsed.target);
+    if (!target) return null;
+    const status = parsed.status === "done" ? "done" : "pending";
+    const pendingCourses = Array.isArray(parsed.pendingCourses)
+      ? parsed.pendingCourses.filter(isCurso)
+      : [];
+    const attempts =
+      typeof parsed.attempts === "number" && parsed.attempts >= 0
+        ? Math.floor(parsed.attempts)
+        : 0;
+    const lastErrorAt = typeof parsed.lastErrorAt === "string" ? parsed.lastErrorAt : null;
+    return {
+      schemaVersion: MIGRATION_SCHEMA_VERSION,
+      status,
+      target,
+      pendingCourses,
+      attempts,
+      lastErrorAt,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function saveMigrationState(state: MigrationState): void {
+  const ls = getStorage();
+  if (!ls) return;
+  try {
+    ls.setItem(MIGRATION_KEY, JSON.stringify(state));
+  } catch {
+    // almacenamiento lleno o restringido: no romper la experiencia del niño
+  }
+}
+
+/** Borra el marcador de migración. Uso interno y de tests. */
+export function clearMigrationState(): void {
+  const ls = getStorage();
+  if (!ls) return;
+  try {
+    ls.removeItem(MIGRATION_KEY);
+  } catch {
+    // ignorar: sin marcador no se pierde progreso, solo se podría re-evaluar
+  }
+}
+
+/**
+ * ¿Este curso tiene AVANCE real? Verdadero si algún campo de aprendizaje difiere
+ * del estado por defecto. El `profile` (avatar/apodo) NO cuenta como avance: un
+ * curso donde solo se eligió avatar pero nunca se jugó se trata como "sin avance"
+ * y se omite del traslado (no se siembra un documento de nube vacío).
+ */
+export function courseHasProgress(cs: CourseState): boolean {
+  return (
+    cs.stars.total > 0 ||
+    cs.streak.longest > 0 ||
+    cs.dailyGoal.totalCompleted > 0 ||
+    Object.keys(cs.badges.unlocked).length > 0 ||
+    Object.keys(cs.progress.correctByTopic).length > 0 ||
+    Object.keys(cs.progress.correctBySubject).length > 0 ||
+    cs.progress.subjectsTried.length > 0 ||
+    cs.progress.correctExerciseIds.length > 0 ||
+    cs.progress.failedExerciseIds.length > 0
+  );
+}
+
+/** Cursos con avance real, en orden de `COURSES` (1..6). */
+export function coursesWithProgress(state: PersistedState): Curso[] {
+  const out: Curso[] = [];
+  for (const c of COURSES) {
+    const cs = state.courses[c];
+    if (cs && courseHasProgress(cs)) out.push(c);
+  }
+  return out;
+}
+
+/**
+ * Elimina los avances de UN curso de `tdp:v1`, conservando `preferences` y
+ * `currentCourse` intactos. Se usa tras verificar que la nube ya tiene ese curso.
+ * Si al borrar quedara sin la entrada del curso activo, `loadState()` la recrea
+ * vacía en la siguiente lectura, así que no rompe nada.
+ */
+export function removeCourseProgress(curso: Curso): void {
+  const ls = getStorage();
+  if (!ls) return;
+  const state = loadState();
+  if (!state.courses[curso]) return;
+  const courses = { ...state.courses };
+  delete courses[curso];
+  saveState({ ...state, courses });
+}
