@@ -155,6 +155,9 @@ Producto "todo de una vez"; ingeniería troceada en PRs revisables.
 - Dado un usuario con progreso en `localStorage` (esquema v2), cuando el tutor crea
   su primer perfil de hijo, entonces ese progreso se **asocia** a ese perfil sin
   pérdida, y se ofrece hacerlo explícitamente (no silencioso).
+- **Detalle completo en la [Épica E](#épica-e--migración-del-progreso-local-existente-incremento-4)**
+  (US-E1…US-E8): aviso explícito, verify-before-delete, todos los cursos, una sola
+  vez por dispositivo, Modelo B, reanudación/reintento, y cambio de cuenta de tutor.
 
 ### US-D2 (P0, Inc. 5) — Puerta parental para acciones sensibles
 - Dado una acción destructiva o de cuenta (borrar datos en la nube, borrar/cerrar
@@ -168,6 +171,316 @@ Producto "todo de una vez"; ingeniería troceada en PRs revisables.
   `.env.example`), se añade la **política de privacidad** y existe la **DPIA**.
 - Dado el Abogado, cuando revisa, entonces valida residencia de datos (Auth vs UE),
   base jurídica/consentimiento y declaración de Play Data safety.
+
+---
+
+## Épica E — Migración del progreso local existente (Incremento 4)
+
+> Desarrolla en detalle el placeholder **US-D1**. Rama: `feat/migracion-progreso-local`.
+> Contexto técnico: el progreso local vive en `localStorage` bajo la clave `tdp:v1`
+> (esquema v2, `src/lib/storage.ts`): un mapa `courses` con un `CourseState` por
+> curso (1.º–6.º) más `currentCourse` y las `preferences` del dispositivo. El
+> destino en la nube ya soporta `CourseState` por curso
+> (`src/lib/firebase/courseMapping.ts`), con dos rutas de cuenta (ADR-004):
+> **Modelo A** (perfil de hijo bajo cuenta de tutor → `children/{childId}/courses/{curso}`)
+> y **Modelo B** (cuenta propia de niño con Google → `users/{uid}/courses/{curso}`).
+>
+> **Principio rector:** *el progreso local nunca se pierde.* El dato local solo se
+> elimina cuando la nube ha confirmado que lo tiene (verify-before-delete). Ante
+> cualquier duda, gana conservar el dato local.
+
+### US-E1 (P0) — Aviso explícito de migración al crear el primer perfil (Modelo A)
+**Como** tutor que ya usaba la app sin cuenta
+**Quiero** que se me diga con claridad que el progreso guardado en este dispositivo
+se va a pasar al perfil de hijo que estoy creando
+**Para** entender qué ocurre con ese avance y no descubrirlo por sorpresa.
+
+**Criterios de aceptación:**
+- Dado que existe progreso local con avance real (al menos un curso con progreso
+  distinto del estado por defecto), cuando el tutor llega a la pantalla de creación
+  del **primer** perfil de hijo (`ProfileSetupScreen`, variante `tutorChild`),
+  entonces se muestra **antes de crear el perfil** un aviso explícito de que el
+  progreso guardado en este dispositivo se añadirá a ese perfil. No es una
+  migración silenciosa.
+- Dado el aviso, cuando el progreso local abarca **varios cursos**, entonces el
+  aviso indica que se transferirá el progreso de todos ellos (no solo el del curso
+  activo).
+- Dado que el tutor confirma la creación del perfil, cuando se ejecuta, entonces la
+  migración arranca inmediatamente después de crear el perfil (US-E2), sin pedir un
+  segundo paso manual.
+- **(A11y)** Dado que uso teclado o lector de pantalla, cuando aparece el aviso,
+  entonces es texto real (no solo color/icono), está asociado a la sección de
+  creación y el foco es visible y navegable sin ratón.
+- **(i18n)** Dado el aviso, cuando se muestra, entonces todos sus textos proceden de
+  claves i18n en EN y ES.
+
+### US-E2 (P0) — Migración segura: verificar antes de borrar (verify-before-delete)
+**Como** usuario con progreso acumulado
+**Quiero** que mi avance no se borre del dispositivo hasta que la nube confirme que
+lo tiene
+**Para** no perderlo si la subida falla a medias.
+
+**Criterios de aceptación:**
+- Dado un curso con progreso local, cuando se migra, entonces primero se **escribe**
+  en Firestore y después se **verifica** que la escritura se completó — leyendo de
+  vuelta el documento subido y confirmando que su contenido equivale al local
+  (progreso, estrellas, racha, medallas, misión diaria), o confirmando el resultado
+  satisfactorio de la transacción.
+- Dado que la verificación de un curso es **satisfactoria**, cuando termina,
+  entonces —y solo entonces— se elimina ese progreso del `localStorage`.
+- Dado que la verificación de un curso **falla** (error de red, resultado no
+  coincidente, cuota), cuando termina, entonces el progreso local de ese curso **se
+  conserva** intacto y la app **no** lo borra bajo ninguna circunstancia.
+- Dado un fallo de verificación, cuando ocurre, entonces la app lo trata como estado
+  reintentable (US-E6), nunca como pérdida silenciosa.
+- Dado que la nube ya contiene progreso previo para ese perfil/curso (perfil no
+  vacío), cuando se migra, entonces la migración **no sobrescribe destruyendo** el
+  progreso de nube existente (ver US-E4: la migración solo aplica al primer perfil
+  del dispositivo, por lo que este caso solo surge en una reejecución sobre un
+  perfil ya sembrado; en ese caso se conserva lo de mayor avance y no se pierde
+  ninguno de los dos).
+
+### US-E3 (P0) — Se migra el progreso de todos los cursos, no solo el activo
+**Como** familia que ha jugado en varios cursos en el mismo dispositivo
+**Quiero** que se transfiera el progreso de todos los cursos con avance
+**Para** no perder lo trabajado en los cursos que no son el activo.
+
+**Criterios de aceptación:**
+- Dado un `localStorage` con progreso en **varios cursos** (p. ej. 3.º y 5.º),
+  cuando se migra al perfil, entonces se transfiere el `CourseState` de **cada curso
+  con avance real**, cada uno a su documento de curso correspondiente en la nube.
+- Dado un curso cuyo `CourseState` es equivalente al estado por defecto (sin avance),
+  cuando se migra, entonces ese curso se **omite** (no se crean documentos de nube
+  vacíos).
+- Dado el `currentCourse` local, cuando concluye la migración, entonces el perfil de
+  nube queda con ese mismo curso como curso activo inicial (si tenía avance; si no,
+  el que corresponda por defecto).
+- Dado que la migración transfiere `CourseState`, cuando escribe en la nube, entonces
+  respeta la minimización ya existente (`courseStateToCloudDoc` descarta el texto
+  libre `nicknameCustom`); ningún dato personal identificante viaja a la nube.
+- Dado que las `preferences` del dispositivo (idioma, sonido, movimiento) son
+  globales y siguen siendo locales, cuando se migra, entonces **no** se transfieren
+  a la nube (permanecen en `localStorage`, como hasta ahora).
+
+### US-E4 (P0) — Una sola migración por dispositivo; sin fusión entre hermanos
+**Como** familia con varios hijos que comparten una tablet
+**Quiero** que el progreso local se asigne a un único perfil, sin mezclar avances de
+distintos hermanos
+**Para** que el progreso de cada niño quede limpio y sin ambigüedad.
+
+**Criterios de aceptación:**
+- Dado un dispositivo recién actualizado con progreso local, cuando se crea el
+  **primer** perfil en él (sea perfil de hijo de un tutor o cuenta propia de niño),
+  entonces la migración del progreso local ocurre **una única vez**, hacia ese primer
+  perfil.
+- Dado que la migración ya se completó en un dispositivo, cuando se crean **perfiles
+  o cuentas posteriores** en el mismo dispositivo, entonces **no** se les ofrece ni
+  se les aplica el progreso local (no hay fusión automática de progresos de varios
+  hermanos).
+- Dado que se registra que la migración terminó (marcador a nivel de dispositivo en
+  `localStorage`), cuando la app arranca de nuevo, entonces el marcador impide
+  reofrecer o repetir la migración salvo que quedara una parte pendiente por fallo de
+  verificación (US-E6).
+- Dado que dos hermanos comparten dispositivo, cuando cada uno quiere su propio
+  progreso limpio, entonces usan cuentas/perfiles distintos (login-logout de tutores
+  distintos vía US-E8, o el selector de perfil con PIN dentro de la misma cuenta de
+  tutor, ya existente en Inc. 3) — no la migración.
+
+### US-E5 (P0) — Migración análoga para la cuenta propia de niño (Modelo B)
+**Como** niño (con supervisión parental) que crea su propia cuenta con Google en un
+dispositivo donde ya había jugado sin cuenta
+**Quiero** que el progreso guardado en ese dispositivo se pase a mi cuenta
+**Para** seguir desde donde estaba, no desde cero.
+
+**Criterios de aceptación:**
+- Dado un dispositivo con progreso local y sin migración previa, cuando el niño crea
+  su cuenta propia (Modelo B, `ProfileSetupScreen` variante `kid`) como **primer**
+  perfil del dispositivo, entonces se aplica la **misma** migración que en Modelo A:
+  aviso explícito (US-E1), verify-before-delete (US-E2), todos los cursos (US-E3),
+  una sola vez (US-E4).
+- Dado el destino de nube del Modelo B, cuando se migra, entonces el `CourseState`
+  de cada curso se escribe bajo `users/{uid}/courses/{curso}` (no bajo `children/…`).
+- Dado el marcador de migración a nivel de dispositivo, cuando el primer perfil del
+  dispositivo es una cuenta de niño (Modelo B), entonces un perfil de tutor creado
+  después en el mismo dispositivo **no** vuelve a recibir el progreso local, y
+  viceversa (el marcador es común a ambos modelos: se migra a quien cree el primer
+  perfil, sea del tipo que sea).
+
+### US-E6 (P0) — La migración es reanudable y reintentable; nunca deja el dato a medias
+**Como** usuario cuya conexión falla o que cierra la app a mitad del alta
+**Quiero** que la migración se retome sin perder nada
+**Para** que un corte no me cueste el progreso.
+
+**Criterios de aceptación:**
+- Dado que el usuario **cancela o cierra** el alta después de crear el perfil pero
+  antes de que la migración termine, cuando vuelve a abrir la app, entonces el
+  progreso local que aún no se verificó **sigue presente** y la migración se
+  **reanuda** automáticamente hacia el mismo perfil para el que empezó (el estado
+  pendiente registra el perfil destino: `uid` + `childId`, o `uid` de la cuenta de
+  niño).
+- Dado que la verificación de uno o más cursos falló, cuando la app detecta progreso
+  local pendiente con el marcador de migración aún no cerrado, entonces **reintenta**
+  la subida+verificación de los cursos pendientes en segundo plano, sin bloquear el
+  juego del niño.
+- Dado un fallo de verificación persistente, cuando se agota un intento, entonces se
+  informa al usuario de forma **no bloqueante** de que parte del progreso aún no se
+  ha guardado en la nube y se ofrece **reintentar**; el progreso local permanece
+  disponible mientras tanto.
+- Dado que **todos** los cursos con avance se han verificado en la nube, cuando la
+  migración concluye, entonces se marca como completada (US-E4) y el progreso local
+  migrado se elimina; a partir de ahí la fuente de verdad del progreso es la nube.
+- Dado que la migración es idempotente, cuando se reejecuta un curso que ya había
+  llegado a la nube, entonces el resultado es el mismo documento (no duplica ni
+  corrompe), coherente con US-E2.
+- **(i18n)** Dado el aviso de reintento, cuando se muestra, entonces sus textos
+  proceden de claves i18n en EN y ES.
+
+### US-E7 (P1) — Usuario nuevo sin progreso local: alta limpia
+**Como** usuario que instala la app y crea una cuenta sin haber jugado antes
+**Quiero** un alta sencilla sin mensajes sobre migrar algo que no existe
+**Para** no confundirme con un aviso irrelevante.
+
+**Criterios de aceptación:**
+- Dado que no hay progreso local con avance real (no existe la clave, está corrupta,
+  el almacenamiento no está disponible, o todos los cursos están en el estado por
+  defecto), cuando se crea el primer perfil, entonces **no** se muestra el aviso de
+  migración (US-E1) y el alta transcurre como un alta limpia.
+- Dado ese caso, cuando termina el alta, entonces igualmente se registra el marcador
+  de dispositivo (US-E4) para no evaluar la migración en cada arranque.
+- Dado que el almacenamiento local no está disponible, cuando se evalúa la
+  migración, entonces la app degrada sin error (no rompe el alta), coherente con la
+  lectura defensiva de `storage.ts`.
+
+### US-E8 (P0) — Cambiar de cuenta de tutor en el mismo dispositivo
+**Como** adulto que comparte dispositivo (p. ej. dos progenitores, o un docente con
+varias familias)
+**Quiero** poder cerrar la sesión de una cuenta de tutor y entrar con otra fácilmente
+**Para** que cada cuenta acceda a sus propios perfiles sin mezclar progreso.
+
+**Criterios de aceptación:**
+- Dado que hay una sesión activa dentro del juego (cuenta de tutor con un solo hijo,
+  o cuenta de niño), cuando el adulto busca cambiar de cuenta, entonces existe un
+  control accesible de **cambiar de cuenta / cerrar sesión** desde dentro de la app
+  (en `SettingsScreen`), no solo desde el selector de perfiles con varios hijos.
+- Dado que el control de cambio de cuenta se activa, cuando se lanza, entonces queda
+  **protegido por el reto de adulto** (`AdultChallenge`, ya existente) para evitar
+  que un niño cierre sesión por accidente y deje al adulto en la pantalla de login.
+- Dado que el adulto confirma el cambio, cuando se ejecuta, entonces se cierra la
+  sesión actual (`signOut`) y la app vuelve a la pantalla de entrada, donde puede
+  iniciarse sesión con **otra** cuenta de tutor (o de niño).
+- Dado que se cierra la sesión, cuando ocurre, entonces el progreso del niño **no se
+  pierde**: permanece en la nube asociado a su cuenta/perfil; cerrar sesión no borra
+  datos de nube ni de dispositivo.
+- Dado que se cambia de cuenta, cuando la nueva sesión carga, entonces accede
+  **únicamente** a los perfiles de su propia cuenta (frontera por `uid` de las reglas
+  de Firestore, Inc. 3); nunca a los de la cuenta anterior.
+- **(A11y)** Dado que uso teclado o lector de pantalla, cuando abro y confirmo el
+  cambio de cuenta, entonces los controles tienen etiqueta, el foco es visible y el
+  diálogo de confirmación es navegable sin ratón.
+- **(i18n)** Dado cualquier texto del cambio de cuenta/confirmación, cuando se
+  muestra, entonces procede de claves i18n en EN y ES.
+
+> **Nota de alcance sobre US-E8 y la puerta parental (Inc. 5).** El reto de adulto
+> que protege el cambio de cuenta es la fricción ligera ya disponible
+> (`AdultChallenge`), no la puerta parental con reautenticación completa de Inc. 5
+> (US-D2). Cambiar de cuenta no es una acción destructiva (no borra datos), por lo
+> que no exige reautenticación; basta el reto de adulto. La reautenticación de Inc. 5
+> se reserva para acciones destructivas/de cuenta (borrar datos de nube, cerrar
+> cuenta, cambiar email).
+
+### Textos de interfaz (i18n) — referencia EN
+
+Claves nuevas de esta épica, con su valor EN de referencia (el valor ES se añade en
+implementación manteniendo equivalencia semántica; +30% de expansión previsto):
+
+```
+account.profileSetup.migrationNotice.title        "Your progress will move here"
+account.profileSetup.migrationNotice.body         "The progress saved on this device will be added to this profile, so nothing is lost."
+account.profileSetup.migrationNotice.multiCourse  "Progress from every course you've played on this device will be transferred."
+account.migration.inProgress                      "Saving your progress to the cloud…"
+account.migration.incompleteTitle                 "Some progress isn't saved yet"
+account.migration.incompleteBody                  "We couldn't finish saving part of your progress to the cloud. It's still safe on this device and we'll keep trying."
+account.migration.retryAction                     "Try again now"
+account.migration.doneToast                        "Your progress is safely in the cloud."
+settings.account.label                            "Account"
+settings.account.switch                           "Switch account"
+settings.account.signOut                          "Sign out"
+settings.account.switchConfirmTitle               "Switch to a different account?"
+settings.account.switchConfirmBody                "You'll be signed out and can sign in with another account. Your child's progress stays safely in the cloud."
+settings.account.switchConfirmButton              "Switch account"
+settings.account.switchCancel                     "Cancel"
+```
+
+### Casos edge identificados
+
+- **Progreso local corrupto o `schemaVersion` desconocida:** `parseState` ya devuelve
+  el estado por defecto; se trata como "sin progreso que migrar" (US-E7), nunca como
+  error de alta.
+- **`localStorage` no disponible** (modo privado, cuota llena): no hay nada que
+  migrar ni que borrar; el alta continúa (US-E7).
+- **Cierre de la app entre crear el perfil y verificar la subida:** migración
+  reanudable (US-E6); local intacto.
+- **Verificación que falla en unos cursos y no en otros:** se borran solo los cursos
+  verificados; los pendientes se conservan y se reintentan (US-E2 + US-E6).
+- **Perfil creado pero el niño empieza a jugar antes de que la migración termine:** el
+  juego escribe sobre el `CourseState` del curso activo en la nube; la migración debe
+  **fusionar sin retroceder** el avance (no sobrescribir con un estado más antiguo un
+  progreso ya mayor). Regla operativa: para cada curso, conservar el estado de mayor
+  avance; nunca reducir estrellas, racha longest, medallas ni ejercicios resueltos.
+- **Segundo perfil en el mismo dispositivo:** no recibe progreso local (US-E4).
+- **Reinstalación de la app:** al perderse `localStorage`, no hay progreso local ni
+  marcador; el usuario recupera su avance iniciando sesión (la fuente de verdad ya es
+  la nube), no vía migración.
+
+### Fuera de alcance (Inc. 4)
+
+- **Fusión de progresos de varios hermanos** en un mismo perfil: descartada por
+  decisión de producto (US-E4).
+- **Opción de "empezar de cero" descartando el progreso local** en el alta: no se
+  añade en este incremento (evita ambigüedad sobre qué pasa con el dato); el progreso
+  local nunca se descarta por defecto.
+- **Puerta parental con reautenticación completa** para acciones destructivas: es
+  Inc. 5 (US-D2). US-E8 solo cubre el cambio de cuenta con reto de adulto.
+- **Cuenta compartida entre dos progenitores** (mismo progreso del niño desde dos
+  identidades distintas): decisión de arquitectura aún abierta (ver `docs/BACKLOG.md`,
+  "Decisiones de arquitectura pendientes"). US-E8 permite alternar cuentas, no
+  compartir progreso entre ellas.
+- **Migración de `preferences` del dispositivo a la nube:** siguen siendo locales por
+  diseño.
+
+### Base jurídica del tratamiento (input para el Abogado)
+
+- La migración **no introduce datos personales nuevos**: el `CourseState` migrado no
+  contiene PII (el progreso es anónimo; `courseStateToCloudDoc` descarta el único
+  texto libre). El destino en la nube ya está cubierto por el consentimiento del
+  tutor / de la cuenta de niño capturado en Inc. 2/6 (`CONSENT_VERSION = "2026-08"`).
+- **Punto a validar por el Abogado:** que el texto de consentimiento vigente cubra
+  explícitamente el traslado a la nube de **progreso preexistente guardado en el
+  dispositivo** (no solo el progreso generado tras el alta). Si no lo cubre con
+  claridad, ajustar el copy antes del release. Base jurídica: ejecución del servicio
+  solicitado por el tutor (guardar y sincronizar el progreso del niño), sobre la base
+  del consentimiento ya registrado.
+
+### Requisitos no funcionales (Inc. 4)
+
+- **Integridad del dato (crítico):** cero pérdida de progreso. El borrado local solo
+  procede tras verificación positiva en la nube. Es la restricción dura del
+  incremento.
+- **No bloqueo del juego:** la migración y sus reintentos ocurren sin impedir que el
+  niño juegue; la experiencia offline-first (Inc. 3) se mantiene.
+- **Idempotencia:** reejecutar la migración de un curso no duplica ni corrompe el
+  documento de nube.
+
+### Dependencias
+
+- Inc. 3 mergeado (Firestore + perfiles + reglas + `CloudGameProvider`) — cumplido.
+- Proyecto Firebase real para verificación end-to-end de subida/verify en WebView y
+  offline (registrado en `.claude/pending-actions.md`); contra el emulador es
+  verificable en desarrollo.
+- Coordinación con la deuda técnica registrada por QA en la PR #31 (flush del
+  debounce de guardado en `CloudGameProvider`): el mismo problema de "última edición
+  sin flush" afecta a la ventana de migración; conviene resolverlo o tenerlo en
+  cuenta al implementar el verify-before-delete.
 
 ---
 
