@@ -94,6 +94,11 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   `RepasosDePrimaria` (GitHub redirige automáticamente la URL anterior).
 - Las rutas internas de la aplicación pasan a ser relativas para poder
   ejecutarse dentro de la app; ya no dependen de una subruta de un sitio web.
+- El **APK de prueba (debug)** pasa a firmarse siempre con la misma clave de
+  desarrollo, en lugar de con una clave distinta en cada compilación. Es un paso
+  previo para habilitar el inicio de sesión con Google en las versiones de
+  prueba. No afecta a la versión de publicación, que seguirá firmándose de forma
+  segura cuando llegue el momento de subir a Google Play.
 
 ### Removed
 
