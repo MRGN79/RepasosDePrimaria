@@ -17,6 +17,7 @@ export type IconName =
   | "star-outline"
   | "streak"
   | "lock"
+  | "cloud"
   | "rocket"
   | "sound-on"
   | "sound-off"
@@ -63,6 +64,9 @@ const PATHS: Record<IconName, JSX.Element> = {
       <rect x="5" y="11" width="14" height="9" rx="2" />
       <path d="M8 11V8a4 4 0 018 0v3" />
     </>
+  ),
+  cloud: (
+    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
   ),
   rocket: (
     <>

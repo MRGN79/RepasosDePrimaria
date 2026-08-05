@@ -33,5 +33,15 @@
     "confirmBody": "Se borrarán permanentemente todas tus estrellas, racha, medallas y progreso. Esta acción no tiene vuelta atrás.",
     "confirmButton": "Sí, borrarlo todo",
     "cancel": "Cancelar"
+  },
+  "account": {
+    "label": "Cuenta",
+    "help": "¿Compartes este dispositivo con otra familia?",
+    "switch": "Cambiar de cuenta",
+    "signOut": "Cerrar sesión",
+    "switchConfirmTitle": "¿Cambiar a otra cuenta?",
+    "switchConfirmBody": "Se cerrará la sesión y podrás entrar con otra cuenta. El progreso de tu hijo o hija sigue a salvo en la nube.",
+    "switchConfirmButton": "Cambiar de cuenta",
+    "switchCancel": "Cancelar"
   }
 }

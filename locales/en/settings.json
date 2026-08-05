@@ -33,5 +33,15 @@
     "confirmBody": "This will permanently delete all your stars, streaks, badges and progress. This action cannot be undone.",
     "confirmButton": "Yes, delete everything",
     "cancel": "Cancel"
+  },
+  "account": {
+    "label": "Account",
+    "help": "Sharing this device with another family?",
+    "switch": "Switch account",
+    "signOut": "Sign out",
+    "switchConfirmTitle": "Switch to a different account?",
+    "switchConfirmBody": "You'll be signed out and can sign in with another account. Your child's progress stays safely in the cloud.",
+    "switchConfirmButton": "Switch account",
+    "switchCancel": "Cancel"
   }
 }
