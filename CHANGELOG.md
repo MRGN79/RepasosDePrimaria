@@ -27,6 +27,20 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   identificador de sesión: nunca se guardan el correo, el nombre ni la foto. El
   avatar y el apodo salen de una lista cerrada, sin texto libre que identifique
   al niño.
+- **El progreso de antes de tener cuenta se traslada solo a la nube.** Si el
+  niño llevaba tiempo jugando sin cuenta y después un adulto crea la suya, todo
+  ese avance (racha, estrellas, medallas, misión diaria y el progreso de cada
+  curso jugado en el dispositivo) se traslada **automáticamente y sin perder
+  nada** a la nube al crear el primer perfil. Antes de que ocurra, la pantalla de
+  creación del perfil avisa de que ese progreso se va a guardar en la cuenta. El
+  traslado se hace en segundo plano —el niño puede seguir jugando mientras
+  tanto— y, si en algún momento no hay conexión, el avance permanece intacto en
+  el dispositivo y termina de guardarse en cuanto vuelve la red.
+- **Cambio de cuenta de adulto en el mismo dispositivo.** Desde Ajustes, un
+  adulto puede cerrar su sesión y entrar con otra cuenta —por ejemplo, si dos
+  familias comparten la misma tablet—. El cambio pide primero una comprobación
+  para personas adultas y una confirmación, y **no borra nada**: el progreso de
+  cada niño sigue a salvo en la nube.
 - **Contenido de 2.º de Primaria (primer paquete).** Al elegir el curso de 2.º,
   las cinco materias muestran ya actividades reales (antes aparecían como
   "Pronto"), alineadas al currículo oficial de 2.º: en Matemáticas, números hasta
