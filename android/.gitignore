@@ -59,6 +59,13 @@ captures/
 *.keystore
 key.properties
 
+# Excepción explícita: keystore de DEBUG, no de release. Usa las credenciales
+# públicas y conocidas que Android define para debug (alias/contraseña
+# "android"), sin valor como secreto. Se versiona a propósito para que CI y
+# cualquier máquina firmen los builds debug con la misma huella SHA-1/SHA-256,
+# la que se registra en Firebase/Google Cloud para Google Sign-In.
+!app/debug.keystore
+
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
 .cxx/
