@@ -24,3 +24,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Worktrees temporales de subagentes de Claude Code (aislamiento de sesión, no versionar)
+.claude/worktrees/
