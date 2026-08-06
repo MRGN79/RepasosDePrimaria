@@ -6,7 +6,7 @@
 > mantenerse equivalente a este documento. Cuando cambie la política, se cambian
 > ambos y se actualiza la fecha.
 >
-> **Última actualización:** 4 de agosto de 2026 · **Versión del texto:** 1.1
+> **Última actualización:** 6 de agosto de 2026 · **Versión del texto:** 1.2
 >
 > **Estado de implementación (importante para la exactitud del documento):** en
 > el momento de esta versión, la **cuenta del tutor** (email/contraseña o
@@ -108,8 +108,24 @@ Authentication; el proyecto **no** ve ni guarda la contraseña en claro.
   Google, Modelo B) se copian a la base de datos de progreso** (Firestore): residen
   únicamente en Firebase Authentication, que es su única fuente de verdad para
   ambos.
-- **No usamos cookies de terceros, ni analítica, ni perfiles publicitarios, ni
-  rastreadores.** No se realiza publicidad dirigida.
+- **No usamos analítica, ni perfiles publicitarios, ni rastreadores, ni cookies de
+  terceros con fines comerciales.** No se realiza publicidad dirigida. **Única
+  excepción, estrictamente de seguridad:** para proteger las cuentas frente a abuso
+  automatizado (creación masiva de cuentas, envío masivo de correos de verificación
+  o de restablecimiento de contraseña), la app usa **Google reCAPTCHA v3** al
+  comunicarse con Firebase. reCAPTCHA puede usar cookies u otro almacenamiento del
+  dominio de Google y analiza señales técnicas del dispositivo y del comportamiento
+  para distinguir un uso legítimo de un abuso automatizado; **no se usa con fines
+  analíticos ni publicitarios**. La base jurídica de esta señal es el **interés
+  legítimo en la seguridad del servicio** (art. 6.1.f RGPD); puedes **oponerte** a
+  este tratamiento (art. 21 RGPD) a través de los canales de contacto de esta
+  política. A diferencia del resto de la infraestructura de Firebase —donde Google
+  actúa como encargado del tratamiento bajo su DPA—, en el servicio estándar de
+  reCAPTCHA v3 Google puede tratar estas señales también para sus propios fines de
+  seguridad y prevención de abuso; el encuadre exacto de esa relación está pendiente
+  de confirmación por un profesional del derecho, y el objetivo es sustituir
+  reCAPTCHA por Play Integrity, que no envía señales de comportamiento a un tercero.
+  Aplica por igual en el Modelo A y en el Modelo B (cuenta propia del niño).
 
 ### 5. Base jurídica y consentimiento (tratamiento de datos de menores)
 
@@ -330,8 +346,23 @@ the project never sees or stores the password in clear text.
 - **Neither the adult's email nor the child's email (when they use their own Google
   account, Model B) are copied into the progress database** (Firestore): both
   reside only in Firebase Authentication, their single source of truth.
-- **No third-party cookies, analytics, advertising profiles or trackers.** No
-  targeted advertising is carried out.
+- **No analytics, advertising profiles, trackers, or third-party cookies for
+  commercial purposes.** No targeted advertising is carried out. **One strictly
+  security-related exception:** to protect accounts against automated abuse (mass
+  account creation, mass sending of verification or password-reset emails), the app
+  uses **Google reCAPTCHA v3** when communicating with Firebase. reCAPTCHA may use
+  cookies or other storage on Google's domain, and it analyzes technical device and
+  behavioral signals to distinguish legitimate use from automated abuse; **it is not
+  used for analytics or advertising purposes**. The legal basis for this signal is
+  the **legitimate interest in the security of the service** (Art. 6(1)(f) GDPR); you
+  may **object** to this processing (Art. 21 GDPR) through the contact channels in
+  this policy. Unlike the rest of the Firebase infrastructure —where Google acts as
+  processor under its DPA—, in the standard reCAPTCHA v3 service Google may also
+  process these signals for its own security and abuse-prevention purposes; the exact
+  characterization of that relationship is pending confirmation by a qualified
+  lawyer, and the goal is to replace reCAPTCHA with Play Integrity, which does not
+  send behavioral signals to a third party. This applies equally to Model A and Model
+  B (the child's own account).
 
 ### 5. Legal basis and consent (processing of minors' data)
 

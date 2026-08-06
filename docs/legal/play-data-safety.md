@@ -47,6 +47,7 @@ la publicación (no hay acceso a Play Console desde el entorno de desarrollo).
 | **Actividad en la app** | Progreso / interacciones en la app (progreso de aprendizaje) | Sí (perfil de hijo) | No | Funcionalidad de la app (guardar/sincronizar) | Opcional | Sin PII del menor |
 | **Info de la app y rendimiento** | Registros de fallos, diagnósticos | No | — | — | — | No se integra analítica ni crash reporting de terceros |
 | **Identificadores del dispositivo o de otro tipo** | Device ID / user ID publicitario | No | — | — | — | No se usa ID publicitario |
+| **Identificadores del dispositivo o de otro tipo** | Señales técnicas del dispositivo (reCAPTCHA v3 / Firebase App Check, ADR-005) | **Sí** | No | **Prevención de fraude, seguridad y cumplimiento** (Play declara esta finalidad como categoría propia, distinta de publicidad/analítica) | No opcional (mecanismo de seguridad, no vinculado a una acción del usuario) | Modo monitor: no bloquea el uso de la app. Hoy sin site key → aún no hay recopilación real. **Encuadre de Google pendiente de confirmación legal:** el servicio estándar de reCAPTCHA v3 no se rige por el DPA de Firebase y Google puede tratar la señal con fines propios de seguridad; si se confirma, revisar si esta fila debe declararse como dato **compartido** (no solo recopilado), salvo que aplique la excepción de Play para transferencias de prevención de fraude y seguridad |
 | **Ubicación** | Aproximada o precisa | No | — | — | — | — |
 | **Datos de salud / financieros / mensajes / fotos / contactos / audio** | — | No | — | — | — | — |
 

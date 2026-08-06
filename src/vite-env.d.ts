@@ -18,6 +18,13 @@ interface ImportMetaEnv {
   readonly VITE_FIREBASE_USE_EMULATOR?: string;
   /** Host del emulador (por defecto 127.0.0.1). */
   readonly VITE_FIREBASE_EMULATOR_HOST?: string;
+  /**
+   * App Check (ADR-005). Site key pública de reCAPTCHA v3 — sin ella, App
+   * Check queda ausente (no-op), no bloquea la app.
+   */
+  readonly VITE_FIREBASE_APPCHECK_RECAPTCHA_SITE_KEY?: string;
+  /** "true" activa el debug token de App Check. Solo debe usarse fuera de builds de producción. */
+  readonly VITE_FIREBASE_APPCHECK_DEBUG?: string;
 }
 
 interface ImportMeta {

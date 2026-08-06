@@ -1,5 +1,5 @@
 /*
- * Inicialización de Firebase (ADR-003, Inc. 2).
+ * Inicialización de Firebase (ADR-003, Inc. 2; App Check: ADR-005).
  *
  * Principios:
  * - La configuración llega por variables VITE_FIREBASE_* (públicas, no secretas).
@@ -15,6 +15,7 @@
  * públicos por diseño en cualquier app cliente Firebase.
  */
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth, connectAuthEmulator, type Auth } from "firebase/auth";
 import {
   initializeFirestore,
@@ -95,6 +96,7 @@ let cachedAuth: Auth | null = null;
 let cachedFirestore: Firestore | null = null;
 let emulatorConnected = false;
 let firestoreEmulatorConnected = false;
+let appCheckInitialized = false;
 
 /**
  * ¿Soporta el entorno la persistencia offline con IndexedDB? En el WebView de
@@ -105,9 +107,58 @@ function supportsIndexedDb(): boolean {
   return typeof globalThis !== "undefined" && "indexedDB" in globalThis;
 }
 
+/**
+ * App Check necesita DOM (carga el script de reCAPTCHA). En node/jsdom
+ * (tests) y con el emulador (que ignora App Check) no se inicializa.
+ */
+function supportsAppCheck(): boolean {
+  return typeof window !== "undefined" && typeof document !== "undefined";
+}
+
+/**
+ * Proveedor de App Check, aislado en un único punto de extensión (ADR-005):
+ * hoy reCAPTCHA v3 (único proveedor viable con el SDK Web dentro del WebView
+ * de Capacitor); el día que exista un plugin nativo de Capacitor para Play
+ * Integrity, se sustituye aquí sin tocar el resto del módulo. Sin site key
+ * configurada, devuelve null (no-op): App Check queda ausente, no bloquea.
+ */
+function resolveAppCheckProvider(): ReCaptchaV3Provider | null {
+  const siteKey = env.VITE_FIREBASE_APPCHECK_RECAPTCHA_SITE_KEY;
+  if (!siteKey) return null;
+  return new ReCaptchaV3Provider(siteKey);
+}
+
+/**
+ * Inicializa App Check en modo monitor (ADR-005): mide el tráfico con/sin
+ * token válido sin bloquear a nadie — el enforce es un toggle de consola
+ * futuro, no algo que decida este código. El debug token (solo dev/no-prod)
+ * nunca debe viajar en un build de producción.
+ */
+function initializeAppCheckOnce(app: FirebaseApp): void {
+  if (appCheckInitialized || useEmulator || !supportsAppCheck()) return;
+  const provider = resolveAppCheckProvider();
+  if (!provider) return;
+
+  if (env.VITE_FIREBASE_APPCHECK_DEBUG === "true" && !import.meta.env.PROD) {
+    (globalThis as { FIREBASE_APPCHECK_DEBUG_TOKEN?: boolean }).FIREBASE_APPCHECK_DEBUG_TOKEN =
+      true;
+  }
+
+  // Modo monitor: un fallo al inicializar App Check nunca debe impedir el uso
+  // de Auth/Firestore (hallazgo de Seguridad, PR #35) — se traga el error.
+  try {
+    initializeAppCheck(app, { provider, isTokenAutoRefreshEnabled: true });
+  } catch {
+    // Intencional: ver comentario arriba.
+  } finally {
+    appCheckInitialized = true;
+  }
+}
+
 function getFirebaseApp(): FirebaseApp {
   if (cachedApp) return cachedApp;
   cachedApp = getApps().length > 0 ? getApp() : initializeApp(effectiveConfig());
+  initializeAppCheckOnce(cachedApp);
   return cachedApp;
 }
 

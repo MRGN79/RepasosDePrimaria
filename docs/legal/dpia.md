@@ -94,10 +94,11 @@ adulto. Esto es la fuente del riesgo R9 (§3).
 | R3 | Transferencia internacional del correo del adulto (Auth global) | Media | Medio | Medio | Minimización (solo correo); DPA + SCCs 2021 + DPF; documentado en política y ADR-003 |
 | R4 | Caché offline sin cifrar con datos sensibles | Baja | Medio | Bajo | Email fuera de Firestore; PIN fuera de Firestore; solo progreso sin PII en caché |
 | R5 | Acción destructiva ejecutada por un niño (borrar cuenta/datos) | Media | Medio | Medio | Puerta parental: reautenticación del adulto para acciones de cuenta; reto de adulto para destructivas locales (ADR-003 §4) |
-| R6 | Enumeración de cuentas / abuso de API key | Media | Bajo | Bajo | Email Enumeration Protection activado; errores genéricos; API key restringida por app+SHA-256 |
+| R6 | Enumeración de cuentas / abuso de API key | Media | Bajo | Bajo | Email Enumeration Protection activado; API key de la app Android restringida por SHA-1 — la de la app **Web** (la que usa esta app) no admite esa restricción, su mitigación es App Check en modo monitor (R10, ADR-005) |
 | R7 | Persistencia de datos tras baja (no se cumple supresión) | Baja | Alto | Medio | Cloud Function de recursive delete de todo el árbol + borrado en Auth (ADR-003 §5) |
 | R8 | Suplantación con correo no verificado | Baja | Medio | Bajo | Verificación de correo obligatoria antes de escribir en la nube; refresh de token |
 | **R9** | **Transferencia internacional de PII de un menor identificado (correo/nombre/foto de su propia cuenta de Google, Modelo B, ADR-004)** | Media | **Alto** | **Alto** | DPA + SCCs 2021 + DPF (misma cobertura contractual que R3, pero aplicada ahora a datos del menor, no solo del adulto); reto de adulto antes del alta (esfuerzo razonable, no verificación fuerte — **su suficiencia como consentimiento parental está pendiente de revisión legal humana**, ver §5); minimización en Firestore (solo `uid`); ninguna funcionalidad activa hasta que exista proyecto Firebase real |
+| R10 | Tercero (Google reCAPTCHA v3) recibe señales del dispositivo con fines antiabuso (App Check, ADR-005), posiblemente del dispositivo de un menor (Modelo B) | Baja | Medio | Bajo | Uso estrictamente de seguridad, no analítico ni publicitario; base jurídica interés legítimo (art. 6.1.f) con derecho de oposición (art. 21); modo monitor (no bloquea); **hoy sin site key configurada → App Check ausente (no-op): no hay flujo de datos a Google todavía**; proveedor interino hasta Play Integrity —atestación de dispositivo sin scoring conductual—. **Advertencia:** el servicio estándar de reCAPTCHA v3 **no se rige por el DPA de Firebase** (a diferencia de R3/R9); Google puede tratar la señal con fines propios de seguridad → el encuadre "encargado" **no puede darse por sentado** y queda pendiente de revisión legal humana antes de activar la site key (posible régimen de responsable/corresponsable; valorar reCAPTCHA Enterprise —sí bajo Cloud DPA— o Play Integrity como salida) |
 
 **Nota sobre R9:** es el riesgo de mayor impacto de esta DPIA porque combina dos
 factores agravantes del art. 35 RGPD — datos de un **menor** y una **transferencia
@@ -117,8 +118,11 @@ umbral de proporcionalidad para datos de menores es más exigente. Ver condició
 - **Puerta parental:** reautenticación para acciones de cuenta/credenciales; reto de
   adulto para destructivas locales.
 - **Supresión efectiva:** Cloud Function de borrado en cascada + eliminación en Auth.
-- **Seguridad de plataforma:** App Check (monitor→enforce), API key restringida,
-  endurecimiento de WebView y del pipeline de firma (ADR-003 §7-8).
+- **Seguridad de plataforma:** App Check con reCAPTCHA v3 en modo monitor
+  (proveedor interino hasta que Play Integrity sea viable; ver ADR-005), API key
+  restringida donde aplica, endurecimiento de WebView y del pipeline de firma
+  (ADR-003 §7-8). reCAPTCHA v3 introduce un tercero (Google) que recibe señales del
+  dispositivo con fines antiabuso, no analíticos ni publicitarios — ver R10.
 - **Transparencia y consentimiento:** política de privacidad en la app; registro de
   consentimiento con fecha y versión.
 - **Residencia:** Firestore en región UE; para Auth, cobertura contractual (DPA/SCCs)
