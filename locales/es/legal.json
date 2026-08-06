@@ -1,7 +1,7 @@
 {
   "privacy": {
     "title": "Política de privacidad",
-    "updated": "Última actualización: 4 de agosto de 2026",
+    "updated": "Última actualización: 6 de agosto de 2026",
     "intro": "Repasos de Primaria es una app educativa gratuita. Un niño o niña puede jugar sin cuenta, con un perfil dentro de la cuenta de un adulto, o con su propia cuenta de Google si ya la tiene. Aquí te explicamos qué datos se tratan y cómo, según cada caso.",
     "design": {
       "title": "Dos formas de jugar: perfil bajo la cuenta del tutor, o cuenta propia del niño",
@@ -23,7 +23,7 @@
         "En Cloud Firestore, ningún dato identificativo: ni nombre real, ni fecha de nacimiento, ni foto, ni voz, ni correo —del adulto ni del niño—. El apodo procede de una lista cerrada.",
         "El PIN del niño no se guarda en la nube de ninguna forma; vive solo en el dispositivo (solo aplica al Modelo A).",
         "Ni el correo del adulto ni el del niño (Modelo B) se copian a la base de datos de progreso: residen únicamente en Firebase Authentication.",
-        "No usamos cookies de terceros, ni analítica, ni publicidad, ni rastreadores."
+        "No usamos analítica, ni publicidad, ni rastreadores, ni cookies de terceros con fines comerciales. Única excepción, de seguridad: Google reCAPTCHA v3 protege las cuentas frente a abuso automatizado; no se usa con fines analíticos ni publicitarios."
       ]
     },
     "legalBasis": {
