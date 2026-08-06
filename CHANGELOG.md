@@ -82,6 +82,10 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   prueba (debug)** descargable. La firma de la versión de publicación queda
   preparada para hacerse de forma segura cuando llegue el momento de subir a
   Google Play.
+- **La app instalable queda conectada al servicio en la nube real.** El guardado
+  del progreso en la cuenta descrito más arriba funciona ya en las versiones que
+  genera la compilación, y no solo en pruebas internas: la aplicación empaquetada
+  arranca con la nube activada en lugar de en modo local.
 
 ### Changed
 
