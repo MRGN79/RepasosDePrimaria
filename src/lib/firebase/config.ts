@@ -144,8 +144,15 @@ function initializeAppCheckOnce(app: FirebaseApp): void {
       true;
   }
 
-  initializeAppCheck(app, { provider, isTokenAutoRefreshEnabled: true });
-  appCheckInitialized = true;
+  // Modo monitor: un fallo al inicializar App Check nunca debe impedir el uso
+  // de Auth/Firestore (hallazgo de Seguridad, PR #35) — se traga el error.
+  try {
+    initializeAppCheck(app, { provider, isTokenAutoRefreshEnabled: true });
+  } catch {
+    // Intencional: ver comentario arriba.
+  } finally {
+    appCheckInitialized = true;
+  }
 }
 
 function getFirebaseApp(): FirebaseApp {

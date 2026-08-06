@@ -123,6 +123,18 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   correo/nombre/foto residen en Firebase Authentication igual que los del
   adulto (nunca en la base de datos de progreso).
 
+### Security
+
+- **Protección adicional de las cuentas frente al abuso automatizado.** La app
+  incorpora una medida de seguridad que ayuda a distinguir el uso normal de
+  intentos automatizados de abuso —como la creación masiva de cuentas o el envío
+  en masa de correos de verificación o de restablecimiento de contraseña—. Actúa
+  en segundo plano y **no cambia en nada la experiencia** de quien usa la app con
+  normalidad: no bloquea, ni añade pasos o pruebas visuales. Esta comprobación la
+  realiza un servicio de Google con fines **exclusivamente de seguridad** (nunca
+  publicitarios ni de analítica), y así queda recogido en la política de
+  privacidad.
+
 ## [0.5.0] — 2026-08-03
 
 ### Added
