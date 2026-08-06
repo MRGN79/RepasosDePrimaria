@@ -125,8 +125,114 @@ motivo (Google Sign-In no es fiable vía `signInWithPopup` en el WebView). Vale 
 tratar ambos como un mismo incremento futuro de migración a plugins nativos de
 `@capacitor-firebase/*`.
 
+## Extensión 2026-08-06 — Alcance por modelo de cuenta (pregunta de Responsabilidad Social, PR #35)
+
+**Decisión: App Check se mantiene GLOBAL — se inicializa en el arranque para toda
+sesión, incluido el Modelo B (niño con cuenta Google). No se acota al Modelo A. El
+código actual (`initializeAppCheckOnce`, global y previo a la primera llamada de Auth)
+es el correcto y NO debe hacerse condicional por rol. Sin cambio de código.**
+
+### La pregunta
+
+Responsabilidad Social (gate de la PR #35) planteó si el dispositivo de un niño
+(Modelo B, ADR-004) debe cargar y ejecutar el script de reCAPTCHA de un tercero, cuando
+el vector de abuso que motivó App Check (alta masiva, spam de verificación/reset) vive
+en el flujo **email/contraseña**, que solo existe en el Modelo A. El Modelo B usa Google
+Sign-In, con su propia protección antiabuso. La intuición —minimizar la exposición del
+menor a señales de terceros— es legítima y coherente con el principio de minimización
+que rige ADR-004.
+
+### Por qué acotar a Modelo A es técnicamente inviable, no solo subóptimo
+
+Tres propiedades de App Check, encadenadas con el orden real del flujo de entrada
+(`AppRoot.tsx`), lo cierran:
+
+1. **App Check se adjunta al `FirebaseApp`, no a un flujo de autenticación.** Una vez
+   inicializado, toda llamada de red (Auth, Firestore) de esa instancia lleva el token.
+   No es configurable por rol, por usuario ni por endpoint.
+2. **El enforce es server-side y por producto** (toggle de consola: Firestore o Auth,
+   cada uno completo), **nunca por rol ni por endpoint.** No existe "enforce solo
+   `accounts:signUp`" ni "enforce Firestore solo para tutores".
+3. **El rol no se conoce hasta _después_ de autenticar.** El mismo `signInWithGoogle()`
+   sirve al tutor-Google y al niño; el rol se elige en `RoleChoiceScreen` ya con sesión
+   abierta. En el instante de la llamada de red de auth —que **es** el vector de abuso
+   de este ADR (`accounts:signUp`, `accounts:sendOobCode`)— la app no sabe ni puede
+   saber si es Modelo A o B.
+
+Consecuencias directas:
+
+- **Diferir App Check "hasta saber que es tutor" no protege el vector.** Cuando el rol
+  es conocido, las llamadas de abuso (signup, verify, reset) ya ocurrieron. Peor aún:
+  un atacante con la key robada abusa de esos endpoints **fuera de la app**, sin pulsar
+  ningún botón; solo el enforce con token en *toda* llamada legítima lo bloquea. Acotar
+  por rol dejaría esos endpoints sin cobertura para todos, no solo para el Modelo B.
+- **No hay token sin script.** El proveedor de App Check *es* reCAPTCHA; obtener el token
+  al arranque (necesario para cubrir Auth pre-rol) implica cargar el script en todo
+  dispositivo, incluido el del niño. No existe "cubrir Auth del tutor sin cargar
+  reCAPTCHA en el dispositivo del niño", porque al arrancar ambos son indistinguibles.
+- **El enforce de Auth arrastra al niño igualmente.** `signInWithIdp` (Google) y el
+  refresh del token son endpoints de Identity Platform: con Auth en enforce, la sesión
+  del niño necesita token en el sign-in y en cada refresh. Sin App Check inicializado, su
+  Google Sign-In y su sesión se romperían. ADR-004 §7 ya anticipaba "App Check en la ruta
+  de Google" cubriendo también al niño; mantenerlo global es coherente con esa postura.
+
+### Impacto en el enforce futuro (respuesta explícita)
+
+Mantenerlo global es precisamente lo que **conserva abierta** la vía de enforce para
+ambos modelos: con token en toda sesión, tanto Firestore-enforce como Auth-enforce
+podrían aplicarse al niño sin excluirlo. Haberlo acotado al Modelo A habría **cerrado
+para siempre** el enforce de Firestore sobre las escrituras del niño (bloqueadas por
+falta de token) y **roto** su Google Sign-In bajo Auth-enforce. Es decir: la opción que
+"protege menos al niño de reCAPTCHA" es también la que le **impediría** beneficiarse del
+enforce el día que se active — lo contrario de lo que se busca. (El paso a enforce sigue
+condicionado a lo ya fijado en este ADR: validación en dispositivo real, reconciliación
+con offline-first, y criterios de corte de Seguridad en `pending-actions.md`.)
+
+### Cómo se responde de verdad a la preocupación de Responsabilidad Social
+
+La preocupación es válida y su resolución **no** es el alcance por rol (imposible), sino
+**la migración a Play Integrity** — que este ADR ya fija como destino preferido y que RS
+ahora refuerza con una razón concreta y de peso: Play Integrity es una atestación de
+integridad de app/dispositivo vía Play Services, **no un script de scoring conductual de
+un tercero ejecutándose en la página del menor**. Migrar a Play Integrity elimina de raíz
+la exposición que RS señala, para ambos modelos. Se eleva la prioridad de esa migración
+por este motivo, además del técnico ya registrado.
+
+Justificación a reforzar en ADR/política de privacidad, mientras reCAPTCHA sea el
+proveedor (para el gate de RS y la revisión legal humana ya pendiente):
+
+- reCAPTCHA v3 se carga como **medida de seguridad** (prevención de abuso), **idéntica en
+  todo dispositivo porque la superficie que protege —los endpoints de autenticación— se
+  ejerce antes de que la app pueda saber si la sesión es de un adulto o de un menor**, y
+  el enforce de App Check es por servicio, no por usuario. Distinguir por rol en la capa
+  protegida es técnicamente imposible; no es una omisión de diseño.
+- Es proporcionada y minimizada: en **modo monitor** no muestra reto ni fricción al niño
+  (es invisible), la app **no persiste ningún score ni señal conductual** de reCAPTCHA, y
+  el token atesta integridad de la app, no identidad del usuario. Es un **puente temporal**
+  documentado hacia Play Integrity.
+- La preocupación **legal** derivada (cookies de reCAPTCHA del dominio de Google en el
+  dispositivo de un menor — ePrivacy/art. 22.2 LSSI — y el rol contractual real de Google
+  en reCAPTCHA v3 estándar) **no la resuelve esta decisión de arquitectura**; sigue viva y
+  ya está registrada como bloqueante de la activación de la site key en `pending-actions.md`
+  (entrada de revisión legal humana ampliada). Esta decisión solo establece que el alcance
+  por rol no es una mitigación disponible, por lo que la mitigación debe venir de Play
+  Integrity + el encuadre legal, no de dejar de cargar reCAPTCHA en el Modelo B.
+
+### Nota para la decisión de enforce (no ahora)
+
+Dado que la barrera de autorización real de Firestore son las reglas (deny-by-default +
+`uid`/`email_verified`), al llegar el momento del enforce es defendible **enforce solo en
+Auth** (donde vive el vector real) y **dejar Firestore en monitor**, reduciendo la huella.
+Esto **no** cambia la decisión de esta sección: el niño se autentica igualmente (Google
+Sign-In → Auth), así que su dispositivo necesita el token —y por tanto reCAPTCHA al
+arranque— aunque Firestore nunca pase a enforce. No hay escenario de enforce que permita
+al Modelo B prescindir de App Check.
+
 ## Impacto de versión
 
 **PATCH** (`0.6.1`). Endurecimiento de seguridad interno: en modo monitor no cambia
 ningún comportamiento observable para el usuario legítimo, no añade capacidad de
 usuario ni cambia contrato de API.
+
+> Extensión 2026-08-06 (alcance por modelo de cuenta): **sin impacto de versión** — es
+> una aclaración de diseño que confirma el comportamiento ya implementado; no toca código.
