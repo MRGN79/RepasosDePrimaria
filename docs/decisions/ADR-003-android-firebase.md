@@ -227,7 +227,10 @@ Se registran como requisitos de la fase de implementación, sin detalle cerrado 
 - **Inmutabilidad** de `consentimiento` y `createdAt` en las reglas + **rechazo de
   campos desconocidos** (allowlist de campos por documento).
 - **App Check**: rollout en modo **monitor → enforce**, con **plan de debug tokens**
-  para desarrollo/CI.
+  para desarrollo/CI. Implementado en modo monitor con `ReCaptchaV3Provider` como
+  proveedor interino — Play Integrity (el proveedor originalmente previsto aquí) no
+  es viable hasta que existan keystore de release + acceso a Play Console + plugin
+  nativo de Capacitor. Ver [`ADR-005`](./ADR-005-app-check-recaptcha-interino.md).
 - **Refresh del ID token** tras verificar email (para propagar `email_verified`).
 - **Auditoría de dependencias en CI** (se suma a la política de dependencias del
   CLAUDE.md).

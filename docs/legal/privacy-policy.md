@@ -109,7 +109,15 @@ Authentication; el proyecto **no** ve ni guarda la contraseña en claro.
   únicamente en Firebase Authentication, que es su única fuente de verdad para
   ambos.
 - **No usamos cookies de terceros, ni analítica, ni perfiles publicitarios, ni
-  rastreadores.** No se realiza publicidad dirigida.
+  rastreadores.** No se realiza publicidad dirigida. **Única excepción, estrictamente
+  de seguridad:** para proteger las cuentas frente a abuso automatizado (creación
+  masiva de cuentas, envío masivo de correos de verificación o de restablecimiento
+  de contraseña), la app usa **Google reCAPTCHA v3** al comunicarse con Firebase.
+  reCAPTCHA analiza señales técnicas del dispositivo y del comportamiento para
+  distinguir un uso legítimo de un abuso automatizado; **no se usa con fines
+  analíticos ni publicitarios**, y Google actúa como encargado del tratamiento para
+  esta señal, igual que para el resto de la infraestructura de Firebase. Aplica por
+  igual en el Modelo A y en el Modelo B (cuenta propia del niño).
 
 ### 5. Base jurídica y consentimiento (tratamiento de datos de menores)
 
@@ -331,7 +339,14 @@ the project never sees or stores the password in clear text.
   account, Model B) are copied into the progress database** (Firestore): both
   reside only in Firebase Authentication, their single source of truth.
 - **No third-party cookies, analytics, advertising profiles or trackers.** No
-  targeted advertising is carried out.
+  targeted advertising is carried out. **One strictly security-related exception:**
+  to protect accounts against automated abuse (mass account creation, mass sending of
+  verification or password-reset emails), the app uses **Google reCAPTCHA v3** when
+  communicating with Firebase. reCAPTCHA analyzes technical device and behavioral
+  signals to distinguish legitimate use from automated abuse; **it is not used for
+  analytics or advertising purposes**, and Google acts as data processor for this
+  signal, same as for the rest of the Firebase infrastructure. This applies equally
+  to Model A and Model B (the child's own account).
 
 ### 5. Legal basis and consent (processing of minors' data)
 

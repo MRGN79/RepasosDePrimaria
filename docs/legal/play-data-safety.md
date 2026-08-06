@@ -47,6 +47,7 @@ la publicación (no hay acceso a Play Console desde el entorno de desarrollo).
 | **Actividad en la app** | Progreso / interacciones en la app (progreso de aprendizaje) | Sí (perfil de hijo) | No | Funcionalidad de la app (guardar/sincronizar) | Opcional | Sin PII del menor |
 | **Info de la app y rendimiento** | Registros de fallos, diagnósticos | No | — | — | — | No se integra analítica ni crash reporting de terceros |
 | **Identificadores del dispositivo o de otro tipo** | Device ID / user ID publicitario | No | — | — | — | No se usa ID publicitario |
+| **Identificadores del dispositivo o de otro tipo** | Señales técnicas del dispositivo (reCAPTCHA v3 / Firebase App Check, ADR-005) | **Sí** | No | **Prevención de fraude, seguridad y cumplimiento** (Play declara esta finalidad como categoría propia, distinta de publicidad/analítica) | No opcional (mecanismo de seguridad, no vinculado a una acción del usuario) | Modo monitor: no bloquea el uso de la app; Google actúa como encargado, no como receptor de datos con fines propios |
 | **Ubicación** | Aproximada o precisa | No | — | — | — | — |
 | **Datos de salud / financieros / mensajes / fotos / contactos / audio** | — | No | — | — | — | — |
 
