@@ -26,8 +26,10 @@ que este trabajo entrega el conjunto completo:
   **offline-first**.
 - **Migración del progreso local existente** (`localStorage` v2 del ADR-002) a la
   cuenta del tutor la primera vez que inicia sesión.
-- **CI que genera APK en cada PR** (debug sin firma) y **release firmado sólo en
-  `main`/tag** vía Play App Signing.
+- **CI que genera APK en cada PR** (debug firmado con un keystore de desarrollo
+  fijo y versionado, credenciales públicas estándar de Android — huella SHA
+  estable para Google Sign-In) y **release firmado sólo en `main`/tag** vía Play
+  App Signing.
 - **Corrección del copy legal** sobre privacidad en el mismo cambio (el README y los
   textos que aún afirman "nada sale del dispositivo" dejan de ser ciertos).
 - **DPIA (Evaluación de Impacto de Protección de Datos)** como entregable, dado que
