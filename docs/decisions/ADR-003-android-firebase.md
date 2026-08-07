@@ -237,6 +237,10 @@ Se registran como requisitos de la fase de implementación, sin detalle cerrado 
 - **Validación del campo `mote`** (longitud, caracteres, sin PII del adulto).
 - **Política de contraseña del tutor** (longitud/robustez mínimas).
 - **Dominios autorizados** en los action links de Firebase Auth (ver §2).
+- **Google Sign-In dentro del WebView nativo**: `signInWithPopup` no es fiable en un
+  WebView de Capacitor (confirmado en dispositivo real). Resuelto con un puente nativo
+  (`@capacitor-firebase/authentication`, modo `skipNativeAuth`) — ver
+  [`ADR-006`](./ADR-006-google-signin-nativo.md).
 
 ### 10. Versionado (SemVer)
 

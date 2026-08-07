@@ -132,6 +132,12 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   —el progreso se guarda solo en el dispositivo— y, más tarde, un botón
   "Crear cuenta" en Ajustes permite darse de alta sin perder nada de lo
   avanzado.
+- **El PIN de pestillo local queda correctamente disponible en el paquete
+  Android.** Desde que se añadió (Inc. 3), la app declaraba el almacén nativo
+  que guarda el PIN en el propio dispositivo, pero el proyecto Android nunca
+  se había vuelto a sincronizar para incluirlo de verdad en el paquete
+  instalable — el PIN podía no guardarse ni verificarse correctamente en el
+  APK. Corregido junto con la preparación del login nativo con Google.
 
 ### Security
 
