@@ -48,6 +48,7 @@ describe("i18n auth: paridad EN/ES", () => {
       "errors.tooManyRequests",
       "errors.network",
       "errors.requiresRecentLogin",
+      "errors.cancelled",
       "errors.generic",
     ];
     for (const bag of [enAuth, esAuth] as Bag[]) {
