@@ -13,4 +13,13 @@ ext {
     androidxJunitVersion = '1.3.0'
     androidxEspressoCoreVersion = '3.7.0'
     cordovaAndroidVersion = '14.0.1'
+
+    // @capacitor-firebase/authentication (ADR-006): sin esto, Play Services Auth
+    // y androidx.credentials quedan como `compileOnly` (no se empaquetan) y el
+    // picker nativo de Google falla en tiempo de ejecución (NoClassDefFoundError).
+    // No se activa el equivalente de Facebook: esta app no usa ese proveedor.
+    rgcfaIncludeGoogle = true
+    // Fija la versión estable (el valor por defecto del plugin es una release
+    // candidate, 1.2.0-rc01), según la guía oficial de configuración de Android.
+    androidxCredentialsVersion = '1.3.0'
 }
