@@ -25,12 +25,17 @@ type SettingsScreenProps = {
   onHome: () => void;
   onBack: () => void;
   /**
-   * Sección "Cuenta" (US-E8). Presente solo con nube activa y sesión: si falta,
-   * la sección NO se renderiza (modo local no tiene cuenta). `onSwitchAccount`
-   * ejecuta el cierre de sesión — vive en AppRoot; aquí solo se dispara tras el
-   * reto de adulto y la confirmación.
+   * Sección "Cuenta". Ausente ⟹ no se renderiza (modo local sin nube, US-E9
+   * previo a decidir). Dos variantes:
+   *  - "switch" (US-E8): con sesión activa; `onSwitchAccount` cierra la sesión
+   *    actual (vive en AppRoot), tras el reto de adulto y la confirmación.
+   *  - "create" (US-E9): sin sesión, tras jugar sin cuenta; `onCreateAccount`
+   *    lleva de vuelta a la pantalla de alta, sin perder el progreso local (se
+   *    traslada solo al crear el primer perfil, igual que en el alta directa).
    */
-  account?: { onSwitchAccount: () => void };
+  account?:
+    | { mode: "switch"; onSwitchAccount: () => void }
+    | { mode: "create"; onCreateAccount: () => void };
 };
 
 export function SettingsScreen({
@@ -130,7 +135,17 @@ export function SettingsScreen({
           </Button>
         </fieldset>
 
-        {account ? (
+        {account?.mode === "create" ? (
+          <fieldset className={styles.group}>
+            <legend className={styles.legend}>{t("settings:account.label")}</legend>
+            <p className={styles.help}>{t("settings:account.createHelp")}</p>
+            <Button variant="secondary" size="lg" onClick={account.onCreateAccount}>
+              {t("settings:account.create")}
+            </Button>
+          </fieldset>
+        ) : null}
+
+        {account?.mode === "switch" ? (
           <fieldset className={styles.group}>
             <legend className={styles.legend}>{t("settings:account.label")}</legend>
             <p className={styles.help}>{t("settings:account.help")}</p>

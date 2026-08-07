@@ -20,6 +20,8 @@ interface TutorAuthScreenProps {
   onForgotPassword: (email: string) => void;
   /** si se pasa, muestra el botón "Continuar con Google" (ADR-004 §1). */
   onGoogle?: () => void;
+  /** si se pasa, muestra la salida "Jugar sin cuenta" (US-E9): progreso solo local. */
+  onSkip?: () => void;
   busy?: boolean;
   /** clave i18n de error a mostrar (ej. "auth:errors.invalidCredentials"). */
   errorKey?: string | null;
@@ -33,6 +35,7 @@ export function TutorAuthScreen({
   onSubmit,
   onForgotPassword,
   onGoogle,
+  onSkip,
   busy = false,
   errorKey,
   infoKey,
@@ -136,6 +139,22 @@ export function TutorAuthScreen({
             {isSignUp ? t("mode.toggleToSignIn") : t("mode.toggleToSignUp")}
           </button>
         </div>
+
+        {onSkip ? (
+          <div className={styles.skip}>
+            <button
+              type="button"
+              className={styles.linkButton}
+              onClick={onSkip}
+              aria-describedby="tutor-auth-skip-hint"
+            >
+              {t("skip.action")}
+            </button>
+            <p id="tutor-auth-skip-hint" className={styles.skipHint}>
+              {t("skip.hint")}
+            </p>
+          </div>
+        ) : null}
       </div>
     </PageLayout>
   );

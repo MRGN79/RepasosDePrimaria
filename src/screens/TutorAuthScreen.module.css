@@ -109,3 +109,21 @@
   color: var(--color-text-muted, #888);
   margin: 0.25rem 0;
 }
+
+.skip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--tdp-space-1);
+  margin-top: var(--tdp-space-4);
+  padding-top: var(--tdp-space-4);
+  border-top: var(--tdp-border-width) solid var(--tdp-color-border);
+  text-align: center;
+}
+
+.skipHint {
+  margin: 0;
+  font-size: var(--tdp-font-size-sm);
+  color: var(--tdp-color-text-muted);
+  max-width: 22rem;
+}
