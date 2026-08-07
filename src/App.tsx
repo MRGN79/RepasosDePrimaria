@@ -58,11 +58,13 @@ function formatBadgeDate(dateKey: string, lang: "en" | "es"): string {
 
 interface AppProps {
   /**
-   * Sección "Cuenta" de Ajustes (US-E8). Presente solo con nube activa y sesión;
-   * ausente ⟹ la sección no se renderiza (modo local no tiene cuenta). Se reenvía
-   * tal cual a SettingsScreen. `onSwitchAccount` vive en AppRoot (cierre de sesión).
+   * Sección "Cuenta" de Ajustes: con sesión (US-E8) o tras jugar sin cuenta
+   * (US-E9, ver AppRoot). Ausente ⟹ la sección no se renderiza (nube
+   * deshabilitada de fábrica). Se reenvía tal cual a SettingsScreen.
    */
-  account?: { onSwitchAccount: () => void };
+  account?:
+    | { mode: "switch"; onSwitchAccount: () => void }
+    | { mode: "create"; onCreateAccount: () => void };
 }
 
 export function App({ account }: AppProps = {}) {

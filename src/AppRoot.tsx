@@ -1,12 +1,18 @@
 /*
- * Orquestador de entrada (ADR-003, ADR-004, Inc. 3).
+ * Orquestador de entrada (ADR-003, ADR-004, Inc. 3, US-E9).
  *
- * Dos modos:
- *  - Nube DESHABILITADA (sin VITE_FIREBASE_* ni emulador): la app corre 100% en
- *    local, exactamente como antes — se renderiza <GameProvider><App/></>.
- *  - Nube HABILITADA: se ejecuta el flujo de cuenta (auth → verificación → rol →
- *    consentimiento → perfil) y, con un perfil activo, el juego respaldado por
- *    Firestore vía <CloudGameProvider>.
+ * Con la nube DESHABILITADA (sin VITE_FIREBASE_* ni emulador) la app corre
+ * 100% en local, exactamente igual que antes — se renderiza
+ * <GameProvider><App/></>, sin gate de entrada.
+ *
+ * Con la nube HABILITADA se ejecuta el flujo de cuenta (auth → verificación →
+ * rol → consentimiento → perfil) y, con un perfil activo, el juego respaldado
+ * por Firestore vía <CloudGameProvider>. Pero la cuenta nunca es un requisito
+ * de entrada: desde la pantalla de acceso, "jugar sin cuenta" lleva al mismo
+ * modo local de arriba (mismo <GameProvider><App/></>), y desde Ajustes se
+ * puede volver a la pantalla de acceso para crear una cuenta más tarde sin
+ * perder el progreso — la migración local→nube ya existente se dispara igual
+ * al crear el primer perfil, venga de aquí o del alta directa.
  *
  * El flujo de cuenta materializa ADR-004: cuenta de tutor (email/contraseña o
  * Google, con selector+PIN si hay más de un hijo) y cuenta de niño (Google
@@ -97,6 +103,12 @@ function CloudRoot() {
   const [lockedIds, setLockedIds] = useState<string[]>([]);
   const [bootLoading, setBootLoading] = useState(false);
 
+  // El adulto decidió jugar sin cuenta (US-E9): progreso solo local hasta que
+  // elija crear una desde Ajustes. Se vuelve a la pantalla de entrada sin
+  // perder nada — la migración a la nube ya existe y se dispara igual al
+  // crear el primer perfil, venga de aquí o del alta directa.
+  const [skippedAccount, setSkippedAccount] = useState(false);
+
   // Estado de la pantalla de entrada.
   const [entryMode, setEntryMode] = useState<AuthMode>("signIn");
   const [entryError, setEntryError] = useState<string | null>(null);
@@ -147,6 +159,10 @@ function CloudRoot() {
         setPinTargetChild(null);
         setLockedIds([]);
         setMigrationPhase(null);
+        // Ídem para "jugar sin cuenta" (US-E9): si no se limpia, un logout tras
+        // un login en curso dejaría el juego local montado en silencio en vez
+        // de la pantalla de entrada (hallazgo de QA, PR de este fix).
+        setSkippedAccount(false);
         resetSetup();
       }
     });
@@ -387,7 +403,7 @@ function CloudRoot() {
 
   /* ------------------------------ render ------------------------------ */
 
-  const account = { onSwitchAccount: onSignOut };
+  const account = { mode: "switch" as const, onSwitchAccount: onSignOut };
 
   // Banda no bloqueante del traslado, superpuesta al juego. Frontend controla el
   // posicionamiento (glue de layout); el aspecto lo define el componente.
@@ -419,7 +435,18 @@ function CloudRoot() {
     return <PrivacyPolicyScreen onBack={() => setShowPrivacy(false)} onHome={() => setShowPrivacy(false)} />;
   }
 
-  // Sin sesión → pantalla de entrada (email/contraseña + Google).
+  // El adulto eligió jugar sin cuenta → modo local, con salida a "Crear
+  // cuenta" desde Ajustes (US-E9). Mismo árbol que con la nube deshabilitada.
+  if (!user && skippedAccount) {
+    return (
+      <GameProvider>
+        <App account={{ mode: "create", onCreateAccount: () => setSkippedAccount(false) }} />
+      </GameProvider>
+    );
+  }
+
+  // Sin sesión → pantalla de entrada (email/contraseña + Google), con salida a
+  // jugar sin cuenta (US-E9).
   if (!user) {
     return (
       <TutorAuthScreen
@@ -428,6 +455,7 @@ function CloudRoot() {
         onSubmit={onSubmitEmail}
         onForgotPassword={onForgot}
         onGoogle={onGoogle}
+        onSkip={() => setSkippedAccount(true)}
         busy={busy}
         errorKey={entryError}
         infoKey={entryInfo}

@@ -42,6 +42,8 @@
     "switchConfirmTitle": "Switch to a different account?",
     "switchConfirmBody": "You'll be signed out and can sign in with another account. Your child's progress stays safely in the cloud.",
     "switchConfirmButton": "Switch account",
-    "switchCancel": "Cancel"
+    "switchCancel": "Cancel",
+    "createHelp": "Right now your progress is saved only on this device. Create an account to also save it in the cloud, without losing anything.",
+    "create": "Create account"
   }
 }

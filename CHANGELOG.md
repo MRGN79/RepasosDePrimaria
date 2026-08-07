@@ -125,6 +125,13 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   cuando el niño usa su propia cuenta de Google, en cuyo caso su
   correo/nombre/foto residen en Firebase Authentication igual que los del
   adulto (nunca en la base de datos de progreso).
+- **Se puede volver a jugar sin necesidad de crear una cuenta.** Al activar el
+  guardado en la nube en las versiones publicadas, la pantalla de acceso se
+  quedó sin la opción de entrar sin cuenta, obligando a darse de alta antes de
+  poder jugar. Ahora la pantalla de acceso ofrece de nuevo "Jugar sin cuenta"
+  —el progreso se guarda solo en el dispositivo— y, más tarde, un botón
+  "Crear cuenta" en Ajustes permite darse de alta sin perder nada de lo
+  avanzado.
 
 ### Security
 

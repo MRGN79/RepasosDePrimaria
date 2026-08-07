@@ -42,6 +42,8 @@
     "switchConfirmTitle": "¿Cambiar a otra cuenta?",
     "switchConfirmBody": "Se cerrará la sesión y podrás entrar con otra cuenta. El progreso de tu hijo o hija sigue a salvo en la nube.",
     "switchConfirmButton": "Cambiar de cuenta",
-    "switchCancel": "Cancelar"
+    "switchCancel": "Cancelar",
+    "createHelp": "Ahora mismo el progreso se guarda solo en este dispositivo. Crea una cuenta para guardarlo también en la nube, sin perder nada.",
+    "create": "Crear cuenta"
   }
 }
