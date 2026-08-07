@@ -103,6 +103,9 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   previo para habilitar el inicio de sesión con Google en las versiones de
   prueba. No afecta a la versión de publicación, que seguirá firmándose de forma
   segura cuando llegue el momento de subir a Google Play.
+- El nombre del archivo APK generado por CI pasa de `app-debug.apk` a
+  `RepasosDePrimaria-<versión>-debug.apk`, para distinguir descargas de
+  distintas compilaciones.
 
 ### Removed
 

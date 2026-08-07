@@ -36,6 +36,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    // Nombre de archivo del APK con proyecto + versión (en vez del "app-debug.apk"
+    // genérico de Gradle), para distinguir descargas al ir sacando builds sucesivas.
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "RepasosDePrimaria-${defaultConfig.versionName}-${variant.buildType.name}.apk"
+        }
+    }
 }
 
 repositories {
