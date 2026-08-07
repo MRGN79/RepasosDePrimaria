@@ -59,6 +59,19 @@ jobs:
       - name: Capacitor sync (Android)
         run: npx cap sync android
 
+      - name: Write google-services.json
+        # No se versiona (ADR-003 §6/§7): lo inyecta la CI desde un secreto.
+        # Necesario para el login nativo con Google (@capacitor-firebase/authentication,
+        # ADR-006) — sin él, el plugin no encuentra el cliente OAuth de Android.
+        env:
+          GOOGLE_SERVICES_JSON_B64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+        run: |
+          if [ -z "$GOOGLE_SERVICES_JSON_B64" ]; then
+            echo "::error::Falta el secreto GOOGLE_SERVICES_JSON_BASE64 (Settings → Secrets and variables → Actions). Sin él, el login con Google nativo no funciona en el APK generado."
+            exit 1
+          fi
+          echo "$GOOGLE_SERVICES_JSON_B64" | base64 -d > android/app/google-services.json
+
       - name: Build debug APK
         run: ./gradlew assembleDebug --no-daemon
         working-directory: android
@@ -108,6 +121,17 @@ jobs:
 
       - name: Capacitor sync (Android)
         run: npx cap sync android
+
+      - name: Write google-services.json
+        # Ver la misma nota en el job debug-apk.
+        env:
+          GOOGLE_SERVICES_JSON_B64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+        run: |
+          if [ -z "$GOOGLE_SERVICES_JSON_B64" ]; then
+            echo "::error::Falta el secreto GOOGLE_SERVICES_JSON_BASE64 (Settings → Secrets and variables → Actions). Sin él, el login con Google nativo no funciona en el AAB generado."
+            exit 1
+          fi
+          echo "$GOOGLE_SERVICES_JSON_B64" | base64 -d > android/app/google-services.json
 
       - name: Check signing secrets
         id: signing

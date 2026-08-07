@@ -6,7 +6,6 @@ import type { CapacitorConfig } from "@capacitor/cli";
  * - appId: identificador único de la app en Android (paquete Java invertido).
  * - webDir: carpeta que Vite genera con `npm run build`; Capacitor la copia al
  *   proyecto nativo con `cap sync` / `cap copy`.
- * No introduce Firebase todavía (eso es el Incremento 2).
  */
 const config: CapacitorConfig = {
   appId: "com.repasosdeprimaria.app",
@@ -15,6 +14,15 @@ const config: CapacitorConfig = {
   android: {
     // El WebView usa https por defecto; sin tráfico de texto plano.
     allowMixedContent: false,
+  },
+  plugins: {
+    // ADR-006 (Google Sign-In nativo): el plugin solo hace de picker nativo
+    // (skipNativeAuth) y entrega el idToken al SDK Web de Firebase, que sigue
+    // siendo el dueño real de la sesión (Auth/Firestore/App Check sin tocar).
+    FirebaseAuthentication: {
+      skipNativeAuth: true,
+      providers: ["google.com"],
+    },
   },
 };
 
