@@ -38,9 +38,10 @@ export type AuthResult<T> =
 
 /**
  * Traduce el código de error de Firebase a una clave del namespace i18n "auth".
- * Cualquier código no contemplado cae en un mensaje genérico.
+ * Cualquier código no contemplado cae en un mensaje genérico. Exportada para
+ * poder testear la lógica pura sin depender del SDK de Firebase.
  */
-function errorKeyFromCode(code: string): string {
+export function errorKeyFromCode(code: string): string {
   switch (code) {
     case "auth/email-already-in-use":
       return "auth:errors.emailInUse";
@@ -65,7 +66,8 @@ function errorKeyFromCode(code: string): string {
   }
 }
 
-function extractCode(error: unknown): string {
+/** Exportada para poder testear la lógica pura sin depender del SDK de Firebase. */
+export function extractCode(error: unknown): string {
   if (typeof error === "object" && error !== null && "code" in error) {
     const code = (error as { code: unknown }).code;
     if (typeof code === "string") return code;
@@ -139,7 +141,10 @@ export async function signInWithGoogle(): Promise<AuthResult<User>> {
       skipNativeAuth: true,
     });
     if (!credential?.idToken) throw { code: "auth/no-credential" };
-    const googleCredential = GoogleAuthProvider.credential(credential.idToken, credential.accessToken);
+    // Solo el idToken: es lo único que necesita signInWithCredential, y evita
+    // que la app maneje un access token OAuth de Google que no usa para nada
+    // (minimización, hallazgo de Seguridad).
+    const googleCredential = GoogleAuthProvider.credential(credential.idToken);
     const cred = await signInWithCredential(auth, googleCredential);
     return cred.user;
   });
